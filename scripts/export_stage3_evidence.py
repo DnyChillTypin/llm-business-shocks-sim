@@ -177,7 +177,8 @@ def main():
     write_json(PRIVATE / "index.json", mapping)
     write_json(ROOT / "results/benchmarks/coverage.json", {"coverage": coverage, "local_cohorts": mapping})
     files = [p for p in PUBLIC.iterdir() if p.is_file() and p.name != "artifact_manifest.json"]
-    write_json(PUBLIC / "artifact_manifest.json", {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(files)})
+    write_json(PUBLIC / "artifact_manifest.json", {"hash_rule": "SHA-256 UTF-8 text with CRLF normalized to LF",
+        "files": {p.name: hashlib.sha256(p.read_bytes().replace(b"\r\n", b"\n")).hexdigest() for p in sorted(files)}})
     print(json.dumps({**status, "aggregate_exposure_credits": summary["exposure_usd"]}, indent=2))
 
 

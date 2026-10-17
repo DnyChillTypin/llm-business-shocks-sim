@@ -26,10 +26,12 @@ def main():
         else:
             for row in csv.DictReader(text.splitlines()):
                 check(row)
-    manifest = json.loads((PUBLIC / "artifact_manifest.json").read_text())
+    provenance = json.loads((PUBLIC / "artifact_manifest.json").read_text())
+    assert provenance["hash_rule"] == "SHA-256 UTF-8 text with CRLF normalized to LF"
+    manifest = provenance["files"]
     assert set(manifest) == {p.name for p in paths} - {"artifact_manifest.json"}
     for name, digest in manifest.items():
-        assert hashlib.sha256((PUBLIC / name).read_bytes()).hexdigest() == digest, name
+        assert hashlib.sha256((PUBLIC / name).read_bytes().replace(b"\r\n", b"\n")).hexdigest() == digest, name
     assert (ROOT / "docs/results/native_coverage.csv").read_bytes() == (PUBLIC / "native_coverage.csv").read_bytes()
     print(f"Stage 3 aggregate publication boundary and artifact hashes passed: {len(paths)} files.")
 

@@ -1,8 +1,11 @@
 {
-  "budget_summary.json": "c9fe64c9c7772a37f7c693c935c45b863e2fe04e65e791623b8955c9703f6fba",
-  "evaluation_cohorts.json": "b7bd2fe601e681c0a8996aa87e1eff3ae57c206c8e73cd7c2b289145592e0012",
-  "evaluation_usage.csv": "77da9d377ad62bab54c82c54b3f3f3fcccba576926fe2e84e7f969022771c6f4",
-  "family_metrics.json": "a5338d955b09046ec0b16f3a9625b7955c763aae07dc722e474e6078745f932f",
-  "native_coverage.csv": "f8c2afa18dc219c58590bfb4b68a766fe9051394e97bda9eb67a48125ff48614",
-  "status.json": "ce1c03f10b6df35e6116d1cacc3755591d81a43997e21de0afe0aa395065f5cc"
+  "hash_rule": "SHA-256 UTF-8 text with CRLF normalized to LF",
+  "files": {
+    "budget_summary.json": "8125b16207c8d538a3876a8369531f6ca17acc207f41c7332f857d9c93373771",
+    "evaluation_cohorts.json": "6cb9e1f86424f95bdfdcce3e133f859c84c6ba0f66355ed4dbb345ae89241b90",
+    "evaluation_usage.csv": "8145c77fee8b77d7e9f00a011a88918a1b7573007026b8bb534f37a79102cdb0",
+    "family_metrics.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "native_coverage.csv": "4bfff1885ad6c25e76402ed3cc28777d86f5a0dabf49c8db062ad001ca58243c",
+    "status.json": "e493f12016daefd4ac950bd2657a3a69bbf5366e5e4b3021a82ad5cd5df9a0d2"
+  }
 }

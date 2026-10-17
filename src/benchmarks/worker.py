@@ -10,9 +10,17 @@ import random
 import re
 import sys
 import types
+import inspect
+import math
+from datetime import datetime, timezone
 from pathlib import Path
 
 from .common import ROOT, TASKS, install_gateway_clients, settings, verify_sources
+from .common import credentials
+from .budget import load_budget
+from .errors import BudgetStop, CallLimitReached, DecisionFailure, GatewayFailure
+from .gateway import request_context, CONTEXT
+from .planning import run_plan
 
 
 def load_file(name, path):
@@ -69,12 +77,62 @@ def load_firm(config):
 
     def bounded(*args, **kwargs):
         kwargs.update(retries_on_timeout=2, sleep_seconds=1)
-        return original(*args, **kwargs)
+        call = inspect.signature(original).bind_partial(*args, **kwargs).arguments
+        call_id = str(call.get("call_id", "unknown"))
+        case_id = CONTEXT.get().get("case_id", call_id)
+        match = re.fullmatch(r"test_eval_(\d+)", call_id)
+        if match and config.get("_selected_case_ids"):
+            case_id = config["_selected_case_ids"][int(match.group(1))]
+        kind = ("beer" if "beergame" in call_id else "candidate" if "consulting" in call_id else
+                "reasoning" if config.get("_task", "").startswith("firm:") and
+                config["_task"] not in {"firm:edt", "firm:consulting", "firm:beergame"} else None)
+        with request_context(logical_request_id=call_id, case_id=case_id, native_call_id=call_id,
+                             role=call.get("role"), validation_kind=kind):
+            return original(*args, **kwargs)
     llm.timed_llm_call = bounded
     import utils.consulting_tools as consulting
     consulting.OPENAI_BASE_URL = os.environ["OPENAI_URL"]
     consulting.CONSULTING_LLM_MODEL = config["judge_model"]
     from Agents.cot import ChainOfThoughtAgent
+    if config.get("_purpose") in {"pilot", "evaluation"}:
+        original_interview = consulting._run_single_interview
+        def interview(**kwargs):
+            with request_context(case_id=kwargs["case"]["case_id"]):
+                return original_interview(**kwargs)
+        consulting._run_single_interview = interview
+        original_judge = consulting._chat_json
+        def judge(*args, **kwargs):
+            with request_context(role="interviewer_judge", validation_kind="judge"):
+                return original_judge(*args, **kwargs)
+        consulting._chat_json = judge
+        original_edt = ChainOfThoughtAgent._decide_edt_scenario_schema
+        async def decide_edt(self, *args, **kwargs):
+            with request_context(case_id="interactive", validation_kind="edt", role="scenario_candidate"):
+                return await original_edt(self, *args, **kwargs)
+        ChainOfThoughtAgent._decide_edt_scenario_schema = decide_edt
+        agent_module = sys.modules[ChainOfThoughtAgent.__module__]
+        normalize = agent_module.normalize_edt_schema
+        def audited_schema(raw, ctx):
+            projects, horizon, cmax = len(ctx["projects"]), ctx["horizon_steps"], ctx["C_max"]
+            valid = (isinstance(raw, dict) and type(raw.get("C")) is int and 0 <= raw["C"] <= cmax
+                     and type(raw.get("R")) in (int, float) and math.isfinite(raw["R"]) and 0 <= raw["R"] <= 1
+                     and isinstance(raw.get("P"), list) and len(raw["P"]) == projects)
+            if valid:
+                valid = all(type(p) is int and p == 0 or isinstance(p, list) and len(p) == 3 and
+                            all(type(v) is int for v in p) and p[0] == 1 and 0 <= p[1] <= p[2] <= horizon
+                            for p in raw["P"])
+            if not valid:
+                path = Path(config["_runtime_output"]) / "decision_events.jsonl"
+                with path.open("a", encoding="utf-8") as log:
+                    log.write(json.dumps({"event": "invalid_edt_schema", "status": "failed", "fallback_used": False}) + "\n")
+                raise DecisionFailure("EDT schema has invalid/missing fields; no native default substituted.")
+            result = normalize(raw, ctx)
+            path = Path(config["_runtime_output"]) / "decision_events.jsonl"
+            with path.open("a", encoding="utf-8") as log:
+                log.write(json.dumps({"event": "native_edt_normalization", "raw_schema": raw,
+                                      "normalized_schema": result, "projection_applied": result != raw}) + "\n")
+            return result
+        agent_module.normalize_edt_schema = audited_schema
     if os.name == "nt":
         import StructuredReasoning.data_processor as processor
         from .formula_exec import exec_python_windows
@@ -127,17 +185,23 @@ def run_firm(task, output, config):
                   max_tokens=config["max_output_tokens"], agent_method="cot")
     if task not in ("consulting", "beergame", "edt"):
         processor, samples, path = structured_samples(task)
+        if config.get("_case_limit"):
+            samples = samples[:config["_case_limit"]]
         return agent.run("eval_only", samples, processor, {"task_name": task, "save_dir": str(output),
                          "test_workers": config["workers"], "json_mode": True, "source_file": str(path)})
     if task == "consulting":
         from Consulting.run import load_consulting_cases
         cases = load_consulting_cases("Consulting/agsm_cases_all.json")
         cases = random.Random(config["seed"]).sample(cases, min(config["consulting_cases"], len(cases)))
+        if config.get("_case_limit"):
+            cases = cases[:config["_case_limit"]]
         return agent.run("eval_only", cases, None, {"task_name": "Consulting", "save_dir": str(output),
                          "consulting_max_turns": config["consulting_turns"], "consulting_judge": True})
     if task == "beergame":
         from SeriousGame.beergame_data_processor import BeerGameDataProcessor
         samples = BeerGameDataProcessor.process_task_data(BeerGameDataProcessor.load_scenarios(None))
+        if config.get("_case_limit"):
+            samples = samples[:config["_case_limit"]]
         return agent.run("eval_only", samples, None, {"task_name": "SeriousGame/BeerGame", "save_dir": str(output),
                          "mcp": {"command": sys.executable, "args": [str(ROOT / "vendor/FirmBench/SeriousGame/beergame_mcp_server.py")],
                                  "timeout_sec": 90, "max_retry_attempts": 2},
@@ -163,10 +227,19 @@ def load_icbe():
     source = source.replace('else:\n                return "COOPERATE"', 'else:\n                raise')
     source = source.replace('    return "COOPERATE"\n\n# ================= MAIN LOOP', '    raise RuntimeError("ICBE retries exhausted")\n\n# ================= MAIN LOOP')
     source = source.replace("await asyncio.sleep(0.1)", "await asyncio.sleep(ROUND_DELAY_SECONDS)")
+    source = source.replace("task_a = get_decision(model_a, r, hist_b)",
+                            "task_a = scoped_decision(model_a, r, hist_b, match_counter, 'A')")
+    source = source.replace("task_b = get_decision(model_b, r, hist_a)",
+                            "task_b = scoped_decision(model_b, r, hist_a, match_counter, 'B')")
     module = types.ModuleType("native_icbe")
     module.__file__ = str(path)
     module.ROUND_DELAY_SECONDS = 0.1
     exec(compile(source, str(path), "exec"), module.__dict__)
+    async def scoped_decision(model, round_number, history, match, actor):
+        with request_context(case_id=f"ordered_pair_{match-1:02d}", round=round_number, actor=actor,
+                             logical_request_id=f"pair{match}:round{round_number}:{actor}", validation_kind="icbe"):
+            return await module.get_decision(model, round_number, history)
+    module.scoped_decision = scoped_decision
     return module
 
 
@@ -176,27 +249,72 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("task", choices=TASKS)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--plan", type=Path)
+    parser.add_argument("--budget", type=Path, required=True)
     args = parser.parse_args()
-    verify_sources()
-    config = settings()
+    from src.research.design import validate_design
+    validate_design(ROOT)
+    plan = json.loads(args.plan.read_text(encoding="utf-8")) if args.plan else run_plan(args.task)
+    base = settings()
+    expected = run_plan(args.task, config_path={"purpose": plan["purpose"], "case_limit": plan["case_limit"],
+                      "settings": {k: v for k, v in plan["settings"].items() if base.get(k) != v}})
+    if plan != expected:
+        raise ValueError("Launch plan differs from the validated bounded/frozen selection.")
+    config = plan["settings"]
     output = args.output.resolve()
     output.mkdir(parents=True, exist_ok=True)
     config["_runtime_output"] = str(output)
+    config.update(_purpose=plan["purpose"], _case_limit=plan["case_limit"], _task=args.task,
+                  _run_id=output.name, _selected_case_ids=plan["selected_case_ids"],
+                  _request_context={"task_id": args.task})
     (output / "run_config.json").write_text(json.dumps({"task": args.task, **config}, indent=2), encoding="utf-8")
-    counts = install_gateway_clients(output, config)
+    _, base_url = credentials()
+    budget = load_budget(args.budget.resolve(), run_id=output.name, scope="native", base_url=base_url, purpose=plan["purpose"])
+    if args.task not in budget.manifest.get("allowed_tasks", []):
+        raise BudgetStop("This task is not listed in the approved allowance.")
+    counts = install_gateway_clients(output, config, budget=budget)
+    import subprocess
+    from src.research.design import canonical_hash, text_hash
+    identity = {"project_commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
+                "project_tracked_dirty": bool(subprocess.check_output(["git", "status", "--porcelain", "--untracked-files=no"], cwd=ROOT, text=True).strip()),
+                "source_pins": json.loads((ROOT / "configs/sources.json").read_text(encoding="utf-8")),
+                "study_manifest_sha256": text_hash(ROOT / "docs/results/study_design_manifest.json"),
+                "run_config_sha256": canonical_hash(config), "allowance_sha256": budget.fingerprint,
+                "provider": "ShopAIKey", "base_url": base_url}
+    (output / "runtime_identity.json").write_text(json.dumps(identity, indent=2), encoding="utf-8")
+    manifest = {"task": args.task, "purpose": plan["purpose"], "status": "running",
+                "expected_units": plan["expected_units"], "configured_horizon": plan["configured_horizon"],
+                "selected_case_ids": plan["selected_case_ids"], "pilot_qualification": plan["pilot_qualification"],
+                "started_at_utc": datetime.now(timezone.utc).isoformat(), "budget_id": budget.manifest["budget_id"]}
+    (output / "run_manifest.json").write_text(json.dumps(manifest, indent=2), encoding="utf-8")
+    result = None
     try:
         if args.task.startswith("retail:"):
             run_retail(args.task.split(":", 1)[1], output, config)
         elif args.task.startswith("firm:"):
-            run_firm(args.task.split(":", 1)[1], output, config)
+            result = run_firm(args.task.split(":", 1)[1], output, config)
         else:
             module = load_icbe()
             module.MODELS = config["icbe_models"]
             module.NUM_ROUNDS = config["icbe_rounds"]
             os.chdir(output)
             asyncio.run(module.main())
+        (output / "native_result.json").write_text(json.dumps(result, indent=2, default=str), encoding="utf-8")
+        budget_state = budget.summary()
+        if budget_state["pending_attempts"] or budget_state["uncertain_attempts"]:
+            raise BudgetStop("Run has unresolved attempts; it cannot be marked complete.")
+        if isinstance(result, dict) and "total" in result and result["total"] != plan["expected_units"]:
+            raise RuntimeError("Native scorer did not account for every selected case.")
+        manifest["status"] = "execution_finished_requires_artifact_review"
+    except BaseException as exc:
+        manifest.update(status="incomplete" if isinstance(exc, CallLimitReached) else "failed",
+                        failure_category=type(exc).__name__)
+        raise
     finally:
         (output / "usage_totals.json").write_text(json.dumps(counts, indent=2), encoding="utf-8")
+        (output / "budget_summary.json").write_text(json.dumps(budget.summary(), indent=2), encoding="utf-8")
+        manifest["finished_at_utc"] = datetime.now(timezone.utc).isoformat()
+        (output / "run_manifest.json").write_text(json.dumps(manifest, indent=2), encoding="utf-8")
 
 
 if __name__ == "__main__":

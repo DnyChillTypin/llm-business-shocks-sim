@@ -1,0 +1,10 @@
+{
+  "purpose": "pilot",
+  "case_limit": 1,
+  "settings": {
+    "retail_days": 1,
+    "icbe_rounds": 2,
+    "max_api_calls_per_task": 80
+  },
+  "description": "One reasoning/Consulting case, one full 25-week Beer scenario, one full 96-step EDT rollout, one Retail day or six 2-round ICBE matches. Requires a separately approved shared allowance."
+}

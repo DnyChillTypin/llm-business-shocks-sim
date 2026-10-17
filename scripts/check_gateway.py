@@ -8,12 +8,17 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from src.benchmarks.common import credentials, install_gateway_clients, settings
+from src.benchmarks.budget import load_budget
+from src.benchmarks.errors import BudgetStop
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--smoke", action="store_true")
+    parser.add_argument("--budget", type=Path, help="Required approved allowance for --smoke; listing model access remains free.")
     args = parser.parse_args()
+    if args.smoke and not args.budget:
+        parser.error("--smoke makes paid calls and requires --budget; native pilots usually make this redundant.")
     import openai
     key, base = credentials()
     config = settings()
@@ -30,7 +35,10 @@ def main():
     output = ROOT / "results/gateway_checks" / session
     output.mkdir(parents=True)
     test_config = {**config, "max_output_tokens": 256, "max_api_calls_per_task": 4}
-    counts = install_gateway_clients(output, test_config)
+    budget = load_budget(args.budget.resolve(), run_id=session, scope="native", base_url=base, purpose="pilot")
+    if "gateway:compatibility" not in budget.manifest.get("allowed_tasks", []):
+        raise BudgetStop("Compatibility smoke calls are not listed in this allowance.")
+    counts = install_gateway_clients(output, test_config, budget=budget)
     checks = []
     for model in required:
         client = openai.OpenAI()

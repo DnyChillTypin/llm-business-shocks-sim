@@ -12,6 +12,7 @@ import httpx
 import openai
 
 from src.benchmarks.common import CallLimitReached, GatewayFailure, install_gateway_clients, settings
+from budget_fixture import ledger
 
 
 class GatewayTests(unittest.TestCase):
@@ -20,6 +21,7 @@ class GatewayTests(unittest.TestCase):
         self.temp = tempfile.TemporaryDirectory()
         self.output = Path(self.temp.name)
         self.config = {**settings(), "max_output_tokens": 40, "max_api_calls_per_task": 1}
+        self.budget = ledger(self.output)
         self.credentials = patch("src.benchmarks.common.credentials", return_value=("private-test-key", "https://gateway.example/v1"))
         self.credentials.start()
         self.environment = patch.dict(os.environ)
@@ -41,7 +43,7 @@ class GatewayTests(unittest.TestCase):
             return httpx.Response(200, json={"id": "test", "object": "chat.completion", "created": 0, "model": "gpt-4.1-mini",
                 "choices": [{"index": 0, "message": {"role": "assistant", "content": "ready"}, "finish_reason": "stop"}],
                 "usage": {"prompt_tokens": 4, "completion_tokens": 1, "total_tokens": 5}})
-        counts = install_gateway_clients(self.output, self.config)
+        counts = install_gateway_clients(self.output, self.config, budget=self.budget)
         client = openai.OpenAI(api_key="vendor-key", base_url="https://wrong.example", http_client=httpx.Client(transport=httpx.MockTransport(handler)))
         params = {"model": "gpt-4.1-mini", "messages": [{"role": "user", "content": "ready"}], "max_completion_tokens": 500, "reasoning_effort": "low"}
         self.assertEqual(client.chat.completions.create(**params).choices[0].message.content, "ready")
@@ -56,7 +58,7 @@ class GatewayTests(unittest.TestCase):
             openai.OpenAI().chat.completions.create(model="test", messages=[])
 
     def test_api_failure_cannot_be_silently_scored(self):
-        install_gateway_clients(self.output, self.config)
+        install_gateway_clients(self.output, self.config, budget=self.budget)
         transport = httpx.MockTransport(lambda request: httpx.Response(401, json={"error": {"message": "private-test-key", "type": "auth"}}))
         client = openai.OpenAI(http_client=httpx.Client(transport=transport))
         with self.assertRaises(GatewayFailure) as caught:
@@ -64,7 +66,7 @@ class GatewayTests(unittest.TestCase):
         self.assertNotIn("private-test-key", str(caught.exception))
 
     def test_async_gateway_for_icbe(self):
-        counts = install_gateway_clients(self.output, self.config)
+        counts = install_gateway_clients(self.output, self.config, budget=self.budget)
         transport = httpx.MockTransport(lambda request: httpx.Response(200, json={"id": "test", "object": "chat.completion", "created": 0,
             "model": "test", "choices": [{"index": 0, "message": {"role": "assistant", "content": "DECISION: OPTION A"}, "finish_reason": "stop"}],
             "usage": {"prompt_tokens": 3, "completion_tokens": 5, "total_tokens": 8}}))

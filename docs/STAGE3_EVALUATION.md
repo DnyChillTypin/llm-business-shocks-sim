@@ -22,6 +22,12 @@ Keep native metric units explicit: finer's native accuracy is over individual en
 
 Paid decision adapters are unchanged from preparation commit `8322966`. Subsequent reporting and post-run validation work can make the tracked working tree dirty during a run; the run identity records that flag. Frozen prompts, model settings, case selection, native scoring and horizons remain unchanged.
 
+### Consulting transport interruption
+
+The first evaluation cohort stopped on HTTP 503 during its fourth session, after 49 valid responses and three complete judgments. The runner had not written state-complete combined session checkpoints. All original responses and partial judgments are retained; the failed request's full unknown-charge reservation is carried in the same ledger. The three observed overall judgments were 8, 8 and 8.5.
+
+Before observing restart outcomes, the review selected a fresh ten-session cohort with identical frozen settings. Use the **first fully completed, artifact-validated cohort regardless of score** for the complete-cohort table. Keep the interrupted cohort, its partial judgment aggregates, all paid attempts and the full unknown-charge hold visible separately. This is a manual transport-related restart under the documented interactive failure handling, not verified state resume, score-based selection or an SDK retry. Do not call the eventual full cohort an uninterrupted first-pass evaluation.
+
 ## Evidence and publication
 
 Raw responses, transcripts, request identifiers, account snapshots, allowance approval history and detailed run mappings stay under ignored `results/` or `.cache/`. Publish aggregate task metrics, anonymous cohort labels, coverage, model identifiers, token-derived project costs, limitations and saved-output analysis only. Push code and reviewed aggregate results at useful milestones.

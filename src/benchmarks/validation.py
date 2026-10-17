@@ -53,6 +53,14 @@ def validate_run(folder):
         judges = [e for e in starts.values() if e["context"].get("validation_kind") == "judge"]
         checks["every_frozen_case_judged_once"] = (len(judges) == manifest["expected_units"] and
             {e["context"].get("case_id") for e in judges} == set(manifest["selected_case_ids"]))
+        messages = [(read(folder / "attempts" / key / "response.json").get("choices") or [{}])[0].get("message", {})
+                    for key in starts if (folder / "attempts" / key / "response.json").is_file()]
+        checks["all_text_decisions_present"] = (len(messages) == len(starts) and
+            all(isinstance(m.get("content"), str) and m["content"].strip() and not m.get("tool_calls") for m in messages))
+        states = list(folder.rglob("consulting_interview_states.json"))
+        sessions = read(states[0])["cases"] if len(states) == 1 else []
+        checks["saved_session_coverage"] = (len(sessions) == manifest["expected_units"] and
+            [s["case_id"] for s in sessions] == manifest["selected_case_ids"])
     elif task == "firm:beergame" and result:
         checks["native_coverage"] = result["episodes"] == manifest["expected_units"]
         checks["full_25_week_horizon"] = all(e.get("weeks_completed") == 25 for e in result["episode_metrics"])

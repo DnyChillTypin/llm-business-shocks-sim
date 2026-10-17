@@ -85,13 +85,22 @@ def cohort_record(folder, manifest, label):
               "checks": validation["checks"] if validation else {},
               "project_commit": read(folder / "runtime_identity.json")["project_commit"],
               "project_tracked_dirty": read(folder / "runtime_identity.json")["project_tracked_dirty"]}
+    if manifest["task"] == "firm:consulting":
+        judges = [e for e in finishes if e["status"] == "completed" and e["context"].get("validation_kind") == "judge"]
+        scores = [json.loads(read(folder / "attempts" / e["attempt_id"] / "response.json")["choices"][0]["message"]["content"]) for e in judges]
+        record["observed_consulting_judgments"] = len(scores)
+        record["observed_mean_judge_scores"] = {k: sum(s[k] for s in scores) / len(scores) for k in
+            ("structure", "quant", "business_sense", "communication", "overall")} if scores else None
     return record, validation
 
 
 def task_metrics(folder, validation, label):
     task, score = validation["task"], validation["native_score"]
     if task == "firm:consulting":
+        states = read(next(folder.rglob("consulting_interview_states.json")))["cases"]
         return {"cohort": label, "task": task, "sessions": score["num_finished"], "native_mean_judge_scores": score["metrics"],
+                "session_message_counts": [len(s["history"]) for s in states],
+                "overall_judge_score_range": [min(s["judge_scores"]["overall"] for s in states), max(s["judge_scores"]["overall"] for s in states)],
                 "outcome_units": "Judge rubric scores from 0 to 10",
                 "qualification": "Scores are judgments by the substituted judge model, not independent human ratings."}
     if task == "firm:beergame":
@@ -105,8 +114,14 @@ def task_metrics(folder, validation, label):
                 "qualification": "Inspect supply-chain amplification separately from controlled-retailer cost. Missing upstream aggregate metrics remain null."}
     if task == "firm:edt":
         rollout = read(next(folder.rglob("rollout.json")))
+        decisions = [json.loads(line) for line in (folder / "decision_events.jsonl").read_text().splitlines()]
+        event = next(e for e in decisions if e["event"] == "native_edt_normalization")
+        schema = event["normalized_schema"]
         return {"cohort": label, "task": task, "rollout_summary": {k: v for k, v in rollout.items() if type(v) in (int, float, bool) or v is None},
                 "outcome_units": "Native synthetic business monetary units, distinct from gateway credits",
+                "scenario_decision_summary": {"capital_C": schema["C"], "risk_R": schema["R"], "available_projects": len(schema["P"]),
+                    "selected_projects": sum(isinstance(p, list) and p[0] == 1 for p in schema["P"]),
+                    "native_projection_applied": event["projection_applied"]},
                 "synthetic_business_metrics": {k: v for k, v in rollout.get("metrics", {}).items() if type(v) in (int, float) or v is None},
                 "qualification": "One configured scenario; synthetic model outcome, not a causal estimate of real business performance."}
     if task == "icbe":
@@ -185,7 +200,7 @@ def main():
     write_json(PUBLIC / "family_metrics.json", metrics)
     write_json(PUBLIC / "budget_summary.json", budget)
     write_csv(PUBLIC / "native_coverage.csv", coverage)
-    usage = [{k: v for k, v in c.items() if k not in {"checks", "requested_models", "returned_models", "project_commit", "project_tracked_dirty"}} for c in cohorts]
+    usage = [{k: v for k, v in c.items() if k not in {"checks", "requested_models", "returned_models", "project_commit", "project_tracked_dirty", "observed_consulting_judgments", "observed_mean_judge_scores"}} for c in cohorts]
     write_csv(PUBLIC / "evaluation_usage.csv", usage)
     write_csv(ROOT / "docs/results/native_coverage.csv", coverage)
     write_json(PRIVATE / "index.json", mapping)

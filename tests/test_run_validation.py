@@ -75,3 +75,20 @@ class RunValidationTests(unittest.TestCase):
         self.assertTrue(report["checks"]["judge_observed"])
         self.assertFalse(report["checks"]["every_frozen_case_judged_once"])
         self.assertEqual(report["status"], "requires_review")
+
+    def test_tool_only_consulting_response_cannot_be_a_complete_text_session(self):
+        manifest = json.loads((self.folder / "run_manifest.json").read_text())
+        manifest.update(task="firm:consulting")
+        self.write("run_manifest.json", manifest)
+        result = {"num_cases": 1, "num_finished": 1, "num_failed": 0, "metrics": {"overall": 8}}
+        self.write("native_result.json", result)
+        self.write("native/test_results.json", {"test_results": result})
+        self.write("native/consulting_interview_states.json", {"cases": [{"case_id": "case0"}]})
+        self.events[0]["context"]["validation_kind"] = "judge"
+        self.events_write()
+        self.write("attempts/a/response.json", {"choices": [{"message": {"content": "valid mock judge text"}}]})
+        self.assertEqual(validate_run(self.folder)["status"], "validated_complete")
+        self.write("attempts/a/response.json", {"choices": [{"message": {"content": None, "tool_calls": [{}]}}]})
+        report = validate_run(self.folder)
+        self.assertFalse(report["checks"]["all_text_decisions_present"])
+        self.assertEqual(report["status"], "requires_review")

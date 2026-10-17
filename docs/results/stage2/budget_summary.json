@@ -1,0 +1,14 @@
+{
+  "budget_id": "stage2_pilot_v1",
+  "currency": "USD_gateway_credit",
+  "attempts": 22,
+  "known_cost_usd": 0.01899748,
+  "unresolved_reserved_usd": 0.0076905,
+  "exposure_usd": 0.02668798,
+  "pending_attempts": 0,
+  "uncertain_attempts": 1,
+  "cap_usd": 1.0,
+  "allowance_sha256": "8ab6a7a2da3bf1485f55c66a17a804a6a7ab8fa5e3678de988f42323aa34f72e",
+  "cost_basis": "Token-derived uncached tariff upper estimate; provider billing is not independently verified.",
+  "limit_qualification": "Conditional on applicable tariff and gateway honoring token limits; not a provider-side quota."
+}

@@ -11,13 +11,38 @@ import httpx
 import openai
 
 from budget_fixture import ledger, manifest
-from src.benchmarks.budget import BudgetLedger
+from src.benchmarks.budget import BudgetLedger, load_budget
 from src.benchmarks.common import install_gateway_clients, settings
 from src.benchmarks.errors import BudgetStop, DecisionFailure, GatewayFailure
 from src.benchmarks.gateway import request_context
 
 
 class BudgetTests(unittest.TestCase):
+    def test_powershell_bom_manifest_uses_the_same_shared_allowance(self):
+        with tempfile.TemporaryDirectory() as directory:
+            folder = Path(directory)
+            spec = manifest()
+            path = folder / "approved.json"
+            path.write_text(json.dumps(spec), encoding="utf-8-sig")
+            with patch("src.benchmarks.common.ROOT", folder):
+                allowance = load_budget(path, run_id="first", scope="native", base_url=spec["base_url"], purpose="pilot")
+                allowance.reserve("a", "test", 10, 10)
+                allowance.settle("a", input_tokens=1, output_tokens=1)
+                second = load_budget(path, run_id="second", scope="native", base_url=spec["base_url"], purpose="pilot")
+                self.assertEqual(second.summary()["attempts"], 1)
+
+    def test_uncertain_native_charge_blocks_the_reserved_kaggle_allocation_too(self):
+        with tempfile.TemporaryDirectory() as directory:
+            spec = manifest()
+            spec["scope_caps_usd"] = {"native": .75, "kaggle": .25}
+            path = Path(directory) / "shared.sqlite"
+            native = BudgetLedger(spec, path, run_id="native", scope="native")
+            native.reserve("a", "test", 100, 100)
+            native.settle("a", uncertain_reason="scripted_503_missing_usage")
+            kaggle = BudgetLedger(spec, path, run_id="kaggle", scope="kaggle")
+            with self.assertRaises(BudgetStop):
+                kaggle.reserve("b", "test", 100, 100)
+
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
         self.folder = Path(self.temp.name)
@@ -112,6 +137,27 @@ class TelemetryTests(unittest.TestCase):
 
     def events(self):
         return [json.loads(line) for line in (self.folder / "api_attempts.jsonl").read_text().splitlines()]
+
+    def test_kaggle_invalid_json_reaches_explicit_repair_policy_instead_of_native_fail_stop(self):
+        install_gateway_clients(self.folder, self.config, budget=self.budget)
+        client = openai.OpenAI(http_client=httpx.Client(transport=httpx.MockTransport(lambda request: self.response("bad JSON"))))
+        with request_context(validation_kind="kaggle"):
+            response = client.chat.completions.create(model="test", messages=[], response_format={"type": "json_object"})
+        self.assertEqual(response.choices[0].message.content, "bad JSON")
+        self.assertEqual(self.events()[-1]["parse_status"], "invalid")
+        self.assertEqual(self.budget.summary()["uncertain_attempts"], 0)
+
+    def test_provider_error_body_is_saved_sanitized_and_never_clears_the_reservation(self):
+        install_gateway_clients(self.folder, self.config, budget=self.budget)
+        def failed(request):
+            return httpx.Response(503, json={"error": {"message": "private-test-key unavailable", "type": "unavailable"}})
+        client = openai.OpenAI(http_client=httpx.Client(transport=httpx.MockTransport(failed)))
+        with self.assertRaises(GatewayFailure):
+            client.chat.completions.create(model="test", messages=[])
+        error_file = next((self.folder / "attempts").glob("*/error.json"))
+        self.assertNotIn("private-test-key", error_file.read_text())
+        self.assertIn("[REDACTED]", error_file.read_text())
+        self.assertEqual(self.budget.summary()["uncertain_attempts"], 1)
 
     def test_start_is_durable_before_transport_and_key_is_redacted(self):
         def handler(request):

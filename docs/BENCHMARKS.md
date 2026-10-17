@@ -39,7 +39,7 @@ processors, run each Retail configuration for a day, complete both Beer Game
 horizons, complete the EDT horizon, and export a scripted ICBE tournament.
 These are readiness checks, not research results.
 
-`scripts/check_gateway.py --smoke` additionally makes four short paid calls:
+`scripts/check_gateway.py --smoke --budget <approved_manifest>` additionally makes four short paid calls:
 JSON compatibility on all three configured models and native Retail streaming.
 It writes usage evidence without saving keys. Credentials belong only in the
 ignored `.env`; use `.env.example` as the template on another machine.
@@ -48,7 +48,9 @@ ignored `.env`; use `.env.example` as the template on another machine.
 
 ```powershell
 .\.venv\Scripts\python.exe scripts/run_benchmarks.py list
-.\.venv\Scripts\python.exe scripts/run_benchmarks.py run --task firm:CodeFinQA
+.\.venv\Scripts\python.exe scripts/run_benchmarks.py run --task firm:CodeFinQA --config configs/pilots/native.json --dry-run
+# Paid, only with the separate approved allowance:
+.\.venv\Scripts\python.exe scripts/run_benchmarks.py run --task firm:CodeFinQA --config configs/pilots/native.json --budget .cache/approvals/stage2_pilot_v1.json
 ```
 
 Replace `firm:CodeFinQA` with any listed task. A `run` command starts paid calls;
@@ -60,6 +62,11 @@ native outputs, console log, token usage and process exit status. Use another
 PowerShell window to watch its `console.log` with `Get-Content -Wait`.
 Native Retail checkpoints are retained. The unified launcher starts a new run;
 it does not automatically resume partially completed tasks.
+
+Paid execution now requires an immutable approved allowance and a persistent,
+shared spending ledger. The pilot allowance excludes full evaluation. Missing
+usage retains its reservation and blocks subsequent calls across both tracks;
+see [Stage 2 status](STAGE2_PILOTS.md) and [measured costs](COST_ESTIMATE.md).
 
 Calls have a 90-second request timeout, an output ceiling of 4,096 tokens, and a
 6,000-call ceiling per task. These are operational bounds, not a monetary cap.
@@ -74,6 +81,9 @@ All changes live in our launcher; pinned vendor files remain unchanged.
 - RetailBench's inconsistent `sku` import is aliased to `module.sku`. Relative
   input paths are resolved, and middle-setting news paths point to the matching
   dynamic/still input directory. Its native loop and simulation are retained.
+  Forced `end_today` after invalid-tool/turn exhaustion now stops as an explicit
+  failed decision rather than silently advancing a day. This documented failure
+  handling change leaves the vendor source unchanged.
 - All clients use the configured gateway, including Consulting's hard-coded
   endpoint. Unsupported reasoning settings are removed for the selected GPT-4
   models. Native output requests are capped by the local run configuration.

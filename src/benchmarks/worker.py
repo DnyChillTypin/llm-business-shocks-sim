@@ -47,16 +47,31 @@ def retail_config(kind, output):
     return config
 
 
-def load_retail():
+def load_retail(*, reject_forced=False):
     vendor = ROOT / "vendor/RetailBench"
     sys.path.insert(0, str(vendor))
     sys.modules["sku"] = importlib.import_module("module.sku")
     os.chdir(vendor)
-    return load_file("native_retail_runner", vendor / "run_env.py")
+    if not reject_forced:
+        return load_file("native_retail_runner", vendor / "run_env.py")
+    path = vendor / "run_env.py"
+    source = path.read_text(encoding="utf-8")
+    forced = 'env.exec_tools("end_today")'
+    if source.count(forced) != 2:
+        raise RuntimeError("Retail forced-transition source changed; inspect the failure adapter.")
+    source = source.replace(forced, "reject_forced_transition()")
+    module = types.ModuleType("native_retail_runner")
+    module.__file__ = str(path)
+    def reject():
+        raise DecisionFailure("Native Retail exhausted tool/turn limits; no forced end_today substituted.")
+    module.reject_forced_transition = reject
+    sys.modules[module.__name__] = module
+    exec(compile(source, str(path), "exec"), module.__dict__)
+    return module
 
 
 def run_retail(kind, output, config):
-    runner = load_retail()
+    runner = load_retail(reject_forced=True)
     import openai
     runner.create_openai_client = lambda **kwargs: openai.OpenAI()
     runner.build_log_path = lambda: (output / "retail_trace.json", str(output / "native_logs"))

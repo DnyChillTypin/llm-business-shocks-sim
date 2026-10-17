@@ -3,9 +3,7 @@ from __future__ import annotations
 
 import json
 import os
-import threading
 import subprocess
-from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]

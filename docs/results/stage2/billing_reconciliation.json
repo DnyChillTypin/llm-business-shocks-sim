@@ -1,0 +1,125 @@
+{
+  "snapshot_checked_at_utc": "2026-10-17T11:09:32.034960+00:00",
+  "matched_completed_attempts": 21,
+  "matched_provider_reported_cost_usd": 0.017866,
+  "matched_local_uncached_estimate_usd": 0.01899748,
+  "unresolved_attempts": [
+    {
+      "attempt_id": "78b37b3af16842ad81504f03fa222ae9",
+      "failure_category": "api_InternalServerError_http_503",
+      "started_at_utc": "2026-10-17T11:04:39.032855+00:00",
+      "model": "gpt-4o-mini-2024-07-18",
+      "reason": "No unique token/time-matched provider charge record; missing usage is not zero."
+    }
+  ],
+  "matches": [
+    {
+      "attempt_id": "abd678dab2be4215b6508e544bbd4d04",
+      "provider_reported_cost_usd": 0.000962,
+      "local_uncached_estimate_usd": 0.000961841
+    },
+    {
+      "attempt_id": "625df8207ab4424da936a15ef03f0411",
+      "provider_reported_cost_usd": 0.000946,
+      "local_uncached_estimate_usd": 0.000946462
+    },
+    {
+      "attempt_id": "9d5e3331369447e1b5727a7b08c518a4",
+      "provider_reported_cost_usd": 0.000614,
+      "local_uncached_estimate_usd": 0.0006147
+    },
+    {
+      "attempt_id": "21cb58b8182047f592b4563595201d75",
+      "provider_reported_cost_usd": 0.000646,
+      "local_uncached_estimate_usd": 0.000646568
+    },
+    {
+      "attempt_id": "81fbd080a87b40dbb3b66af8323f0852",
+      "provider_reported_cost_usd": 0.0004,
+      "local_uncached_estimate_usd": 0.0006426
+    },
+    {
+      "attempt_id": "fcbf8a72c9fb4eb18233c6ba8b1a9bb7",
+      "provider_reported_cost_usd": 0.001036,
+      "local_uncached_estimate_usd": 0.001036815
+    },
+    {
+      "attempt_id": "2a3801a83957474fbf2bd4db3291cb61",
+      "provider_reported_cost_usd": 0.00044,
+      "local_uncached_estimate_usd": 0.00070416
+    },
+    {
+      "attempt_id": "a1e6030647344e3cbdf73fd24e2bafd8",
+      "provider_reported_cost_usd": 0.001172,
+      "local_uncached_estimate_usd": 0.001172664
+    },
+    {
+      "attempt_id": "bb0f725f16874d08bc425a3b7dc2a8ec",
+      "provider_reported_cost_usd": 0.000458,
+      "local_uncached_estimate_usd": 0.0007578
+    },
+    {
+      "attempt_id": "abb0fbfc5ce04ca0b84daa228d7ad069",
+      "provider_reported_cost_usd": 0.0015,
+      "local_uncached_estimate_usd": 0.001499472
+    },
+    {
+      "attempt_id": "434f721a5103497bb51efe4966c51af5",
+      "provider_reported_cost_usd": 0.000502,
+      "local_uncached_estimate_usd": 0.00082404
+    },
+    {
+      "attempt_id": "98e8836b7a0a459390b944a80e3d9825",
+      "provider_reported_cost_usd": 0.001782,
+      "local_uncached_estimate_usd": 0.001782706
+    },
+    {
+      "attempt_id": "4393deb9d1b948b3aa89c6b0d6af6ca4",
+      "provider_reported_cost_usd": 0.000776,
+      "local_uncached_estimate_usd": 0.000776009
+    },
+    {
+      "attempt_id": "d30a687027ef4229b60188105ca9a0c2",
+      "provider_reported_cost_usd": 0.000856,
+      "local_uncached_estimate_usd": 0.000855468
+    },
+    {
+      "attempt_id": "641f5318d0ec40d393e00873ad3e428f",
+      "provider_reported_cost_usd": 0.000484,
+      "local_uncached_estimate_usd": 0.000484445
+    },
+    {
+      "attempt_id": "b7806a7a86bd4a08b7f8e5fb25fd3c90",
+      "provider_reported_cost_usd": 0.001864,
+      "local_uncached_estimate_usd": 0.001863447
+    },
+    {
+      "attempt_id": "198ee6a00a75431fb06cce20d373c5eb",
+      "provider_reported_cost_usd": 0.000856,
+      "local_uncached_estimate_usd": 0.00085675
+    },
+    {
+      "attempt_id": "59d37149bb2f4424949f0b7bea17dea7",
+      "provider_reported_cost_usd": 0.000372,
+      "local_uncached_estimate_usd": 0.000371024
+    },
+    {
+      "attempt_id": "e1c0be88ba0044e9bb0f5a20fb1a4340",
+      "provider_reported_cost_usd": 0.000486,
+      "local_uncached_estimate_usd": 0.000486368
+    },
+    {
+      "attempt_id": "399a877d89104e8694a332122fda56c4",
+      "provider_reported_cost_usd": 0.000924,
+      "local_uncached_estimate_usd": 0.000923393
+    },
+    {
+      "attempt_id": "14ed50dc10b048c9bf8aaf7ac83b3c75",
+      "provider_reported_cost_usd": 0.00079,
+      "local_uncached_estimate_usd": 0.000790748
+    }
+  ],
+  "ledger_modified": false,
+  "paid_calls_may_resume": false,
+  "qualification": "Matching provider history is available charging evidence, not independently audited billing. No charge inferred from an absent row."
+}

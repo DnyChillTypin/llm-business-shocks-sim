@@ -42,3 +42,5 @@ jobs:
         run: .venv/bin/python scripts/verify_notebook.py --notebook notebooks/02_benchmark_setup.ipynb
       - name: Execute the frozen design notebook without API calls
         run: .venv/bin/python scripts/verify_notebook.py --notebook notebooks/03_kaggle_llm_experiment.ipynb
+      - name: Execute saved pilot-cost analysis without API calls
+        run: .venv/bin/python scripts/verify_notebook.py --notebook notebooks/04_results_analysis.ipynb

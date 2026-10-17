@@ -1,4 +1,4 @@
-# Stage 2: bounded pilots (in progress)
+# Stage 2 checkpoint: paid work stopped on unresolved usage
 
 This checkpoint introduces persistent budget reservations, raw request/response
 artifacts and bounded native run plans. It is not completion of full benchmarks.
@@ -59,8 +59,65 @@ redaction and invalid-decision failure paths. The scripted native scorer fixture
 passed separately; its synthetic responses/tokens are excluded from research and
 cost estimates.
 
-Remaining work: run the affordable pilot menu sequentially, review family-specific
-artifacts and fallback paths, complete the Stage 4 offline prerequisites before
-the Kaggle validation pilot, and publish measured cost/time projections and a
-total-budget decision. Long Retail context and late ICBE phases need separate
-qualifications; short pilots cannot establish full-horizon reliability.
+## Current outcome
+
+Eleven one-case reasoning pilots passed artifact checks: eight correct and three
+incorrect (CodeFinQA, formula, Factset). This is diagnostic coverage, not an estimate
+of full-dataset accuracy. Factset remains a separate local extension.
+
+The Consulting pilot `20261017T110343057610Z` made ten successful completions,
+then stopped on HTTP 503 at **2026-10-17 11:04:39 UTC**, requested model
+`gpt-4o-mini-2024-07-18`. No judge score or complete interview is reported. The
+failed request had no returned usage; attempt ID
+`78b37b3af16842ad81504f03fa222ae9` is local, not a provider request identifier.
+The original failure saved type/status and timing, but no provider error body;
+the adapter now also preserves sanitized error bodies/request IDs for future
+diagnosis. It does not infer an unbilled request from a 503.
+
+There were **22 client attempts**, 21 completed responses, one failed response:
+the ledger holds **$0.018997480** in known token-derived upper estimates plus
+**$0.007690500** unresolved reservation, **$0.026687980** total exposure.
+This is a charging-evidence stop, not exhaustion of the $1 allowance. Both native
+and Kaggle paid calls are blocked by the same ledger.
+
+Two read-only account checks after the failure reported rounded balance **$19.98**.
+The later snapshot at 11:09:32 UTC uniquely matches all 21 completed responses to
+provider history by model, token counts and time, totaling **$0.017866** provider
+reported credit. The failed request has no unique matching charge row. Account
+history totals include earlier calls; neither those totals nor an absent failed
+row prove this request cost zero. No reservation was released and no paid call
+was attempted after the failure. See [reconciliation](results/stage2/billing_reconciliation.json).
+
+The unpaid Stage 4 prerequisites now include the frozen JSON policy, one repair
+then explicit adaptive fallback, complete-portfolio validation before mutation,
+a shared baseline/LLM episode loop, validation-window preparation and a guarded
+pilot command. Offline checks show exact legacy/shared baseline equivalence and
+21-day scripted completion for all four scenarios. Scripted results are not
+genuine LLM outcomes. Full primary evaluation remains disabled in the new paid
+Kaggle command. The genuine 42-decision validation pilot has not started.
+
+All **49 automated tests** passed, including the observed failure paths, cross-track
+blocking, BOM loading, wrong-but-valid scoring, repair/fallback export and action
+atomicity. Notebook 04 executes from committed sanitized artifacts without API
+access. The Stage 1 frozen design remains unchanged. The earlier infrastructure
+milestone `4001cf7` passed [CI](https://github.com/DnyChillTypin/llm-business-shocks-sim/actions/runs/39026932102).
+
+## Remaining Stage 2 gate
+
+1. Obtain request-specific charging evidence for the failed request, record an
+   auditable reconciliation in the existing ledger, and preserve the original
+   failed run. Do not reset the ledger, label missing usage zero, or buy a new
+   allowance to evade this check.
+2. Resume bounded native pilots under the existing approval, reviewing Consulting,
+   Beer, EDT, Retail dynamic middle/hard and ICBE separately. Retry a corrected or
+   recovered pilot as a new run; retain all consumed attempts and prior failures.
+3. Validate one full 21-day Kaggle control episode before the delivery-disruption
+   episode, under the reserved $0.25. Inspect fallback frequency before continuing.
+4. Finish family-specific cost/time projections, including long-context Retail
+   uncertainty and the late ICBE phase qualification. Then request a concrete
+   total evaluation cap, stating whether pilot spending is included and preserving
+   a recommended 20% reserve. No full evaluation is currently authorized.
+
+**Stage 2 is incomplete.** Neither Stage 3 nor primary Kaggle comparisons should
+start from this checkpoint. See [partial cost estimate](COST_ESTIMATE.md) and
+[saved analysis notebook](../notebooks/04_results_analysis.ipynb).

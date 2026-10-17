@@ -124,7 +124,7 @@ class AttemptLog:
         return params, {"record": record, "folder": folder, "started": time.perf_counter(), "finished": False}
 
     @fatal_accounting
-    def finish(self, state, *, response=None, error=None, chunks=None):
+    def finish(self, state, *, response=None, error=None, chunks=None, error_detail=None):
         if state["finished"]:
             return
         state["finished"] = True
@@ -133,6 +133,8 @@ class AttemptLog:
             (state["folder"] / "response.json").write_text(json.dumps(self.clean(raw), ensure_ascii=False, indent=2), encoding="utf-8")
         if chunks is not None:
             (state["folder"] / "stream_chunks.json").write_text(json.dumps(self.clean(chunks), ensure_ascii=False), encoding="utf-8")
+        if error_detail is not None:
+            (state["folder"] / "error.json").write_text(json.dumps(self.clean(error_detail), ensure_ascii=False, default=str), encoding="utf-8")
         usage = raw.get("usage") if raw else None
         valid_usage = (isinstance(usage, dict) and type(usage.get("prompt_tokens")) is int
                        and type(usage.get("completion_tokens")) is int
@@ -213,7 +215,7 @@ class AttemptLog:
         self.event({"event": "parse_checked", "attempt_id": state["record"]["attempt_id"],
                     "parse_status": "invalid" if problem else "valid", "validation_kind": kind,
                     "failure_category": problem})
-        if problem:
+        if problem and kind != "kaggle":
             raise DecisionFailure(problem)
 
 
@@ -262,7 +264,8 @@ def install_clients(output, config, *, credential_loader, offline=False, budget=
                 try:
                     response = create(**params)
                 except Exception as exc:
-                    log.finish(state, error=f"api_{type(exc).__name__}_http_{getattr(exc, 'status_code', 'unknown')}")
+                    log.finish(state, error=f"api_{type(exc).__name__}_http_{getattr(exc, 'status_code', 'unknown')}",
+                               error_detail={"body": getattr(exc, "body", None), "request_id": getattr(exc, "request_id", None)})
                     raise GatewayFailure("Gateway request failed; inspect sanitized attempt metadata.") from None
                 if not params.get("stream"):
                     log.finish(state, response=response)
@@ -303,7 +306,8 @@ def install_clients(output, config, *, credential_loader, offline=False, budget=
                 try:
                     response = await create(**params)
                 except BaseException as exc:
-                    log.finish(state, error=f"api_{type(exc).__name__}_http_{getattr(exc, 'status_code', 'unknown')}")
+                    log.finish(state, error=f"api_{type(exc).__name__}_http_{getattr(exc, 'status_code', 'unknown')}",
+                               error_detail={"body": getattr(exc, "body", None), "request_id": getattr(exc, "request_id", None)})
                     raise GatewayFailure("Gateway async request failed; inspect sanitized attempt metadata.") from None
                 if not params.get("stream"):
                     log.finish(state, response=response)

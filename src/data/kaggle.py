@@ -41,7 +41,8 @@ def load_sales(path: str | Path) -> pd.DataFrame:
 def prepare_dataset(raw_path: str | Path, output_dir: str | Path,
                     config_path: str | Path = DEFAULT_CONFIG, *,
                     store_id: str | None = None,
-                    product_ids: list[str] | None = None) -> dict:
+                    product_ids: list[str] | None = None,
+                    episode_start: str | None = None) -> dict:
     """Select on training dates only; export a full store or a single pilot SKU.
 
     With no selection, use the upper-median training demand-CV series. Passing
@@ -74,6 +75,15 @@ def prepare_dataset(raw_path: str | Path, output_dir: str | Path,
     if train_count < 14 or test_index + settings["horizon"] > len(dates):
         raise ValueError("Insufficient chronological history or test dates.")
     train_end, test_start = dates[train_count - 1], dates[test_index]
+    split_test_index = test_index
+    if episode_start is not None:
+        requested = pd.Timestamp(episode_start)
+        if requested not in dates or requested < dates[train_count]:
+            raise ValueError("Episode must start on a known validation/test date.")
+        test_index = dates.get_loc(requested)
+        if test_index + settings["horizon"] > len(dates):
+            raise ValueError("Episode exceeds available dates.")
+        test_start = dates[test_index]
     train = frame.loc[frame["Date"] <= train_end]
     statistics = train.groupby(["Store ID", "Product ID"])["Demand"].agg(["mean", "std"])
     statistics = statistics.loc[statistics["mean"] > 0].copy()
@@ -132,7 +142,7 @@ def prepare_dataset(raw_path: str | Path, output_dir: str | Path,
         "source_rows": len(frame), "source_series": frame.groupby(["Store ID", "Product ID"]).ngroups,
         "train_end": train_end.date().isoformat(),
         "validation_start": dates[train_count].date().isoformat(),
-        "validation_end": dates[test_index - 1].date().isoformat(),
+        "validation_end": dates[split_test_index - 1].date().isoformat(),
         "test_start": test_start.date().isoformat(), "episode_end": episode_dates[-1].date().isoformat(),
         "settings": settings, "catalog": catalog,
         "initial_funds": sum(p["training_mean_demand"] * p["unit_cost"] * settings["initial_cash_days"] for p in catalog),

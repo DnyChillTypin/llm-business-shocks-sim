@@ -20,6 +20,7 @@ from src.benchmarks.common import credentials, settings
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--history", action="store_true", help="Include sanitized recent request-cost rows from the provider's public history interface.")
     args = parser.parse_args()
     for name in ("httpx", "httpcore"):
         logging.getLogger(name).disabled = True
@@ -64,6 +65,19 @@ def main():
             available = {m["id"] for m in response.json()["data"]}
             result["missing_models"] = [m for m in models if m not in available]
             result["rates_verified"] = not result["missing_models"]
+            if args.history:
+                response = client.post("https://api.shopaikey.com/usage/histories",
+                                       headers={"x-api-key": key}, json={"page": 1, "page_size": 100})
+                response.raise_for_status()
+                history = response.json()
+                if history.get("success") is not True:
+                    raise ValueError("History endpoint did not return success.")
+                data = history["data"]
+                allowed = {"created_at", "model_name", "prompt_tokens", "completion_tokens", "cost", "type"}
+                result["history"] = {"source": "https://api.shopaikey.com/usage/histories", "total": data.get("total"),
+                    "stats": {k: v for k, v in (data.get("stats") or {}).items() if type(v) in (int, float)},
+                    "items": [{k: v for k, v in row.items() if k in allowed} for row in data.get("items", [])],
+                    "qualification": "Provider account history; absent entries do not prove an unlogged failed request was unbilled."}
     except Exception as exc:
         # str(exc) may contain the credential-bearing /usage URL.
         result = {"status": "failed", "error_type": type(exc).__name__, "paid_api_calls": 0}

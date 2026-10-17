@@ -121,8 +121,16 @@ flowchart LR
 
 ## Roadmap
 
-- Add an LLM policy using the same observations, constraints and tools; measure
-  validity, cost and performance against the baselines.
+Stage 2 has [genuine pilot evidence](docs/STAGE2_PILOTS.md) and an executed
+[cost-analysis notebook](notebooks/04_results_analysis.ipynb). Eleven one-case
+reasoning pilots completed; Consulting stopped on HTTP 503 with unresolved usage.
+The shared budget guard blocks further paid work pending charge reconciliation.
+The [partial estimate](docs/COST_ESTIMATE.md) does not price the full suite.
+The Kaggle LLM policy and shared runner pass offline contract checks; its genuine
+validation pilot and primary comparisons remain incomplete.
+
+- Validate the implemented LLM policy with genuine bounded pilots, then measure
+  validity, cost and performance against the baselines under an evaluation budget.
 - Expand products/stores and repeated runs; check price-response sensitivity.
 - Execute the agreed bounded task coverage for RetailBench, FirmBench and ICBE,
   documenting native benchmark runs separately from adaptations.

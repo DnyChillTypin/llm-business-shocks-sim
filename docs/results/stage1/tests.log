@@ -1,0 +1,31 @@
+test_infinite_program_times_out (test_benchmark_launcher.FormulaWorkerTests.test_infinite_program_times_out) ... ok
+test_numeric_program_and_import_restriction (test_benchmark_launcher.FormulaWorkerTests.test_numeric_program_and_import_restriction) ... ok
+test_api_failure_cannot_be_silently_scored (test_benchmark_launcher.GatewayTests.test_api_failure_cannot_be_silently_scored) ... ok
+test_async_gateway_for_icbe (test_benchmark_launcher.GatewayTests.test_async_gateway_for_icbe) ... ok
+test_icbe_parse_failure_does_not_become_cooperation (test_benchmark_launcher.GatewayTests.test_icbe_parse_failure_does_not_become_cooperation) ... ok
+test_offline_blocks_calls (test_benchmark_launcher.GatewayTests.test_offline_blocks_calls) ... ok
+test_routing_caps_and_usage (test_benchmark_launcher.GatewayTests.test_routing_caps_and_usage) ... ok
+test_baseline_reruns_match_and_cash_is_reconciled (test_kaggle_retailbench.IntegrationTests.test_baseline_reruns_match_and_cash_is_reconciled) ... <PROJECT>\vendor\RetailBench\retail_environment.py:452: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "ts": datetime.utcnow().isoformat() + "Z",
+<PROJECT>\vendor\RetailBench\retail_environment.py:452: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "ts": datetime.utcnow().isoformat() + "Z",
+ok
+test_boundary_and_no_reset_from_future_csv_inventory (test_kaggle_retailbench.IntegrationTests.test_boundary_and_no_reset_from_future_csv_inventory) ... ok
+test_daily_order_limit_includes_multiple_calls (test_kaggle_retailbench.IntegrationTests.test_daily_order_limit_includes_multiple_calls) ... ok
+test_delivery_shock_does_not_reschedule_existing_orders (test_kaggle_retailbench.IntegrationTests.test_delivery_shock_does_not_reschedule_existing_orders) ... ok
+test_empty_inventory_still_has_unmet_demand (test_kaggle_retailbench.IntegrationTests.test_empty_inventory_still_has_unmet_demand) ... ok
+test_future_information_is_absent_and_history_is_copied (test_kaggle_retailbench.IntegrationTests.test_future_information_is_absent_and_history_is_copied) ... ok
+test_order_arrives_before_sales_on_correct_day (test_kaggle_retailbench.IntegrationTests.test_order_arrives_before_sales_on_correct_day) ... ok
+test_prepared_checksum_rejects_tampering (test_kaggle_retailbench.IntegrationTests.test_prepared_checksum_rejects_tampering) ... ok
+test_price_response_and_invalid_prices (test_kaggle_retailbench.IntegrationTests.test_price_response_and_invalid_prices) ... ok
+test_real_native_environment_and_tools (test_kaggle_retailbench.IntegrationTests.test_real_native_environment_and_tools) ... ok
+test_sales_use_kaggle_and_deplete_stock_without_reviews (test_kaggle_retailbench.IntegrationTests.test_sales_use_kaggle_and_deplete_stock_without_reviews) ... ok
+test_same_starting_conditions_across_scenarios (test_kaggle_retailbench.IntegrationTests.test_same_starting_conditions_across_scenarios) ... ok
+test_changed_frozen_configuration_is_rejected_before_data_access (test_research_design.ResearchDesignTests.test_changed_frozen_configuration_is_rejected_before_data_access) ... ok
+test_held_out_outcomes_cannot_change_series_selection (test_research_design.ResearchDesignTests.test_held_out_outcomes_cannot_change_series_selection) ... ok
+test_ties_and_input_order_have_deterministic_selection (test_research_design.ResearchDesignTests.test_ties_and_input_order_have_deterministic_selection) ... ok
+
+----------------------------------------------------------------------
+Ran 22 tests in 5.450s
+
+OK

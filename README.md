@@ -8,7 +8,7 @@ inventory and pricing policies, and controlled business-shock experiments.**
 ![License](https://img.shields.io/badge/License-MIT-green)
 
 **Status:** verified Kaggle-driven RetailBench integration, two rule-based
-policies, four scenarios, 19 automated tests, and two executed research notebooks.
+policies, four scenarios, 22 automated tests, and three executed research notebooks.
 LLM experiments and broader benchmark reruns are planned; current results are
 baseline simulations, not LLM performance claims.
 
@@ -19,6 +19,9 @@ have been tested. See [benchmark setup](docs/BENCHMARKS.md) and the
 
 The staged execution plan is in [docs/EXECUTION_PLAN.md](docs/EXECUTION_PLAN.md).
 Stage 0 verification and rerun instructions are in [docs/STAGE0_HANDOFF.md](docs/STAGE0_HANDOFF.md).
+Stage 1 freezes the [research design](docs/RESEARCH_DESIGN.md), [study configuration](configs/study.json),
+and [planned coverage](docs/results/planned_coverage.csv). The [design notebook](notebooks/03_kaggle_llm_experiment.ipynb)
+reproduces training-only selection and checks the freeze without running paid experiments.
 Completed stages and meaningful milestones are committed and pushed to GitHub.
 
 ## The business question

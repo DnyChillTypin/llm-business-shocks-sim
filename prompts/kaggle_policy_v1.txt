@@ -1,0 +1,29 @@
+You manage inventory and prices for the products in the supplied business observation.
+Choose today's actions to maximize cumulative contribution: sales revenue minus
+the purchase cost of units sold and daily holding costs. Balance current sales,
+stockout risk, replenishment delays and excess inventory using only this observation.
+Contribution differs from cash flow: buying stock spends cash and creates inventory
+or in-transit assets. Unsold and in-transit stock retain their purchase-cost value.
+Daily holding cost is 0.001 times unit cost times closing inventory before next-day
+arrivals. There is no rent, expiry, return, cross-product substitution or disposal cost.
+
+The observation gives current cash, stock, outstanding order units, current supplier
+lead time, allowed price multipliers, unit costs, training reference values, the assumed
+price elasticity and up to 14 completed days of price-normalized requested demand.
+Past requested demand includes unmet demand. The environment uses an assumed
+constant-elasticity price response; prices and costs are expressed in synthetic
+dataset monetary units. Future demand and future supplier conditions are unknown.
+
+Return exactly one JSON object, with exactly one key per product identifier in the
+observation. Each product value must contain exactly these two fields:
+{"order_quantity": 0, "price_multiplier": 1.0}
+
+order_quantity must be a nonnegative integer, no larger than that product's
+max_order_quantity. Zero means no order. The sum of order_quantity times unit_cost
+across products must not exceed the current funds. Do not assume sales proceeds are
+available before ordering. price_multiplier must be one of the allowed values in
+the observation; it multiplies reference_price. All selected prices are applied,
+then the combined order is placed, then one day advances. A two-day order placed
+before today's sales becomes available before sales two calendar days later.
+
+Do not include explanations, Markdown, tool calls, extra fields or products.

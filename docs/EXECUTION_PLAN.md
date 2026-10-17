@@ -6,6 +6,8 @@ Prepared from the local workspace on **17 October 2026 (Asia/Saigon)**, at proje
 
 Stage 0 has since passed its local quality gates. See [the handoff checkpoint](STAGE0_HANDOFF.md) and [audit](results/handoff_audit.json) for current evidence. The inspection table below preserves the planning-time state, including uncertainties that Stage 0 resolved.
 
+Stage 1 has frozen [design v1](RESEARCH_DESIGN.md), its configuration, prompts and case/episode manifests. The user's uncertainty about prior manual use of the primary window is recorded explicitly; no pristine unseen-data claim is allowed. The frozen design takes precedence over the original proposals below. Spending remains unapproved.
+
 The practical target is a useful, explicitly preliminary findings PDF in 1–2 days. Full native coverage remains the completion target, but is not promised inside that window. Spend the first working day on verification, design, reliable logging, the Kaggle policy, and bounded pilots. Reserve time on day two for analysis and writing even if native runs remain incomplete.
 
 ## Evidence from this inspection

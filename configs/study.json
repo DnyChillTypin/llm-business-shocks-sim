@@ -1,0 +1,157 @@
+{
+  "schema_version": 1,
+  "study_id": "business_shocks_v1",
+  "design_status": "frozen_before_paid_pilots",
+  "frozen_on_local_date": "2026-10-17",
+  "timezone": "Asia/Saigon",
+  "purpose": "Descriptive findings draft; native task coverage and a separate controlled Kaggle simulation",
+  "dataset": {
+    "path": "data/raw/kaggle/sales_data.csv",
+    "sha256": "96f107b42042d5b21fcae88c7dfc98aab036788aaae73fb3605546cfc06135ff",
+    "synthetic": true,
+    "price_response_is_assumed": true
+  },
+  "native": {
+    "settings_path": "configs/benchmarks.json",
+    "settings": {
+      "primary_model": "gpt-4.1-mini-2025-04-14",
+      "judge_model": "gpt-4o-mini-2024-07-18",
+      "icbe_models": ["gpt-4.1-mini-2025-04-14", "gpt-4o-mini-2024-07-18", "deepseek-v3.2"],
+      "max_output_tokens": 4096,
+      "request_timeout_seconds": 90,
+      "workers": 1,
+      "seed": 42,
+      "retail_days": 180,
+      "retail_strategy_turns": 10,
+      "retail_execution_turns": 20,
+      "consulting_cases": 10,
+      "consulting_turns": 12,
+      "icbe_rounds": 100,
+      "max_api_calls_per_task": 6000
+    },
+    "reasoning_supported_cases": 457,
+    "factset_extension_cases": 50,
+    "consulting_case_ids_in_run_order": [
+      "case_0040", "case_0007", "case_0001", "case_0047", "case_0017",
+      "case_0015", "case_0014", "case_0008", "case_0056", "case_0006"
+    ],
+    "icbe_phase_rounds": [[1, 25], [26, 50], [51, 75], [76, 100]],
+    "exact_published_score_reproduction": false
+  },
+  "gateway": {
+    "provider": "ShopAIKey",
+    "base_url": "https://api.shopaikey.com/v1",
+    "identity_independently_attested": false
+  },
+  "kaggle": {
+    "settings_path": "configs/kaggle_retailbench.json",
+    "horizon_days": 21,
+    "splits": {
+      "train_fraction": 0.6,
+      "validation_fraction": 0.2,
+      "train_start": "2022-01-01",
+      "train_end": "2023-04-01",
+      "validation_start": "2023-04-02",
+      "validation_end": "2023-08-31",
+      "test_start": "2023-09-01",
+      "test_end": "2024-01-30"
+    },
+    "windows": {
+      "validation_pilot": {"start": "2023-04-02", "end": "2023-04-22", "purpose": "prompt_and_integration_development"},
+      "exploratory_existing": {"start": "2023-09-01", "end": "2023-09-21", "purpose": "previously_inspected_baseline_pilot"},
+      "primary_evaluation": {
+        "start": "2023-09-22", "end": "2023-10-12",
+        "purpose": "fixed_descriptive_comparison_no_tuning",
+        "prior_manual_outcome_use": "uncertain_user_report_2026-10-17",
+        "pristine_unseen_claim_allowed": false
+      },
+      "optional_replication": {"start": "2023-10-13", "end": "2023-11-02", "enabled": false}
+    },
+    "selection": {
+      "statistic": "sample_std_ddof1_divided_by_mean_of_training_Demand",
+      "sort_keys": ["cv", "Store ID", "Product ID"],
+      "rank_rule": "floor(number_of_eligible_series_times_quantile); zero based",
+      "quantiles": [0.25, 0.5, 0.75],
+      "selected_series": [
+        {"store_id": "S001", "product_id": "P0001", "quantile": 0.25, "rank_zero_based": 25, "training_mean_demand": 91.662280701754, "training_cv": 0.382526709661},
+        {"store_id": "S004", "product_id": "P0006", "quantile": 0.5, "rank_zero_based": 50, "training_mean_demand": 122.736842105263, "training_cv": 0.401812465678},
+        {"store_id": "S003", "product_id": "P0016", "quantile": 0.75, "rank_zero_based": 75, "training_mean_demand": 106.949561403509, "training_cv": 0.434535974158}
+      ]
+    },
+    "policy_ids": ["fixed", "adaptive", "llm_with_fallback"],
+    "primary_comparator": "adaptive",
+    "secondary_comparator": "fixed",
+    "scenarios": ["control", "demand_surge", "demand_decline", "delivery_disruption"],
+    "assumptions": {
+      "elasticity": 1.5, "purchase_cost_ratio": 0.6, "holding_cost_ratio": 0.001,
+      "lead_days": 2, "disrupted_lead_days": 5, "max_order_days": 10,
+      "initial_cash_days": 20, "shock_start_day": 8, "shock_end_day": 14,
+      "surge_multiplier": 1.5, "decline_multiplier": 0.7,
+      "price_multipliers": [0.9, 1.0, 1.1]
+    },
+    "calibration": "training dates only; initial stock observed once at each episode start",
+    "history": "last 14 completed days; normalized requested demand including unmet demand",
+    "initial_pipeline_units": 0,
+    "matched_block": "single store-product and episode window",
+    "replications_per_block": 1,
+    "resample_demand": false,
+    "nominal_environment_seed": 42,
+    "execution_order": "series quantile ascending; scenario order then policy order as listed; sequential paid worker",
+    "model": {
+      "requested_id": "gpt-4.1-mini-2025-04-14",
+      "temperature": 0,
+      "max_output_tokens": 1024,
+      "request_timeout_seconds": 90,
+      "sdk_retries": 0,
+      "model_seed": null,
+      "system_prompt": "prompts/kaggle_policy_v1.txt",
+      "repair_prompt": "prompts/kaggle_repair_v1.txt",
+      "action_schema": "configs/kaggle_action.schema.json",
+      "request_style": "one structured JSON completion per day with current observation; no cross-day chat memory"
+    },
+    "failure_policy": {
+      "atomic_action_validation": true,
+      "maximum_repairs_per_decision": 1,
+      "invalid_after_repair": "adaptive_baseline_for_that_day_with_explicit_fallback_flag",
+      "api_or_budget_failure": "stop_incomplete_preserve_attempts",
+      "silent_clipping_or_coercion": false,
+      "exclude_fallback_days_from_primary_results": false,
+      "fallback_review_trigger_fraction": 0.05,
+      "fallback_trigger_denominator": "completed decision opportunities; inspect after each episode; pause before next episode if fraction strictly exceeds 0.05"
+    },
+    "primary_outcome": "episode_contribution",
+    "primary_contrasts": "llm_with_fallback minus adaptive within each of the three shock scenarios and each selected series",
+    "control_adjusted_contrast": "(LLM_shock - LLM_control) - (baseline_shock - baseline_control)",
+    "relative_gain": "100 * (LLM - baseline) / abs(baseline); NA if abs(baseline) <= 1e-9",
+    "recovery": {
+      "first_candidate_day": 15, "consecutive_days": 3, "last_observed_day": 21,
+      "criterion": "zero lost sales each day and abs(shock_closing_inventory - paired_control_closing_inventory) <= 0.2 * max(paired_control_closing_inventory, 1) each day",
+      "reported_delay_days": "first_qualifying_day - 14",
+      "unobserved": "right_censored_at_day_21; never encode as zero or 21-day exact recovery"
+    },
+    "expected_counts": {"matched_blocks": 3, "episodes": 36, "policy_days": 756, "llm_episodes": 12, "llm_primary_decisions": 252, "llm_max_attempts_with_repairs": 504}
+  },
+  "inference": {
+    "experimental_unit": "matched series-window block; three selected blocks in the primary matrix",
+    "daily_observations_independent": false,
+    "primary_reporting": "per-block effects and per-scenario equal-weight mean, median, range and sign counts",
+    "population_significance_claims": false,
+    "bootstrap_daily_rows": false,
+    "practical_superiority_threshold": null,
+    "practical_superiority_claim_allowed": false,
+    "fallback_free_analysis": "secondary and selected; never replace primary operational outcomes",
+    "adaptation_definition": "within-episode behavioral response to changed observable conditions; no model-weight learning claim"
+  },
+  "spending": {
+    "paid_calls_authorized": false, "pilot_cap_usd": null, "total_cap_usd": null,
+    "execution_authorization_source": "separate approved budget/run manifest; this file records the state at design freeze",
+    "current_gateway_balance_usd": null,
+    "pilot_proposal_not_authorization": {"usd": 1, "attempts": 250},
+    "evaluation_requires_measured_pilot_and_approved_cap": true
+  },
+  "amendments": {
+    "validation_only_changes_before_evaluation": "increment design/prompt version, retain old manifest and explain the reason before any primary evaluation call",
+    "after_evaluation_starts": "no prompt, metric, case-selection or exclusion tuning on primary outcomes; corrected implementations require a separately identified cohort",
+    "optional_expansions": "disabled unless separately recorded with budget allocation; never silently replace the primary matrix"
+  }
+}

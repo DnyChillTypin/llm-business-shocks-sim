@@ -1,0 +1,175 @@
+{
+  "stage": 1,
+  "study_id": "business_shocks_v1",
+  "status": "passed",
+  "checked_at_utc": "2026-10-17T10:14:22.006713+00:00",
+  "paid_api_calls": 0,
+  "checks": [
+    {
+      "check": "frozen_text_artifacts",
+      "status": "passed"
+    },
+    {
+      "check": "frozen_native_loader_text",
+      "status": "passed"
+    },
+    {
+      "check": "pinned_native_sources",
+      "status": "passed"
+    },
+    {
+      "check": "raw_dataset_checksum",
+      "status": "passed"
+    },
+    {
+      "check": "dataset_dimensions",
+      "status": "passed"
+    },
+    {
+      "check": "training_boundary",
+      "status": "passed"
+    },
+    {
+      "check": "training_only_series_ids",
+      "status": "passed"
+    },
+    {
+      "check": "training_calibration_values",
+      "status": "passed"
+    },
+    {
+      "check": "future_values_do_not_change_selection",
+      "status": "passed"
+    },
+    {
+      "check": "chronological_split_dates",
+      "status": "passed"
+    },
+    {
+      "check": "window_validation_pilot_duration",
+      "status": "passed"
+    },
+    {
+      "check": "window_validation_pilot_split",
+      "status": "passed"
+    },
+    {
+      "check": "window_exploratory_existing_duration",
+      "status": "passed"
+    },
+    {
+      "check": "window_exploratory_existing_split",
+      "status": "passed"
+    },
+    {
+      "check": "window_primary_evaluation_duration",
+      "status": "passed"
+    },
+    {
+      "check": "window_primary_evaluation_split",
+      "status": "passed"
+    },
+    {
+      "check": "window_optional_replication_duration",
+      "status": "passed"
+    },
+    {
+      "check": "window_optional_replication_split",
+      "status": "passed"
+    },
+    {
+      "check": "evaluation_after_exploratory_window",
+      "status": "passed"
+    },
+    {
+      "check": "prior_use_uncertainty_disclosed",
+      "status": "passed"
+    },
+    {
+      "check": "environment_assumptions_match",
+      "status": "passed"
+    },
+    {
+      "check": "native_settings_match",
+      "status": "passed"
+    },
+    {
+      "check": "native_case_ids_and_hashes",
+      "status": "passed"
+    },
+    {
+      "check": "reasoning_counts_and_factset_separation",
+      "status": "passed"
+    },
+    {
+      "check": "consulting_selection_order",
+      "status": "passed"
+    },
+    {
+      "check": "native_episode_configs",
+      "status": "passed"
+    },
+    {
+      "check": "native_full_horizons",
+      "status": "passed"
+    },
+    {
+      "check": "kaggle_episode_plan",
+      "status": "passed"
+    },
+    {
+      "check": "matched_matrix_counts",
+      "status": "passed"
+    },
+    {
+      "check": "coverage_has_no_research_results",
+      "status": "passed"
+    },
+    {
+      "check": "no_paid_authorization_in_design",
+      "status": "passed"
+    }
+  ],
+  "selected_series": [
+    {
+      "store_id": "S001",
+      "product_id": "P0001",
+      "quantile": 0.25,
+      "rank_zero_based": 25,
+      "training_mean_demand": 91.662280701754,
+      "training_cv": 0.382526709661
+    },
+    {
+      "store_id": "S004",
+      "product_id": "P0006",
+      "quantile": 0.5,
+      "rank_zero_based": 50,
+      "training_mean_demand": 122.736842105263,
+      "training_cv": 0.401812465678
+    },
+    {
+      "store_id": "S003",
+      "product_id": "P0016",
+      "quantile": 0.75,
+      "rank_zero_based": 75,
+      "training_mean_demand": 106.949561403509,
+      "training_cv": 0.434535974158
+    }
+  ],
+  "native_task_count": 19,
+  "reasoning_case_count": 507,
+  "consulting_case_count": 10,
+  "kaggle_counts": {
+    "matched_blocks": 3,
+    "episodes": 36,
+    "policy_days": 756,
+    "llm_episodes": 12,
+    "llm_primary_decisions": 252,
+    "llm_max_attempts_with_repairs": 504
+  },
+  "limitations": [
+    "Prior manual outcome use of primary window is uncertain.",
+    "Planned coverage is not completed research.",
+    "Design checker does not implement the LLM policy or authorize spending."
+  ]
+}

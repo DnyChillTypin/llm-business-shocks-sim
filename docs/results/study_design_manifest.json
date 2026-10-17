@@ -1,0 +1,36 @@
+{
+  "study_id": "business_shocks_v1",
+  "created_at_utc": "2026-10-17T10:13:12.263349+00:00",
+  "source_commit_before_stage": "50efc8ee5fdbdd86efd684ffed410e4d6dfe9953",
+  "hash_rule": "SHA-256 of file bytes with CRLF normalized to LF; case hashes use canonical JSON",
+  "artifact_text_sha256": {
+    "configs/study.json": "9c3ce07eb0579e29f630a348f1afb58e3c142af15683fc1542a6dc865858710f",
+    "configs/sources.json": "fa410ef420cc1dff630c0f002743decee7b96f8655394f9c81ad3ec99557b719",
+    "configs/benchmarks.json": "6f61688741c8a1ad9667787711ff6459bc4ee81cad052287a671574e37bc456a",
+    "configs/kaggle_retailbench.json": "4c866ea24a38d407cdd42d709c76b6b8268877a7a8913a18262d2687d1b86c18",
+    "configs/kaggle_action.schema.json": "4349c10c066c7330e148af2f959611aee42b1cf2f3f8088e1c7f9c8df3e66e47",
+    "prompts/kaggle_policy_v1.txt": "9109e2268896967c8223052479ec36a565b8220abe84ce50c868ae03346e8f2c",
+    "prompts/kaggle_repair_v1.txt": "d0ece85310920d11efdc957c4ec730296aba303f0266e392aa1f376cb7e27208",
+    "docs/RESEARCH_DESIGN.md": "37982afaf17e0b1a231748a7c02262e30d62b621061ba30f530ef329d25419bc",
+    "docs/REPORT_OUTLINE.md": "99315b9b48fd20d44e50d2524b44ad1ec8e2e643e86b5b6934dadb18bcc63b62",
+    "docs/results/native_case_manifest.csv": "b79a0024f4bfc91db20a0d0c80e06826c2cd57a408e4756d8237c512f9472d6c",
+    "docs/results/kaggle_episode_plan.csv": "02198200d7add142fb67861335ae1ec3213cb6243ec7d7d68d77387df056dc85",
+    "docs/results/planned_coverage.csv": "83c6a27478d7b267c6e6043690a651a074b6b74906d74b59dcdd5d605a1e7bef",
+    "docs/results/native_episode_manifest.json": "f1b9f612184bae87c5c521e3e445f512f2a120b04c41c1c54869a90cc0906de7"
+  },
+  "native_loader_text_sha256": {
+    "vendor/FirmBench/Consulting/run.py": "f4fa3e026d83ecf2c3c14cd9b43e4142fa369fdc3b374c09af1eb32d87d7112b",
+    "vendor/FirmBench/SeriousGame/beergame_data_processor.py": "b1e4b5051bbf8ab9dd9150da38871e014827bf64bd02d34e0dc2cc5d5628a890",
+    "vendor/FirmBench/SeriousGame/edt_data_processor.py": "e169998c5fb42f86a6000adc1986ead875e7afea2bf053c118c44be94e1044a0",
+    "vendor/FirmBench/StructuredReasoning/data/aoa_sampled_test/task_config_aoa_sampled_test_50.json": "3880975c8c1c54e79ad9e413f4376736dd53af2f9373939b59e22808f8c44cc1",
+    "vendor/icbe-2026-strategic-behavior/LLMs_Business_Simulation.py": "919cb0bdf0765ee832162fd5df877acacd7554552ddbea70ee81daa6dd890700"
+  },
+  "implementation_sources_at_freeze_informational": {
+    "src/data/kaggle.py": "a151053beb29232b33d915ebbd46a49b0d50f1c31679a50c7d26497df4de05cf",
+    "src/envs/kaggle_retailbench.py": "e961a23d0cf1e370ff4fb13c254bd98a131ef5ed3f3066849963ed3e106c4337",
+    "src/agents/baselines.py": "a65b7c6324246d98aa9cc0a49b4bd14fbc42a4da010ae3da7250df296ff23fca",
+    "src/benchmarks/worker.py": "bf4eadbdd64746465a9a8f7f98dc917efa9a05bff6ac203f107c7d1f97168c5d"
+  },
+  "paid_api_calls": 0,
+  "research_results_generated": false
+}

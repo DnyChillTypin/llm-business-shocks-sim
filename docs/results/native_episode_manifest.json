@@ -1,0 +1,110 @@
+{
+  "retail": [
+    {
+      "configuration": "dynamic_middle",
+      "days": 180
+    },
+    {
+      "configuration": "dynamic_hard",
+      "days": 180
+    },
+    {
+      "configuration": "still_middle",
+      "days": 180
+    },
+    {
+      "configuration": "still_hard",
+      "days": 180
+    }
+  ],
+  "beergame": [
+    {
+      "scenario_id": "default_typical",
+      "config": {
+        "controlled_role": "retailer",
+        "opponent_policy": "typical",
+        "horizon_weeks": 25,
+        "demand_low": 100,
+        "demand_high": 400,
+        "target_inventory": 400
+      }
+    },
+    {
+      "scenario_id": "default_smoothing_4",
+      "config": {
+        "controlled_role": "retailer",
+        "opponent_policy": "smoothing:4",
+        "horizon_weeks": 25,
+        "demand_low": 100,
+        "demand_high": 400,
+        "target_inventory": 400
+      }
+    }
+  ],
+  "edt": [
+    {
+      "scenario_id": "interactive",
+      "config": {
+        "scenario_managers": [
+          "smEDT"
+        ],
+        "scenarios": [
+          "interactive"
+        ],
+        "equations": [],
+        "agents": [],
+        "agent_states": [],
+        "agent_properties": [],
+        "agent_property_types": [],
+        "max_steps": 96,
+        "reward_key_contains": "accumulated_earnings",
+        "reward_mode": "delta",
+        "auto_select_abm_metrics": true
+      }
+    }
+  ],
+  "icbe": [
+    {
+      "match_id": "ordered_pair_00",
+      "model_a": "gpt-4.1-mini-2025-04-14",
+      "model_b": "gpt-4o-mini-2024-07-18",
+      "rounds": 100,
+      "primary_decisions": 200
+    },
+    {
+      "match_id": "ordered_pair_01",
+      "model_a": "gpt-4.1-mini-2025-04-14",
+      "model_b": "deepseek-v3.2",
+      "rounds": 100,
+      "primary_decisions": 200
+    },
+    {
+      "match_id": "ordered_pair_02",
+      "model_a": "gpt-4o-mini-2024-07-18",
+      "model_b": "gpt-4.1-mini-2025-04-14",
+      "rounds": 100,
+      "primary_decisions": 200
+    },
+    {
+      "match_id": "ordered_pair_03",
+      "model_a": "gpt-4o-mini-2024-07-18",
+      "model_b": "deepseek-v3.2",
+      "rounds": 100,
+      "primary_decisions": 200
+    },
+    {
+      "match_id": "ordered_pair_04",
+      "model_a": "deepseek-v3.2",
+      "model_b": "gpt-4.1-mini-2025-04-14",
+      "rounds": 100,
+      "primary_decisions": 200
+    },
+    {
+      "match_id": "ordered_pair_05",
+      "model_a": "deepseek-v3.2",
+      "model_b": "gpt-4o-mini-2024-07-18",
+      "rounds": 100,
+      "primary_decisions": 200
+    }
+  ]
+}

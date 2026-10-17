@@ -28,11 +28,17 @@ jobs:
         run: .venv/bin/python scripts/setup_project.py
       - name: Prepare small ICBE source for failure-handling test
         run: .venv/bin/python scripts/setup_benchmarks.py --only ICBE
+      - name: Prepare pinned FirmBench source for frozen case selection
+        run: .venv/bin/python scripts/setup_benchmarks.py --only FirmBench
       - name: Validate notebook structure
         run: .venv/bin/python -c "import nbformat; from pathlib import Path; [nbformat.validate(nbformat.read(p, as_version=4)) for p in Path('notebooks').glob('*.ipynb')]"
       - name: Run research validity checks
         run: .venv/bin/python -m unittest discover -s tests -v
+      - name: Verify frozen research design without API calls
+        run: .venv/bin/python scripts/check_research_design.py
       - name: Execute the integration notebook without API calls
         run: .venv/bin/python scripts/verify_notebook.py
       - name: Execute the setup evidence notebook without API calls
         run: .venv/bin/python scripts/verify_notebook.py --notebook notebooks/02_benchmark_setup.ipynb
+      - name: Execute the frozen design notebook without API calls
+        run: .venv/bin/python scripts/verify_notebook.py --notebook notebooks/03_kaggle_llm_experiment.ipynb

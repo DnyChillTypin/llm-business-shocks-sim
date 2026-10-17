@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Kaggle daily action shape; SKU set and resource limits require observation-based checks",
+  "type": "object",
+  "minProperties": 1,
+  "additionalProperties": {
+    "type": "object",
+    "required": ["order_quantity", "price_multiplier"],
+    "additionalProperties": false,
+    "properties": {
+      "order_quantity": {"type": "integer", "minimum": 0},
+      "price_multiplier": {"type": "number", "enum": [0.9, 1.0, 1.1]}
+    }
+  }
+}

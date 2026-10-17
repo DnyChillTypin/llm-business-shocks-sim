@@ -1,0 +1,44 @@
+{
+  "stage": 1,
+  "status": "local_quality_gates_passed",
+  "study_id": "business_shocks_v1",
+  "verified_at_utc": "2026-10-17T10:16:39.117484+00:00",
+  "source_commit_before_stage": "50efc8ee5fdbdd86efd684ffed410e4d6dfe9953",
+  "paid_api_calls": 0,
+  "primary_window_policy_experiments_run": 0,
+  "validation": {
+    "frozen_design_checks": 31,
+    "automated_tests_passed": 22,
+    "design_notebook_code_cells_executed": 5,
+    "cli_frozen_output_overwrite_guard_passed": true,
+    "secret_exclusion": {
+      "passed": true,
+      "files_scanned": 104,
+      "method": "Exact configured credential values; no credential values printed"
+    },
+    "evidence": [
+      "docs/results/stage1/design_check.json",
+      "docs/results/stage1/tests.json",
+      "docs/results/stage1/tests.log",
+      "docs/results/stage1/notebook03.json",
+      "notebooks/03_kaggle_llm_experiment.ipynb"
+    ]
+  },
+  "design_artifacts_manifest": "docs/results/study_design_manifest.json",
+  "prior_manual_outcome_use": "uncertain, as reported by user; pristine unseen-data claim forbidden",
+  "native_task_ids": 19,
+  "reasoning_cases": 507,
+  "factset_extension_cases": 50,
+  "consulting_cases": 10,
+  "kaggle_counts": {
+    "matched_blocks": 3,
+    "episodes": 36,
+    "policy_days": 756,
+    "llm_episodes": 12,
+    "llm_primary_decisions": 252,
+    "llm_max_attempts_with_repairs": 504
+  },
+  "spending": "No paid pilot/evaluation budget approved; future approval recorded separately from frozen design",
+  "next_stage": "Stage 2 offline pilot controls, full attempt/cost logging and spending guard; Stage 4 offline Kaggle policy required before its paid pilot",
+  "ci": "Check exact stage commit after pushing; outcome reported in checkpoint response and local github_ci_after.json."
+}

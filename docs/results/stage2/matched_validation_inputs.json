@@ -1,0 +1,7 @@
+{
+  "status": "passed",
+  "episodes": 6,
+  "identical_initial_observations": true,
+  "identical_prepared_inputs": true,
+  "identical_base_demand_paths": true
+}

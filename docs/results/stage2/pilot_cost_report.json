@@ -2,8 +2,52 @@
   "purpose": "pilot_cost_planning_not_benchmark_evaluation",
   "observations": [
     {
+      "task": "firm:beergame",
+      "execution_status": "execution_finished_requires_artifact_review",
+      "validation_status": "validated_complete",
+      "units": 1,
+      "horizon": 25,
+      "attempts": 25,
+      "finished_attempts": 25,
+      "failed_attempts": 0,
+      "input_tokens": 5103,
+      "output_tokens": 925,
+      "missing_usage_attempts": 0,
+      "known_estimated_cost_usd": 0.005640974,
+      "native_score": {
+        "episodes": 1,
+        "avg_total_cost_controlled": 22950.0,
+        "std_total_cost_controlled": 0.0,
+        "avg_bullwhip_controlled": null,
+        "std_bullwhip_controlled": null,
+        "avg_total_backlog_controlled": null,
+        "std_total_backlog_controlled": null,
+        "avg_total_inventory_controlled": null,
+        "std_total_inventory_controlled": null,
+        "episode_metrics": [
+          {
+            "scenario_id": "default_typical",
+            "weeks_completed": 25,
+            "controlled_role": "retailer",
+            "opponent_policy": "typical",
+            "total_cost_controlled": 22950.0,
+            "total_cost_supply_chain": 11279921800.0,
+            "bullwhip_controlled": 10.628019323671497,
+            "avg_backlog_controlled": 0.0
+          }
+        ]
+      },
+      "models": [
+        "gpt-4.1-mini-2025-04-14"
+      ],
+      "setup_seconds": 3.370546,
+      "elapsed_seconds": 61.113377,
+      "cohort": "pilot_01",
+      "median_latency_seconds": 1.6391562000208069,
+      "mean_latency_seconds": 2.266801347999135
+    },
+    {
       "task": "firm:CodeFinQA",
-      "run_id": "20261017T105521982277Z",
       "execution_status": "execution_finished_requires_artifact_review",
       "validation_status": "validated_complete",
       "units": 1,
@@ -15,9 +59,6 @@
       "output_tokens": 144,
       "missing_usage_attempts": 0,
       "known_estimated_cost_usd": 0.000961841,
-      "latency_seconds": [
-        3.237398299999768
-      ],
       "native_score": {
         "accuracy": 0.0,
         "correct": 0,
@@ -26,11 +67,15 @@
       },
       "models": [
         "gpt-4.1-mini-2025-04-14"
-      ]
+      ],
+      "setup_seconds": 2.143133,
+      "elapsed_seconds": 5.395996,
+      "cohort": "pilot_02",
+      "median_latency_seconds": 3.237398299999768,
+      "mean_latency_seconds": 3.237398299999768
     },
     {
       "task": "firm:CodeTAT-QA",
-      "run_id": "20261017T105727962432Z",
       "execution_status": "execution_finished_requires_artifact_review",
       "validation_status": "validated_complete",
       "units": 1,
@@ -42,9 +87,6 @@
       "output_tokens": 163,
       "missing_usage_attempts": 0,
       "known_estimated_cost_usd": 0.000946462,
-      "latency_seconds": [
-        13.339367000007769
-      ],
       "native_score": {
         "accuracy": 1.0,
         "correct": 1,
@@ -53,11 +95,15 @@
       },
       "models": [
         "gpt-4.1-mini-2025-04-14"
-      ]
+      ],
+      "setup_seconds": 1.588099,
+      "elapsed_seconds": 14.94102,
+      "cohort": "pilot_03",
+      "median_latency_seconds": 13.339367000007769,
+      "mean_latency_seconds": 13.339367000007769
     },
     {
       "task": "firm:consulting",
-      "run_id": "20261017T110343057610Z",
       "execution_status": "failed",
       "validation_status": "requires_review",
       "units": 1,
@@ -69,28 +115,56 @@
       "output_tokens": 1643,
       "missing_usage_attempts": 1,
       "known_estimated_cost_usd": 0.009681525,
-      "latency_seconds": [
-        13.95967800001381,
-        13.047667999984697,
-        3.4657452999963425,
-        3.992114299995592,
-        2.993711200018879,
-        2.679301800002577,
-        2.819965200003935,
-        3.199489299993729,
-        2.68807599999127,
-        2.8644577999948524,
-        0.02003549999790266
-      ],
       "native_score": null,
       "models": [
         "gpt-4.1-mini-2025-04-14",
         "gpt-4o-mini-2024-07-18"
-      ]
+      ],
+      "setup_seconds": 1.722632,
+      "elapsed_seconds": 53.616021,
+      "cohort": "pilot_04",
+      "median_latency_seconds": 2.993711200018879,
+      "mean_latency_seconds": 4.702749309090326
+    },
+    {
+      "task": "firm:consulting",
+      "execution_status": "execution_finished_requires_artifact_review",
+      "validation_status": "validated_complete",
+      "units": 1,
+      "horizon": null,
+      "attempts": 13,
+      "finished_attempts": 13,
+      "failed_attempts": 0,
+      "input_tokens": 32024,
+      "output_tokens": 2083,
+      "missing_usage_attempts": 0,
+      "known_estimated_cost_usd": 0.012795526,
+      "native_score": {
+        "dataset": "Consulting",
+        "split": "test",
+        "num_cases": 1,
+        "num_finished": 1,
+        "num_failed": 0,
+        "metrics": {
+          "structure": 9.0,
+          "quant": 7.0,
+          "business_sense": 8.0,
+          "communication": 8.0,
+          "overall": 8.0
+        }
+      },
+      "models": [
+        "gpt-4.1-mini-2025-04-14",
+        "gpt-4o-mini-2024-07-18"
+      ],
+      "setup_seconds": 3.016647,
+      "elapsed_seconds": 65.993646,
+      "cohort": "pilot_05",
+      "median_latency_seconds": 2.8168112999992445,
+      "mean_latency_seconds": 4.813540969232026
     },
     {
       "task": "firm:ConvFinQA",
-      "run_id": "20261017T105922889351Z",
       "execution_status": "execution_finished_requires_artifact_review",
       "validation_status": "validated_complete",
       "units": 1,
@@ -102,9 +176,6 @@
       "output_tokens": 86,
       "missing_usage_attempts": 0,
       "known_estimated_cost_usd": 0.000776009,
-      "latency_seconds": [
-        2.6112469999934547
-      ],
       "native_score": {
         "accuracy": 1.0,
         "correct": 1,
@@ -113,11 +184,38 @@
       },
       "models": [
         "gpt-4.1-mini-2025-04-14"
-      ]
+      ],
+      "setup_seconds": 1.662297,
+      "elapsed_seconds": 4.290533,
+      "cohort": "pilot_06",
+      "median_latency_seconds": 2.6112469999934547,
+      "mean_latency_seconds": 2.6112469999934547
+    },
+    {
+      "task": "firm:edt",
+      "execution_status": "execution_finished_requires_artifact_review",
+      "validation_status": "validated_complete",
+      "units": 1,
+      "horizon": 96,
+      "attempts": 1,
+      "finished_attempts": 1,
+      "failed_attempts": 0,
+      "input_tokens": 1709,
+      "output_tokens": 107,
+      "missing_usage_attempts": 0,
+      "known_estimated_cost_usd": 0.00136939,
+      "native_score": null,
+      "models": [
+        "gpt-4.1-mini-2025-04-14"
+      ],
+      "setup_seconds": 2.045537,
+      "elapsed_seconds": 20.460506,
+      "cohort": "pilot_07",
+      "median_latency_seconds": 13.161100900004385,
+      "mean_latency_seconds": 13.161100900004385
     },
     {
       "task": "firm:factset",
-      "run_id": "20261017T110305034726Z",
       "execution_status": "execution_finished_requires_artifact_review",
       "validation_status": "validated_complete",
       "units": 1,
@@ -129,9 +227,6 @@
       "output_tokens": 226,
       "missing_usage_attempts": 0,
       "known_estimated_cost_usd": 0.000855468,
-      "latency_seconds": [
-        14.61837340000784
-      ],
       "native_score": {
         "accuracy": 0.0,
         "correct": 0,
@@ -140,11 +235,15 @@
       },
       "models": [
         "gpt-4.1-mini-2025-04-14"
-      ]
+      ],
+      "setup_seconds": 1.626574,
+      "elapsed_seconds": 16.259527,
+      "cohort": "pilot_08",
+      "median_latency_seconds": 14.61837340000784,
+      "mean_latency_seconds": 14.61837340000784
     },
     {
       "task": "firm:FinCode",
-      "run_id": "20261017T105705282885Z",
       "execution_status": "execution_finished_requires_artifact_review",
       "validation_status": "validated_complete",
       "units": 1,
@@ -156,9 +255,6 @@
       "output_tokens": 94,
       "missing_usage_attempts": 0,
       "known_estimated_cost_usd": 0.000484445,
-      "latency_seconds": [
-        13.657172400009586
-      ],
       "native_score": {
         "accuracy": 1.0,
         "correct": 1,
@@ -167,11 +263,15 @@
       },
       "models": [
         "gpt-4.1-mini-2025-04-14"
-      ]
+      ],
+      "setup_seconds": 1.774441,
+      "elapsed_seconds": 15.446469,
+      "cohort": "pilot_09",
+      "median_latency_seconds": 13.657172400009586,
+      "mean_latency_seconds": 13.657172400009586
     },
     {
       "task": "firm:finer",
-      "run_id": "20261017T110122613871Z",
       "execution_status": "execution_finished_requires_artifact_review",
       "validation_status": "validated_complete",
       "units": 1,
@@ -183,9 +283,6 @@
       "output_tokens": 279,
       "missing_usage_attempts": 0,
       "known_estimated_cost_usd": 0.001863447,
-      "latency_seconds": [
-        15.208773999998812
-      ],
       "native_score": {
         "accuracy": 1.0,
         "correct": 1,
@@ -194,11 +291,15 @@
       },
       "models": [
         "gpt-4.1-mini-2025-04-14"
-      ]
+      ],
+      "setup_seconds": 1.454075,
+      "elapsed_seconds": 16.678006,
+      "cohort": "pilot_10",
+      "median_latency_seconds": 15.208773999998812,
+      "mean_latency_seconds": 15.208773999998812
     },
     {
       "task": "firm:FinKnow",
-      "run_id": "20261017T105943259902Z",
       "execution_status": "execution_finished_requires_artifact_review",
       "validation_status": "validated_complete",
       "units": 1,
@@ -210,9 +311,6 @@
       "output_tokens": 280,
       "missing_usage_attempts": 0,
       "known_estimated_cost_usd": 0.00085675,
-      "latency_seconds": [
-        14.596411100006662
-      ],
       "native_score": {
         "accuracy": 1.0,
         "correct": 1,
@@ -221,11 +319,15 @@
       },
       "models": [
         "gpt-4.1-mini-2025-04-14"
-      ]
+      ],
+      "setup_seconds": 1.718579,
+      "elapsed_seconds": 16.329192,
+      "cohort": "pilot_11",
+      "median_latency_seconds": 14.596411100006662,
+      "mean_latency_seconds": 14.596411100006662
     },
     {
       "task": "firm:formula",
-      "run_id": "20261017T110211377975Z",
       "execution_status": "execution_finished_requires_artifact_review",
       "validation_status": "validated_complete",
       "units": 1,
@@ -237,9 +339,6 @@
       "output_tokens": 101,
       "missing_usage_attempts": 0,
       "known_estimated_cost_usd": 0.000371024,
-      "latency_seconds": [
-        13.412720399996033
-      ],
       "native_score": {
         "accuracy": 0.0,
         "correct": 0,
@@ -248,11 +347,15 @@
       },
       "models": [
         "gpt-4.1-mini-2025-04-14"
-      ]
+      ],
+      "setup_seconds": 1.491559,
+      "elapsed_seconds": 14.922318,
+      "cohort": "pilot_12",
+      "median_latency_seconds": 13.412720399996033,
+      "mean_latency_seconds": 13.412720399996033
     },
     {
       "task": "firm:FormulaEval",
-      "run_id": "20261017T110023744544Z",
       "execution_status": "execution_finished_requires_artifact_review",
       "validation_status": "validated_complete",
       "units": 1,
@@ -264,9 +367,6 @@
       "output_tokens": 98,
       "missing_usage_attempts": 0,
       "known_estimated_cost_usd": 0.000486368,
-      "latency_seconds": [
-        12.825638199981768
-      ],
       "native_score": {
         "accuracy": 1.0,
         "correct": 1,
@@ -275,11 +375,15 @@
       },
       "models": [
         "gpt-4.1-mini-2025-04-14"
-      ]
+      ],
+      "setup_seconds": 1.485376,
+      "elapsed_seconds": 14.743987,
+      "cohort": "pilot_13",
+      "median_latency_seconds": 12.825638199981768,
+      "mean_latency_seconds": 12.825638199981768
     },
     {
       "task": "firm:SEC-NUM",
-      "run_id": "20261017T105843360473Z",
       "execution_status": "execution_finished_requires_artifact_review",
       "validation_status": "validated_complete",
       "units": 1,
@@ -291,9 +395,6 @@
       "output_tokens": 69,
       "missing_usage_attempts": 0,
       "known_estimated_cost_usd": 0.000923393,
-      "latency_seconds": [
-        1.4375381999998353
-      ],
       "native_score": {
         "accuracy": 1.0,
         "correct": 1,
@@ -302,11 +403,15 @@
       },
       "models": [
         "gpt-4.1-mini-2025-04-14"
-      ]
+      ],
+      "setup_seconds": 1.622656,
+      "elapsed_seconds": 3.077567,
+      "cohort": "pilot_14",
+      "median_latency_seconds": 1.4375381999998353,
+      "mean_latency_seconds": 1.4375381999998353
     },
     {
       "task": "firm:TAT-QA",
-      "run_id": "20261017T105900115570Z",
       "execution_status": "execution_finished_requires_artifact_review",
       "validation_status": "validated_complete",
       "units": 1,
@@ -318,9 +423,6 @@
       "output_tokens": 165,
       "missing_usage_attempts": 0,
       "known_estimated_cost_usd": 0.000790748,
-      "latency_seconds": [
-        14.889560600015102
-      ],
       "native_score": {
         "accuracy": 1.0,
         "correct": 1,
@@ -329,287 +431,579 @@
       },
       "models": [
         "gpt-4.1-mini-2025-04-14"
-      ]
+      ],
+      "setup_seconds": 1.71407,
+      "elapsed_seconds": 16.61642,
+      "cohort": "pilot_15",
+      "median_latency_seconds": 14.889560600015102,
+      "mean_latency_seconds": 14.889560600015102
+    },
+    {
+      "task": "icbe",
+      "execution_status": "failed",
+      "validation_status": "requires_review",
+      "units": 6,
+      "horizon": 2,
+      "attempts": 2,
+      "finished_attempts": 2,
+      "failed_attempts": 1,
+      "input_tokens": 263,
+      "output_tokens": 150,
+      "missing_usage_attempts": 1,
+      "known_estimated_cost_usd": 0.00015534,
+      "native_score": null,
+      "models": [
+        "gpt-4.1-mini-2025-04-14",
+        "gpt-4o-mini-2024-07-18"
+      ],
+      "setup_seconds": 0.547899,
+      "elapsed_seconds": 15.219715,
+      "cohort": "pilot_16",
+      "median_latency_seconds": 14.64662669999234,
+      "mean_latency_seconds": 14.64662669999234
+    },
+    {
+      "task": "icbe",
+      "execution_status": "execution_finished_requires_artifact_review",
+      "validation_status": "validated_complete",
+      "units": 6,
+      "horizon": 2,
+      "attempts": 24,
+      "finished_attempts": 24,
+      "failed_attempts": 0,
+      "input_tokens": 6516,
+      "output_tokens": 6368,
+      "missing_usage_attempts": 0,
+      "known_estimated_cost_usd": 0.02296253,
+      "native_score": null,
+      "models": [
+        "deepseek-v3.2",
+        "gpt-4.1-mini-2025-04-14",
+        "gpt-4o-mini-2024-07-18"
+      ],
+      "setup_seconds": 0.569092,
+      "elapsed_seconds": 63.104345,
+      "cohort": "pilot_17",
+      "median_latency_seconds": 3.932025350004551,
+      "mean_latency_seconds": 4.151745945834894
+    },
+    {
+      "task": "retail:dynamic_hard",
+      "execution_status": "execution_finished_requires_artifact_review",
+      "validation_status": "validated_complete",
+      "units": 1,
+      "horizon": 1,
+      "attempts": 20,
+      "finished_attempts": 20,
+      "failed_attempts": 0,
+      "input_tokens": 253478,
+      "output_tokens": 2186,
+      "missing_usage_attempts": 0,
+      "known_estimated_cost_usd": 0.168031866,
+      "native_score": null,
+      "models": [
+        "gpt-4.1-mini-2025-04-14"
+      ],
+      "setup_seconds": 48.441235,
+      "elapsed_seconds": 203.797841,
+      "cohort": "pilot_18",
+      "median_latency_seconds": 4.146751450010925,
+      "mean_latency_seconds": 7.353283644995827
+    },
+    {
+      "task": "retail:dynamic_middle",
+      "execution_status": "execution_finished_requires_artifact_review",
+      "validation_status": "validated_complete",
+      "units": 1,
+      "horizon": 1,
+      "attempts": 19,
+      "finished_attempts": 19,
+      "failed_attempts": 0,
+      "input_tokens": 246115,
+      "output_tokens": 1562,
+      "missing_usage_attempts": 0,
+      "known_estimated_cost_usd": 0.161714218,
+      "native_score": null,
+      "models": [
+        "gpt-4.1-mini-2025-04-14"
+      ],
+      "setup_seconds": 49.742616,
+      "elapsed_seconds": 159.618713,
+      "cohort": "pilot_19",
+      "median_latency_seconds": 3.453527200006647,
+      "mean_latency_seconds": 5.607827294734307
+    },
+    {
+      "task": "retail:still_hard",
+      "execution_status": "execution_finished_requires_artifact_review",
+      "validation_status": "validated_complete",
+      "units": 1,
+      "horizon": 1,
+      "attempts": 22,
+      "finished_attempts": 22,
+      "failed_attempts": 0,
+      "input_tokens": 361896,
+      "output_tokens": 4077,
+      "missing_usage_attempts": 0,
+      "known_estimated_cost_usd": 0.242353134,
+      "native_score": null,
+      "models": [
+        "gpt-4.1-mini-2025-04-14"
+      ],
+      "setup_seconds": 50.275639,
+      "elapsed_seconds": 233.202849,
+      "cohort": "pilot_20",
+      "median_latency_seconds": 6.969259650009917,
+      "mean_latency_seconds": 7.72665136818647
+    },
+    {
+      "task": "retail:still_middle",
+      "execution_status": "execution_finished_requires_artifact_review",
+      "validation_status": "validated_complete",
+      "units": 1,
+      "horizon": 1,
+      "attempts": 24,
+      "finished_attempts": 24,
+      "failed_attempts": 0,
+      "input_tokens": 266191,
+      "output_tokens": 2064,
+      "missing_usage_attempts": 0,
+      "known_estimated_cost_usd": 0.175865648,
+      "native_score": null,
+      "models": [
+        "gpt-4.1-mini-2025-04-14"
+      ],
+      "setup_seconds": 51.535754,
+      "elapsed_seconds": 206.130642,
+      "cohort": "pilot_21",
+      "median_latency_seconds": 3.802087300005951,
+      "mean_latency_seconds": 6.218408333330444
+    },
+    {
+      "task": "kaggle:validation_pilot",
+      "scenario": "control",
+      "execution_status": "incomplete",
+      "validation_status": "incomplete",
+      "units": 1,
+      "horizon": 21,
+      "attempts": 8,
+      "finished_attempts": 8,
+      "failed_attempts": 1,
+      "input_tokens": 5896,
+      "output_tokens": 147,
+      "missing_usage_attempts": 1,
+      "known_estimated_cost_usd": 0.004154948,
+      "native_score": null,
+      "kaggle_summary": null,
+      "models": [
+        "gpt-4.1-mini-2025-04-14"
+      ],
+      "completed_decisions": 7,
+      "elapsed_seconds": 119.357344,
+      "cohort": "pilot_22",
+      "median_latency_seconds": 1.5790001999848755,
+      "mean_latency_seconds": 14.591493274998356
+    },
+    {
+      "task": "kaggle:validation_pilot",
+      "scenario": "control",
+      "execution_status": "validated_complete",
+      "validation_status": "validated_complete",
+      "units": 1,
+      "horizon": 21,
+      "attempts": 28,
+      "finished_attempts": 28,
+      "failed_attempts": 0,
+      "input_tokens": 25073,
+      "output_tokens": 588,
+      "missing_usage_attempts": 0,
+      "known_estimated_cost_usd": 0.017573951,
+      "native_score": null,
+      "kaggle_summary": {
+        "scenario": "control",
+        "policy": "llm_with_fallback",
+        "days": 21,
+        "products": 1,
+        "contribution": 35313.166875,
+        "revenue": 98017.5,
+        "fill_rate": 0.9713038053649408,
+        "stockout_sku_days": 1,
+        "mean_closing_inventory": 1690.047619047619,
+        "final_funds": 9020.337927631568,
+        "net_worth_change": 35313.166874999995,
+        "decision_opportunities": 21,
+        "fallback_days": 1,
+        "repair_days": 7,
+        "invalid_responses": 8,
+        "accounting_reconciled": true
+      },
+      "models": [
+        "gpt-4.1-mini-2025-04-14"
+      ],
+      "completed_decisions": 21,
+      "elapsed_seconds": 46.773181,
+      "cohort": "pilot_23",
+      "median_latency_seconds": 1.4278773999976693,
+      "mean_latency_seconds": 1.4930136071447382
+    },
+    {
+      "task": "kaggle:validation_pilot",
+      "scenario": "delivery_disruption",
+      "execution_status": "validated_complete",
+      "validation_status": "validated_complete",
+      "units": 1,
+      "horizon": 21,
+      "attempts": 29,
+      "finished_attempts": 29,
+      "failed_attempts": 0,
+      "input_tokens": 26042,
+      "output_tokens": 609,
+      "missing_usage_attempts": 0,
+      "known_estimated_cost_usd": 0.018248714,
+      "native_score": null,
+      "kaggle_summary": {
+        "scenario": "delivery_disruption",
+        "policy": "llm_with_fallback",
+        "days": 21,
+        "products": 1,
+        "contribution": 35854.4025,
+        "revenue": 98595.0,
+        "fill_rate": 0.9817839195979899,
+        "stockout_sku_days": 1,
+        "mean_closing_inventory": 1448.1904761904761,
+        "final_funds": 4836.573552631578,
+        "net_worth_change": 35854.40250000001,
+        "decision_opportunities": 21,
+        "fallback_days": 2,
+        "repair_days": 8,
+        "invalid_responses": 10,
+        "accounting_reconciled": true
+      },
+      "models": [
+        "gpt-4.1-mini-2025-04-14"
+      ],
+      "completed_decisions": 21,
+      "elapsed_seconds": 57.718216,
+      "cohort": "pilot_24",
+      "median_latency_seconds": 1.440517600014573,
+      "mean_latency_seconds": 1.8490310758583104
     }
   ],
   "projections": [
     {
       "task": "retail:dynamic_middle",
-      "measured_run_id": null,
-      "projection_status": "not_estimable_yet",
+      "projection_status": "linear_single_pilot_scenario",
       "full_units": 1,
       "full_horizon": 180,
-      "projected_calls_base": null,
-      "serialized_api_seconds_base": null,
-      "cost_low_scenario_usd": null,
-      "cost_base_scenario_usd": null,
-      "cost_high_scenario_usd": null,
-      "qualification": "0.75x/1x/2x planning assumptions, not statistical intervals; single pilots do not measure heterogeneity, late context or retries."
+      "projected_calls_base": 3420.0,
+      "serialized_api_seconds_base": 19178.76934799133,
+      "projected_elapsed_seconds_base": 19827.440076000003,
+      "cost_low_scenario_usd": 21.831419429999997,
+      "cost_base_scenario_usd": 29.108559239999998,
+      "cost_high_scenario_usd": 58.217118479999996,
+      "qualification": "0.75x/1x/2x planning assumptions, not statistical intervals; single pilots do not measure heterogeneity, late context or retries.",
+      "measurement_cohort": "pilot_19"
     },
     {
       "task": "retail:dynamic_hard",
-      "measured_run_id": null,
-      "projection_status": "not_estimable_yet",
+      "projection_status": "linear_single_pilot_scenario",
       "full_units": 1,
       "full_horizon": 180,
-      "projected_calls_base": null,
-      "serialized_api_seconds_base": null,
-      "cost_low_scenario_usd": null,
-      "cost_base_scenario_usd": null,
-      "cost_high_scenario_usd": null,
-      "qualification": "0.75x/1x/2x planning assumptions, not statistical intervals; single pilots do not measure heterogeneity, late context or retries."
+      "projected_calls_base": 3600.0,
+      "serialized_api_seconds_base": 26471.821121984976,
+      "projected_elapsed_seconds_base": 28012.630315,
+      "cost_low_scenario_usd": 22.684301910000002,
+      "cost_base_scenario_usd": 30.24573588,
+      "cost_high_scenario_usd": 60.49147176,
+      "qualification": "0.75x/1x/2x planning assumptions, not statistical intervals; single pilots do not measure heterogeneity, late context or retries.",
+      "measurement_cohort": "pilot_18"
     },
     {
       "task": "retail:still_middle",
-      "measured_run_id": null,
-      "projection_status": "not_estimable_yet",
+      "projection_status": "linear_single_pilot_scenario",
       "full_units": 1,
       "full_horizon": 180,
-      "projected_calls_base": null,
-      "serialized_api_seconds_base": null,
-      "cost_low_scenario_usd": null,
-      "cost_base_scenario_usd": null,
-      "cost_high_scenario_usd": null,
-      "qualification": "0.75x/1x/2x planning assumptions, not statistical intervals; single pilots do not measure heterogeneity, late context or retries."
+      "projected_calls_base": 4320.0,
+      "serialized_api_seconds_base": 26863.52399998752,
+      "projected_elapsed_seconds_base": 27878.615594,
+      "cost_low_scenario_usd": 23.74186248,
+      "cost_base_scenario_usd": 31.65581664,
+      "cost_high_scenario_usd": 63.31163328,
+      "qualification": "0.75x/1x/2x planning assumptions, not statistical intervals; single pilots do not measure heterogeneity, late context or retries.",
+      "measurement_cohort": "pilot_21"
     },
     {
       "task": "retail:still_hard",
-      "measured_run_id": null,
-      "projection_status": "not_estimable_yet",
+      "projection_status": "linear_single_pilot_scenario",
       "full_units": 1,
       "full_horizon": 180,
-      "projected_calls_base": null,
-      "serialized_api_seconds_base": null,
-      "cost_low_scenario_usd": null,
-      "cost_base_scenario_usd": null,
-      "cost_high_scenario_usd": null,
-      "qualification": "0.75x/1x/2x planning assumptions, not statistical intervals; single pilots do not measure heterogeneity, late context or retries."
+      "projected_calls_base": 3960.0,
+      "serialized_api_seconds_base": 30597.539418018423,
+      "projected_elapsed_seconds_base": 32977.173439,
+      "cost_low_scenario_usd": 32.71767309,
+      "cost_base_scenario_usd": 43.62356412,
+      "cost_high_scenario_usd": 87.24712824,
+      "qualification": "0.75x/1x/2x planning assumptions, not statistical intervals; single pilots do not measure heterogeneity, late context or retries.",
+      "measurement_cohort": "pilot_20"
     },
     {
       "task": "firm:FinCode",
-      "measured_run_id": "20261017T105705282885Z",
       "projection_status": "linear_single_pilot_scenario",
       "full_units": 7,
       "full_horizon": null,
       "projected_calls_base": 7.0,
       "serialized_api_seconds_base": 95.6002068000671,
+      "projected_elapsed_seconds_base": 97.478637,
       "cost_low_scenario_usd": 0.00254333625,
       "cost_base_scenario_usd": 0.003391115,
       "cost_high_scenario_usd": 0.00678223,
-      "qualification": "0.75x/1x/2x planning assumptions, not statistical intervals; single pilots do not measure heterogeneity, late context or retries."
+      "qualification": "0.75x/1x/2x planning assumptions, not statistical intervals; single pilots do not measure heterogeneity, late context or retries.",
+      "measurement_cohort": "pilot_09"
     },
     {
       "task": "firm:CodeFinQA",
-      "measured_run_id": "20261017T105521982277Z",
       "projection_status": "linear_single_pilot_scenario",
       "full_units": 50,
       "full_horizon": null,
       "projected_calls_base": 50.0,
       "serialized_api_seconds_base": 161.8699149999884,
+      "projected_elapsed_seconds_base": 164.786283,
       "cost_low_scenario_usd": 0.0360690375,
       "cost_base_scenario_usd": 0.04809205,
       "cost_high_scenario_usd": 0.0961841,
-      "qualification": "0.75x/1x/2x planning assumptions, not statistical intervals; single pilots do not measure heterogeneity, late context or retries."
+      "qualification": "0.75x/1x/2x planning assumptions, not statistical intervals; single pilots do not measure heterogeneity, late context or retries.",
+      "measurement_cohort": "pilot_02"
     },
     {
       "task": "firm:CodeTAT-QA",
-      "measured_run_id": "20261017T105727962432Z",
       "projection_status": "linear_single_pilot_scenario",
       "full_units": 50,
       "full_horizon": null,
       "projected_calls_base": 50.0,
       "serialized_api_seconds_base": 666.9683500003885,
+      "projected_elapsed_seconds_base": 669.2341490000001,
       "cost_low_scenario_usd": 0.035492325,
       "cost_base_scenario_usd": 0.0473231,
       "cost_high_scenario_usd": 0.0946462,
-      "qualification": "0.75x/1x/2x planning assumptions, not statistical intervals; single pilots do not measure heterogeneity, late context or retries."
+      "qualification": "0.75x/1x/2x planning assumptions, not statistical intervals; single pilots do not measure heterogeneity, late context or retries.",
+      "measurement_cohort": "pilot_03"
     },
     {
       "task": "firm:SEC-NUM",
-      "measured_run_id": "20261017T105843360473Z",
       "projection_status": "linear_single_pilot_scenario",
       "full_units": 50,
       "full_horizon": null,
       "projected_calls_base": 50.0,
       "serialized_api_seconds_base": 71.87690999999177,
+      "projected_elapsed_seconds_base": 74.36820600000001,
       "cost_low_scenario_usd": 0.0346272375,
       "cost_base_scenario_usd": 0.04616965,
       "cost_high_scenario_usd": 0.0923393,
-      "qualification": "0.75x/1x/2x planning assumptions, not statistical intervals; single pilots do not measure heterogeneity, late context or retries."
+      "qualification": "0.75x/1x/2x planning assumptions, not statistical intervals; single pilots do not measure heterogeneity, late context or retries.",
+      "measurement_cohort": "pilot_14"
     },
     {
       "task": "firm:TAT-QA",
-      "measured_run_id": "20261017T105900115570Z",
       "projection_status": "linear_single_pilot_scenario",
       "full_units": 50,
       "full_horizon": null,
       "projected_calls_base": 50.0,
       "serialized_api_seconds_base": 744.4780300007551,
+      "projected_elapsed_seconds_base": 746.83157,
       "cost_low_scenario_usd": 0.02965305,
       "cost_base_scenario_usd": 0.0395374,
       "cost_high_scenario_usd": 0.0790748,
-      "qualification": "0.75x/1x/2x planning assumptions, not statistical intervals; single pilots do not measure heterogeneity, late context or retries."
+      "qualification": "0.75x/1x/2x planning assumptions, not statistical intervals; single pilots do not measure heterogeneity, late context or retries.",
+      "measurement_cohort": "pilot_15"
     },
     {
       "task": "firm:ConvFinQA",
-      "measured_run_id": "20261017T105922889351Z",
       "projection_status": "linear_single_pilot_scenario",
       "full_units": 50,
       "full_horizon": null,
       "projected_calls_base": 50.0,
       "serialized_api_seconds_base": 130.56234999967273,
+      "projected_elapsed_seconds_base": 133.074097,
       "cost_low_scenario_usd": 0.0291003375,
       "cost_base_scenario_usd": 0.03880045,
       "cost_high_scenario_usd": 0.0776009,
-      "qualification": "0.75x/1x/2x planning assumptions, not statistical intervals; single pilots do not measure heterogeneity, late context or retries."
+      "qualification": "0.75x/1x/2x planning assumptions, not statistical intervals; single pilots do not measure heterogeneity, late context or retries.",
+      "measurement_cohort": "pilot_06"
     },
     {
       "task": "firm:FinKnow",
-      "measured_run_id": "20261017T105943259902Z",
       "projection_status": "linear_single_pilot_scenario",
       "full_units": 50,
       "full_horizon": null,
       "projected_calls_base": 50.0,
       "serialized_api_seconds_base": 729.8205550003331,
+      "projected_elapsed_seconds_base": 732.2492289999999,
       "cost_low_scenario_usd": 0.032128125,
       "cost_base_scenario_usd": 0.0428375,
       "cost_high_scenario_usd": 0.085675,
-      "qualification": "0.75x/1x/2x planning assumptions, not statistical intervals; single pilots do not measure heterogeneity, late context or retries."
+      "qualification": "0.75x/1x/2x planning assumptions, not statistical intervals; single pilots do not measure heterogeneity, late context or retries.",
+      "measurement_cohort": "pilot_11"
     },
     {
       "task": "firm:FormulaEval",
-      "measured_run_id": "20261017T110023744544Z",
       "projection_status": "linear_single_pilot_scenario",
       "full_units": 50,
       "full_horizon": null,
       "projected_calls_base": 50.0,
       "serialized_api_seconds_base": 641.2819099990884,
+      "projected_elapsed_seconds_base": 664.415926,
       "cost_low_scenario_usd": 0.0182388,
       "cost_base_scenario_usd": 0.0243184,
       "cost_high_scenario_usd": 0.0486368,
-      "qualification": "0.75x/1x/2x planning assumptions, not statistical intervals; single pilots do not measure heterogeneity, late context or retries."
+      "qualification": "0.75x/1x/2x planning assumptions, not statistical intervals; single pilots do not measure heterogeneity, late context or retries.",
+      "measurement_cohort": "pilot_13"
     },
     {
       "task": "firm:finer",
-      "measured_run_id": "20261017T110122613871Z",
       "projection_status": "linear_single_pilot_scenario",
       "full_units": 50,
       "full_horizon": null,
       "projected_calls_base": 50.0,
       "serialized_api_seconds_base": 760.4386999999406,
+      "projected_elapsed_seconds_base": 762.650625,
       "cost_low_scenario_usd": 0.0698792625,
       "cost_base_scenario_usd": 0.09317235,
       "cost_high_scenario_usd": 0.1863447,
-      "qualification": "0.75x/1x/2x planning assumptions, not statistical intervals; single pilots do not measure heterogeneity, late context or retries."
+      "qualification": "0.75x/1x/2x planning assumptions, not statistical intervals; single pilots do not measure heterogeneity, late context or retries.",
+      "measurement_cohort": "pilot_10"
     },
     {
       "task": "firm:formula",
-      "measured_run_id": "20261017T110211377975Z",
       "projection_status": "linear_single_pilot_scenario",
       "full_units": 50,
       "full_horizon": null,
       "projected_calls_base": 50.0,
       "serialized_api_seconds_base": 670.6360199998016,
+      "projected_elapsed_seconds_base": 673.0295090000001,
       "cost_low_scenario_usd": 0.0139134,
       "cost_base_scenario_usd": 0.0185512,
       "cost_high_scenario_usd": 0.0371024,
-      "qualification": "0.75x/1x/2x planning assumptions, not statistical intervals; single pilots do not measure heterogeneity, late context or retries."
+      "qualification": "0.75x/1x/2x planning assumptions, not statistical intervals; single pilots do not measure heterogeneity, late context or retries.",
+      "measurement_cohort": "pilot_12"
     },
     {
       "task": "firm:factset",
-      "measured_run_id": "20261017T110305034726Z",
       "projection_status": "linear_single_pilot_scenario",
       "full_units": 50,
       "full_horizon": null,
       "projected_calls_base": 50.0,
       "serialized_api_seconds_base": 730.918670000392,
+      "projected_elapsed_seconds_base": 733.2742239999999,
       "cost_low_scenario_usd": 0.03208005,
       "cost_base_scenario_usd": 0.042773399999999996,
       "cost_high_scenario_usd": 0.08554679999999999,
-      "qualification": "0.75x/1x/2x planning assumptions, not statistical intervals; single pilots do not measure heterogeneity, late context or retries."
+      "qualification": "0.75x/1x/2x planning assumptions, not statistical intervals; single pilots do not measure heterogeneity, late context or retries.",
+      "measurement_cohort": "pilot_08"
     },
     {
       "task": "firm:consulting",
-      "measured_run_id": null,
-      "projection_status": "not_estimable_yet",
+      "projection_status": "linear_single_pilot_scenario",
       "full_units": 10,
       "full_horizon": null,
-      "projected_calls_base": null,
-      "serialized_api_seconds_base": null,
-      "cost_low_scenario_usd": null,
-      "cost_base_scenario_usd": null,
-      "cost_high_scenario_usd": null,
-      "qualification": "0.75x/1x/2x planning assumptions, not statistical intervals; single pilots do not measure heterogeneity, late context or retries."
+      "projected_calls_base": 130.0,
+      "serialized_api_seconds_base": 625.7603260001633,
+      "projected_elapsed_seconds_base": 632.786637,
+      "cost_low_scenario_usd": 0.09596644499999998,
+      "cost_base_scenario_usd": 0.12795526,
+      "cost_high_scenario_usd": 0.25591052,
+      "qualification": "0.75x/1x/2x planning assumptions, not statistical intervals; single pilots do not measure heterogeneity, late context or retries.",
+      "measurement_cohort": "pilot_05"
     },
     {
       "task": "firm:beergame",
-      "measured_run_id": null,
-      "projection_status": "not_estimable_yet",
+      "projection_status": "linear_single_pilot_scenario",
       "full_units": 2,
       "full_horizon": 25,
-      "projected_calls_base": null,
-      "serialized_api_seconds_base": null,
-      "cost_low_scenario_usd": null,
-      "cost_base_scenario_usd": null,
-      "cost_high_scenario_usd": null,
-      "qualification": "0.75x/1x/2x planning assumptions, not statistical intervals; single pilots do not measure heterogeneity, late context or retries."
+      "projected_calls_base": 50.0,
+      "serialized_api_seconds_base": 113.34006739995675,
+      "projected_elapsed_seconds_base": 118.85620800000001,
+      "cost_low_scenario_usd": 0.008461461,
+      "cost_base_scenario_usd": 0.011281948,
+      "cost_high_scenario_usd": 0.022563896,
+      "qualification": "0.75x/1x/2x planning assumptions, not statistical intervals; single pilots do not measure heterogeneity, late context or retries.",
+      "measurement_cohort": "pilot_01"
     },
     {
       "task": "firm:edt",
-      "measured_run_id": null,
-      "projection_status": "not_estimable_yet",
+      "projection_status": "linear_single_pilot_scenario",
       "full_units": 1,
       "full_horizon": 96,
-      "projected_calls_base": null,
-      "serialized_api_seconds_base": null,
-      "cost_low_scenario_usd": null,
-      "cost_base_scenario_usd": null,
-      "cost_high_scenario_usd": null,
-      "qualification": "0.75x/1x/2x planning assumptions, not statistical intervals; single pilots do not measure heterogeneity, late context or retries."
+      "projected_calls_base": 1.0,
+      "serialized_api_seconds_base": 13.161100900004385,
+      "projected_elapsed_seconds_base": 20.460506,
+      "cost_low_scenario_usd": 0.0010270425,
+      "cost_base_scenario_usd": 0.00136939,
+      "cost_high_scenario_usd": 0.00273878,
+      "qualification": "0.75x/1x/2x planning assumptions, not statistical intervals; single pilots do not measure heterogeneity, late context or retries.",
+      "measurement_cohort": "pilot_07"
     },
     {
       "task": "icbe",
-      "measured_run_id": null,
-      "projection_status": "not_estimable_yet",
+      "projection_status": "linear_single_pilot_scenario",
       "full_units": 6,
       "full_horizon": 100,
-      "projected_calls_base": null,
-      "serialized_api_seconds_base": null,
-      "cost_low_scenario_usd": null,
-      "cost_base_scenario_usd": null,
-      "cost_high_scenario_usd": null,
-      "qualification": "0.75x/1x/2x planning assumptions, not statistical intervals; single pilots do not measure heterogeneity, late context or retries."
+      "projected_calls_base": 1200.0,
+      "serialized_api_seconds_base": 4982.095135001873,
+      "projected_elapsed_seconds_base": 3127.3317420000003,
+      "cost_low_scenario_usd": 0.8610948749999998,
+      "cost_base_scenario_usd": 1.1481264999999998,
+      "cost_high_scenario_usd": 2.2962529999999997,
+      "qualification": "0.75x/1x/2x planning assumptions, not statistical intervals; single pilots do not measure heterogeneity, late context or retries.",
+      "measurement_cohort": "pilot_17"
     },
     {
       "task": "kaggle:primary_matrix",
-      "projection_status": "not_estimable_yet",
+      "projection_status": "linear_validation_pilot_scenario",
       "primary_decisions": 252,
       "maximum_attempts_with_repairs": 504,
-      "cost_low_scenario_usd": null,
-      "cost_base_scenario_usd": null,
-      "cost_high_scenario_usd": null,
-      "qualification": "Validation LLM episodes not yet measured; free/scripted runs excluded."
+      "cost_low_scenario_usd": 0.1612019925,
+      "cost_base_scenario_usd": 0.21493599000000002,
+      "cost_high_scenario_usd": 0.42987198000000004,
+      "qualification": "Validation episodes only; price/case/context and repair frequency may differ in evaluation. Free/scripted runs excluded.",
+      "projected_calls_base": 342.0,
+      "serialized_api_seconds_base": 572.557693199662,
+      "projected_elapsed_seconds_base": 626.948382,
+      "measurement_cohort": null
     }
   ],
   "totals": {
-    "attempts": 22,
-    "known_estimated_cost_usd": 0.01899748,
-    "missing_usage_attempts": 1,
-    "validated_native_pilot_tasks": 11,
-    "known_projection_subtotal_base_usd": 0.444966615,
-    "unmeasured_tasks": [
-      "retail:dynamic_middle",
-      "retail:dynamic_hard",
-      "retail:still_middle",
-      "retail:still_hard",
-      "firm:consulting",
-      "firm:beergame",
-      "firm:edt",
-      "icbe",
-      "kaggle:primary_matrix"
-    ],
-    "full_suite_cost_estimate_usd": null,
-    "budget_decision": "No large-run cap recommended until missing pilots and charging reconciliation are complete.",
-    "qualification": "Gateway-credit tariff estimates, not independently verified billing. Subtotal excludes missing families; it is not a full-suite budget."
+    "attempts": 237,
+    "known_estimated_cost_usd": 0.849863719,
+    "missing_usage_attempts": 3,
+    "validated_native_pilot_tasks": 19,
+    "known_projection_subtotal_base_usd": 136.582311583,
+    "unmeasured_tasks": [],
+    "full_suite_cost_estimate_usd": 136.582311583,
+    "full_suite_high_scenario_usd": 273.164623166,
+    "full_suite_projected_elapsed_hours_base": 32.96489870944444,
+    "proposed_inclusive_full_cap_usd": 350,
+    "proposed_inclusive_nonretail_cap_usd": 6,
+    "latest_budget": {
+      "currency": "USD_gateway_credit",
+      "attempts": 237,
+      "known_cost_usd": 0.849863719,
+      "unresolved_reserved_usd": 0.019009592,
+      "exposure_usd": 0.868873311,
+      "pending_attempts": 0,
+      "uncertain_attempts": 3,
+      "bounded_carried_attempts": 3,
+      "bounded_carried_reserve_usd": 0.019009592,
+      "blocking_uncertain_attempts": 0,
+      "cap_usd": 2.0,
+      "cost_basis": "Token-derived uncached tariff upper estimate; provider billing is not independently verified.",
+      "limit_qualification": "Conditional on applicable tariff and gateway honoring token limits; not a provider-side quota."
+    },
+    "kaggle_validation_decisions": 42,
+    "kaggle_validation_fallback_days": 3,
+    "kaggle_validation_repair_days": 15,
+    "kaggle_first_pass_invalid_responses": 15,
+    "kaggle_invalid_responses_including_repairs": 18,
+    "budget_decision": "Proposals only, not authorization. Caps include all pilot exposure and at least 20% unallocated reserve. Retain the frozen operational Kaggle policy after documented constraint/fallback review; full evaluations require a separate approved allowance.",
+    "qualification": "Gateway-credit tariff planning scenarios, not independently verified billing or statistical intervals. One-day/case extrapolation does not establish late-horizon reliability. No full evaluation is authorized by this report."
   }
 }

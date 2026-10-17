@@ -71,7 +71,12 @@ def main():
             for existing in results.glob("*/run_manifest.json"):
                 prior = json.loads(existing.read_text())
                 if prior.get("fallback_review_required"):
-                    parser.error("A previous episode exceeded the fallback review trigger; resolve that quality gate first.")
+                    review_file = existing.parent / "quality_review.json"
+                    review = json.loads(review_file.read_text(encoding="utf-8")) if review_file.exists() else {}
+                    actions_file = existing.parent / "actions.jsonl"
+                    actions_hash = hashlib.sha256(actions_file.read_text(encoding="utf-8").encode("utf-8")).hexdigest() if actions_file.exists() else None
+                    if not (review.get("status") == "reviewed" and review.get("decision") == "retain_frozen_operational_policy" and review.get("actions_sha256") == actions_hash):
+                        parser.error("A previous episode exceeded the fallback review trigger; resolve that quality gate first.")
                 if prior.get("episode_id") == episode_id:
                     if prior.get("status") != "incomplete" or not args.retry_failed:
                         parser.error("Pilot episode already has a saved attempt; only an inspected failed episode may use --retry-failed.")

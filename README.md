@@ -121,13 +121,13 @@ flowchart LR
 
 ## Roadmap
 
-Stage 2 has [genuine pilot evidence](docs/STAGE2_PILOTS.md) and an executed
-[cost-analysis notebook](notebooks/04_results_analysis.ipynb). Eleven one-case
-reasoning pilots completed; Consulting stopped on HTTP 503 with unresolved usage.
-The shared budget guard blocks further paid work pending charge reconciliation.
-The [partial estimate](docs/COST_ESTIMATE.md) does not price the full suite.
-The Kaggle LLM policy and shared runner pass offline contract checks; its genuine
-validation pilot and primary comparisons remain incomplete.
+Stage 2 is complete: [19 native task pilots and two genuine Kaggle validation
+episodes](docs/STAGE2_PILOTS.md), with **$0.869 conservative exposure across 237
+attempts** under the $2 cap. The [executed analysis notebook](notebooks/04_results_analysis.ipynb)
+records negative outcomes, repairs, fallbacks and retained failed-request charges.
+The [full-scope base estimate](docs/COST_ESTIMATE.md) is $136.58 gateway credit;
+a proposed $6 first-draft route covers non-Retail evaluation plus Kaggle. Both
+evaluation routes await approval. Primary comparisons have not started.
 
 - Validate the implemented LLM policy with genuine bounded pilots, then measure
   validity, cost and performance against the baselines under an evaluation budget.

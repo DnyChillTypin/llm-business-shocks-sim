@@ -1,81 +1,52 @@
-# Pilot cost evidence — partial, 17 October 2026
+# Measured pilot cost and evaluation proposals
 
-The full-suite estimate is **not yet available**. Reasoning pilots completed, but
-Consulting stopped on a gateway 503 with unknown usage. Beer, EDT, ICBE, Retail
-and genuine Kaggle pilots remain unmeasured. Do not treat missing values as zero
-or use the partial subtotal to approve the full study.
+Stage 2 respected the **$2 total / 250-attempt** allowance: **237 attempts**, **$0.849863719 known uncached estimates** plus **$0.019009592 fully held unknown charges**, totaling **$0.868873311 exposure**. Full evaluations are not authorized.
 
-| Quantity | Gateway credit |
-|---|---:|
-| User-approved pilot allowance, at most 250 client attempts | $1.00 |
-| Native allocation / later Kaggle validation allocation | $0.75 / $0.25 |
-| Known uncached tariff estimate, 21 completed responses | $0.018997480 |
-| Provider history cost matched to those 21 responses | $0.017866 |
-| Failed request's retained reservation | $0.007690500 |
-| Conservative ledger exposure, 22 attempts total | $0.026687980 |
+## Rates and accounting
 
-The local ledger uses the higher uncached estimate even when provider history
-reports less, including cache discounts. The failed request remains unresolved;
-the provider's rounded $19.98 balance and absence of a matching row do not prove
-it was unbilled. No paid work continued after this stop. Prior account usage is
-excluded from the pilot total. [Request reconciliation](results/stage2/billing_reconciliation.json)
-preserves the matching rule and the unresolved request.
+The [official gateway page](https://shopaikey.com/en) documents balance/history; the [public tariff](https://api.shopaikey.com/pricing) supplies rates. Checks before resuming and after the last pilot retained version a42d372ccf0b5dd13ecf71203521f9d2. These are maximum applicable uncached rates across accessible groups, with group ratios already included.
 
-## Rates and what the dollar unit means
-
-The [official gateway page](https://shopaikey.com/en) documents the balance/history
-interface; the [public tariff endpoint](https://api.shopaikey.com/pricing) supplies
-the applicable group rates. The saved snapshot was checked at 10:43:54 UTC with
-pricing version `a42d372ccf0b5dd13ecf71203521f9d2`. Rates below take the maximum
-across this key's accessible groups; the group ratio is already included.
-
-| Requested model | Input per million tokens | Output per million tokens |
+| Requested model | Input / million tokens | Output / million tokens |
 |---|---:|---:|
 | gpt-4.1-mini-2025-04-14 | $0.6408 | $2.5632 |
 | gpt-4o-mini-2024-07-18 | $0.18 | $0.72 |
 | deepseek-v3.2 | $2.40 | $3.60 |
 
-These are USD-formatted gateway credits, not the cash purchase price of credit.
-The local estimate is `(input × input rate + output × output rate) / 1,000,000`.
-It does not claim independently audited billing or verified upstream identity.
-Cached/reasoning token details are preserved in the attempt logs where returned.
+Units are **gateway credits**, not the cash price of credit. Local cost is input tokens times input rate plus output tokens times output rate, divided by one million and rounded upward at nanocredit precision. Cache details are retained; uncached rates conservatively overestimate some provider charges.
 
-## Measured reasoning projections
+Detailed billing reconciliation and request telemetry remain in ignored local storage. Public costs are token-derived project estimates and fully held uncertainty, not account balances or individually identified provider charge records.
 
-One frozen case per reasoning dataset was measured. Applying each case's observed
-cost and latency to its dataset's full configured count gives:
+Limits depend on tariff and gateway token ceilings; they are not provider-enforced quotas or independently audited bills. Original spending, failed runs, allowance amendments and held-charge records remain in the same ledger.
 
-| Coverage | Low scenario | Base scenario | High scenario | Base serial API time |
-|---|---:|---:|---:|---:|
-| 507 reasoning cases, including the 50-case Factset extension | $0.333725 | $0.444967 | $0.889933 | 90.1 minutes |
-| Consulting, Beer, EDT, ICBE, four Retail configurations, Kaggle | Unmeasured | Unmeasured | Unmeasured | Unmeasured |
+## Full-scope scenarios
 
-Low/base/high are declared **0.75× / 1× / 2× planning assumptions**, not confidence
-intervals, empirical bounds or a promise of sufficient funds. One case cannot
-measure within-dataset heterogeneity. The time projection sums measured request
-latencies and excludes local work, queues, retries and provider drift. In
-particular, it does not estimate Retail's 720 days from 720 calls: calls/day and
-late context still need measurement. ICBE needs 1,200 decisions with actual
-concurrency accounted for; Kaggle needs 252 primary decisions and up to 252
-repairs. None has been priced by substituting a scripted or unrelated call.
+| Coverage | Low: 0.75? | Base: 1? | High: 2? |
+|---|---:|---:|---:|
+| Four Retail configurations ? 180 days | $100.98 | $134.63 | $269.27 |
+| Other native benchmarks | $1.30 | $1.73 | $3.47 |
+| Kaggle primary matrix | $0.16 | $0.21 | $0.43 |
+| **Total evaluation** | **$102.44** | **$136.58** | **$273.16** |
 
-Per-task evidence and nulls are exported in
-[pilot usage](results/stage2/pilot_usage.csv),
-[cost scenarios](results/stage2/cost_projections.csv) and
-[machine-readable report](results/stage2/pilot_cost_report.json).
-Open [notebook 04](../notebooks/04_results_analysis.ipynb) in VS Code and Run All
-to inspect genuine outcomes, usage by model and partial projections without
-spending. From the project root, regenerate local reports with:
+Factors are declared planning assumptions, not empirical bounds or confidence intervals. Base scales successful measured pilots by frozen case/horizon counts. ICBE uses the corrected 4,096-token-ceiling cohort; its failed 150-token cohort counts toward pilot spending only. Kaggle includes repair overhead: 57 requests for 42 decisions project to 342 requests for 252 primary decisions; at most 504 are permitted by the repair rule.
 
-```powershell
-.\.venv\Scripts\python.exe scripts/summarize_pilot_costs.py
-.\.venv\Scripts\python.exe scripts/verify_notebook.py --notebook notebooks/04_results_analysis.ipynb
-```
+Retail uses measured **19 / 20 / 24 / 22 calls per day**. Base full-run costs are $29.11 dynamic middle, $30.25 dynamic hard, $31.66 still middle and $43.62 still hard. Later context, failures and restarts are unmeasured. Offline phase checks and synthetic payload sizing do not become late-horizon observations. A 2? scenario is not an overrun guarantee.
 
-## Budget decision
+Base time is approximately **33.0 hours**: 30.2 Retail and 2.8 for remaining experiments. Native one-time initialization is counted once before scaling work. ICBE uses measured paired concurrency; serialized API time is exported separately. Writing and unobserved outages/restarts are excluded. The forecast assumes agents can finish their horizons.
 
-Keep the existing $1 pilot approval and its persistent ledger. Resolve the failed
-request's charge before resuming. Complete the affordable pilot menu and its
-artifact gates, then propose a total cap with native/Kaggle allocations, explicit
-treatment of pilot spending and a recommended 20% reserve. No large-run cap is
-recommended or requested from the currently partial evidence.
+## Next-stage budget decision
+
+**Recommended first-draft route: $6 total gateway credit**, inclusive of pilots, up to 3,000 total client attempts, with at least 20% reserve. It covers the declared high scenario for non-Retail native tasks and the Kaggle primary matrix. Full Retail stays on the longer route without reducing its horizons.
+
+**Full-scope route: $350 total gateway credit**, inclusive of pilots, up to 30,000 attempts, with at least 20% reserve. It rounds the high evaluation scenario plus pilot exposure, divided by 0.8, upward to the next ten credits. Full-scope completion remains open until funded and executed; sources, models and horizons were not reduced to fit $20.
+
+Both proposals are **unapproved**: [first draft](results/stage2/budget_proposal_nonretail_first_draft.json), [full scope](results/stage2/budget_proposal_full_scope.json). Carry the existing ledger's spending and holds forward. Future batches must fit allocations and preserve stops. No evaluations were launched.
+
+Kaggle's three fallback days out of 42 (7.1%) triggered review. The review confirmed material cash-limit errors and correct fallback/accounting behavior, and retains the frozen **LLM with fallback** policy with explicit reliability reporting. Its contribution was below adaptive in both validation scenarios. These inspected pilots are not primary findings or pure unassisted LLM performance.
+
+## Reproduce without spending
+
+Open [notebook 04](../notebooks/04_results_analysis.ipynb) and Run All. Inspect per-task [usage](results/stage2/pilot_usage.csv), [scenarios](results/stage2/cost_projections.csv) and [JSON evidence](results/stage2/pilot_cost_report.json).
+
+    .\.venv\Scripts\python.exe scripts/summarize_pilot_costs.py
+    .\.venv\Scripts\python.exe scripts/export_stage2_evidence.py
+    .\.venv\Scripts\python.exe scripts/verify_notebook.py --notebook notebooks/04_results_analysis.ipynb

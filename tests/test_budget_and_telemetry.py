@@ -187,6 +187,14 @@ class TelemetryTests(unittest.TestCase):
         self.assertEqual(self.events()[-1]["parse_status"], "invalid")
         self.assertEqual(self.budget.summary()["uncertain_attempts"], 0)
 
+    def test_icbe_reasoning_mentions_are_not_an_explicit_decision(self):
+        install_gateway_clients(self.folder, self.config, budget=self.budget)
+        client = openai.OpenAI(http_client=httpx.Client(transport=httpx.MockTransport(
+            lambda request: self.response("Option A and Option B both have tradeoffs."))))
+        with self.assertRaises(DecisionFailure), request_context(validation_kind="icbe"):
+            client.chat.completions.create(model="test", messages=[])
+        self.assertEqual(self.events()[-1]["failure_category"], "missing_or_ambiguous_explicit_icbe_decision")
+
     def test_provider_error_body_is_saved_sanitized_and_never_clears_the_reservation(self):
         install_gateway_clients(self.folder, self.config, budget=self.budget)
         def failed(request):

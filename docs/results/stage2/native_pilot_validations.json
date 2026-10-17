@@ -1,6 +1,64 @@
 [
   {
-    "run_id": "20261017T105521982277Z",
+    "task": "firm:beergame",
+    "purpose": "pilot",
+    "status": "validated_complete",
+    "checks": {
+      "execution_succeeded": true,
+      "execution_finished": true,
+      "all_attempts_finished": true,
+      "all_responses_valid": true,
+      "all_usage_known": true,
+      "raw_artifacts_present": true,
+      "totals_reconcile": true,
+      "budget_exposure_accounted": true,
+      "native_result_saved": true,
+      "native_coverage": true,
+      "full_25_week_horizon": true
+    },
+    "qualifications": [
+      "Earlier failed-call charges remain unknown and fully reserved under the approved allowance; this is not a claim that provider billing is settled."
+    ],
+    "native_score": {
+      "episodes": 1,
+      "avg_total_cost_controlled": 22950.0,
+      "std_total_cost_controlled": 0.0,
+      "avg_bullwhip_controlled": null,
+      "std_bullwhip_controlled": null,
+      "avg_total_backlog_controlled": null,
+      "std_total_backlog_controlled": null,
+      "avg_total_inventory_controlled": null,
+      "std_total_inventory_controlled": null,
+      "episode_metrics": [
+        {
+          "scenario_id": "default_typical",
+          "weeks_completed": 25,
+          "controlled_role": "retailer",
+          "opponent_policy": "typical",
+          "total_cost_controlled": 22950.0,
+          "total_cost_supply_chain": 11279921800.0,
+          "bullwhip_controlled": 10.628019323671497,
+          "avg_backlog_controlled": 0.0
+        }
+      ]
+    },
+    "attempts": 25,
+    "input_tokens": 5103,
+    "output_tokens": 925,
+    "estimated_gateway_credit_usd": 0.005640974,
+    "missing_usage_attempts": 0,
+    "elapsed_seconds": 61.113377,
+    "models": [
+      "gpt-4.1-mini-2025-04-14"
+    ],
+    "returned_models": [
+      "gpt-4.1-mini-2025-04-14"
+    ],
+    "cost_qualification": "Token-derived uncached gateway-tariff upper estimate, not independently verified billing.",
+    "identity_qualification": "Returned model identifiers do not independently attest the actual served model.",
+    "cohort": "pilot_01"
+  },
+  {
     "task": "firm:CodeFinQA",
     "purpose": "pilot",
     "status": "validated_complete",
@@ -12,7 +70,8 @@
       "all_usage_known": true,
       "raw_artifacts_present": true,
       "totals_reconcile": true,
-      "accounting_settled": true,
+      "budget_exposure_accounted": true,
+      "native_result_saved": true,
       "native_coverage": true,
       "frozen_case_ids": true,
       "native_score_artifact": true
@@ -29,9 +88,6 @@
     "output_tokens": 144,
     "estimated_gateway_credit_usd": 0.000961841,
     "missing_usage_attempts": 0,
-    "api_latency_seconds": [
-      3.237398299999768
-    ],
     "elapsed_seconds": 5.395996,
     "models": [
       "gpt-4.1-mini-2025-04-14"
@@ -39,17 +95,11 @@
     "returned_models": [
       "gpt-4.1-mini-2025-04-14"
     ],
-    "artifact_sha256": {
-      "run_manifest.json": "e0edff3a9529f34da3d28d20013963575879f6f7aa219d445c50b79d3c5b280e",
-      "api_attempts.jsonl": "ae5a351317c20f8c450f0c95ac036dfbd21e18bfde4233a271fb07155dfd0819",
-      "native_result.json": "6a186f4e38e4577a0d62828d5aefc317415fa10d0e7c5772706d134a5e5d376e",
-      "runtime_identity.json": "7a0a16fe92a8498865a8cf5e980c350c071753e53f6d846f380572f0e826049a"
-    },
     "cost_qualification": "Token-derived uncached gateway-tariff upper estimate, not independently verified billing.",
-    "identity_qualification": "Returned model identifiers do not independently attest the actual served model."
+    "identity_qualification": "Returned model identifiers do not independently attest the actual served model.",
+    "cohort": "pilot_02"
   },
   {
-    "run_id": "20261017T105727962432Z",
     "task": "firm:CodeTAT-QA",
     "purpose": "pilot",
     "status": "validated_complete",
@@ -61,7 +111,8 @@
       "all_usage_known": true,
       "raw_artifacts_present": true,
       "totals_reconcile": true,
-      "accounting_settled": true,
+      "budget_exposure_accounted": true,
+      "native_result_saved": true,
       "native_coverage": true,
       "frozen_case_ids": true,
       "native_score_artifact": true
@@ -78,9 +129,6 @@
     "output_tokens": 163,
     "estimated_gateway_credit_usd": 0.000946462,
     "missing_usage_attempts": 0,
-    "api_latency_seconds": [
-      13.339367000007769
-    ],
     "elapsed_seconds": 14.94102,
     "models": [
       "gpt-4.1-mini-2025-04-14"
@@ -88,17 +136,11 @@
     "returned_models": [
       "gpt-4.1-mini-2025-04-14"
     ],
-    "artifact_sha256": {
-      "run_manifest.json": "a8b23e9502cc5afe3bf99b4d0e8eaf664fe1a2c93099386a31a8b5849eb8833c",
-      "api_attempts.jsonl": "0c48791cc6c02ab08212f8ad1b7006bc21d85e906b6d43ae8817750e68841001",
-      "native_result.json": "ee11948f4b6b3e61361d8a364c4a01fdba65730d82fb39c1bef5d618bcdcdfd9",
-      "runtime_identity.json": "9a7e92cc26c44cd49bcb758005fce2b1bf3e3bf52d37a8f959e19f7546e0d795"
-    },
     "cost_qualification": "Token-derived uncached gateway-tariff upper estimate, not independently verified billing.",
-    "identity_qualification": "Returned model identifiers do not independently attest the actual served model."
+    "identity_qualification": "Returned model identifiers do not independently attest the actual served model.",
+    "cohort": "pilot_03"
   },
   {
-    "run_id": "20261017T110343057610Z",
     "task": "firm:consulting",
     "purpose": "pilot",
     "status": "requires_review",
@@ -110,7 +152,7 @@
       "all_usage_known": false,
       "raw_artifacts_present": false,
       "totals_reconcile": true,
-      "accounting_settled": false,
+      "budget_exposure_accounted": false,
       "native_result_saved": false,
       "known_native_validator": false
     },
@@ -121,19 +163,6 @@
     "output_tokens": 1643,
     "estimated_gateway_credit_usd": 0.009681525,
     "missing_usage_attempts": 1,
-    "api_latency_seconds": [
-      13.95967800001381,
-      13.047667999984697,
-      3.4657452999963425,
-      3.992114299995592,
-      2.993711200018879,
-      2.679301800002577,
-      2.819965200003935,
-      3.199489299993729,
-      2.68807599999127,
-      2.8644577999948524,
-      0.02003549999790266
-    ],
     "elapsed_seconds": 53.616021,
     "models": [
       "gpt-4.1-mini-2025-04-14",
@@ -144,16 +173,63 @@
       "gpt-4o-mini-2024-07-18",
       "not_reported"
     ],
-    "artifact_sha256": {
-      "run_manifest.json": "d6fe86dd7439f80466dc393c09fce4b19c92050bebf51f1d3c26f4c99ddd60fc",
-      "api_attempts.jsonl": "c62fc215af7ca067c5328bb5efc1ffe4a1893a65836aa92e68e2288bd0e55769",
-      "runtime_identity.json": "028f29049de15b400609439b065223cbaf2c8a16b39fed70ea933e4cee3d2bbb"
-    },
     "cost_qualification": "Token-derived uncached gateway-tariff upper estimate, not independently verified billing.",
-    "identity_qualification": "Returned model identifiers do not independently attest the actual served model."
+    "identity_qualification": "Returned model identifiers do not independently attest the actual served model.",
+    "cohort": "pilot_04"
   },
   {
-    "run_id": "20261017T105922889351Z",
+    "task": "firm:consulting",
+    "purpose": "pilot",
+    "status": "validated_complete",
+    "checks": {
+      "execution_succeeded": true,
+      "execution_finished": true,
+      "all_attempts_finished": true,
+      "all_responses_valid": true,
+      "all_usage_known": true,
+      "raw_artifacts_present": true,
+      "totals_reconcile": true,
+      "budget_exposure_accounted": true,
+      "native_result_saved": true,
+      "native_coverage": true,
+      "judge_observed": true
+    },
+    "qualifications": [
+      "Earlier failed-call charges remain unknown and fully reserved under the approved allowance; this is not a claim that provider billing is settled."
+    ],
+    "native_score": {
+      "dataset": "Consulting",
+      "split": "test",
+      "num_cases": 1,
+      "num_finished": 1,
+      "num_failed": 0,
+      "metrics": {
+        "structure": 9.0,
+        "quant": 7.0,
+        "business_sense": 8.0,
+        "communication": 8.0,
+        "overall": 8.0
+      }
+    },
+    "attempts": 13,
+    "input_tokens": 32024,
+    "output_tokens": 2083,
+    "estimated_gateway_credit_usd": 0.012795526,
+    "missing_usage_attempts": 0,
+    "elapsed_seconds": 65.993646,
+    "models": [
+      "gpt-4.1-mini-2025-04-14",
+      "gpt-4o-mini-2024-07-18"
+    ],
+    "returned_models": [
+      "gpt-4.1-mini-2025-04-14",
+      "gpt-4o-mini-2024-07-18"
+    ],
+    "cost_qualification": "Token-derived uncached gateway-tariff upper estimate, not independently verified billing.",
+    "identity_qualification": "Returned model identifiers do not independently attest the actual served model.",
+    "cohort": "pilot_05"
+  },
+  {
     "task": "firm:ConvFinQA",
     "purpose": "pilot",
     "status": "validated_complete",
@@ -165,7 +241,8 @@
       "all_usage_known": true,
       "raw_artifacts_present": true,
       "totals_reconcile": true,
-      "accounting_settled": true,
+      "budget_exposure_accounted": true,
+      "native_result_saved": true,
       "native_coverage": true,
       "frozen_case_ids": true,
       "native_score_artifact": true
@@ -182,9 +259,6 @@
     "output_tokens": 86,
     "estimated_gateway_credit_usd": 0.000776009,
     "missing_usage_attempts": 0,
-    "api_latency_seconds": [
-      2.6112469999934547
-    ],
     "elapsed_seconds": 4.290533,
     "models": [
       "gpt-4.1-mini-2025-04-14"
@@ -192,17 +266,48 @@
     "returned_models": [
       "gpt-4.1-mini-2025-04-14"
     ],
-    "artifact_sha256": {
-      "run_manifest.json": "11e2108685b9b3863c0fdeced265a911d0e08ddeed92f0da432233aeeffb590c",
-      "api_attempts.jsonl": "9808eaaa114f7f6393b375c69b095219eb881e2d71ec60e34c2cd77c254aa733",
-      "native_result.json": "ee11948f4b6b3e61361d8a364c4a01fdba65730d82fb39c1bef5d618bcdcdfd9",
-      "runtime_identity.json": "50caa93021d7f1cac29f360862092f5f9315e56b573916c99400376101e57831"
-    },
     "cost_qualification": "Token-derived uncached gateway-tariff upper estimate, not independently verified billing.",
-    "identity_qualification": "Returned model identifiers do not independently attest the actual served model."
+    "identity_qualification": "Returned model identifiers do not independently attest the actual served model.",
+    "cohort": "pilot_06"
   },
   {
-    "run_id": "20261017T110305034726Z",
+    "task": "firm:edt",
+    "purpose": "pilot",
+    "status": "validated_complete",
+    "checks": {
+      "execution_succeeded": true,
+      "execution_finished": true,
+      "all_attempts_finished": true,
+      "all_responses_valid": true,
+      "all_usage_known": true,
+      "raw_artifacts_present": true,
+      "totals_reconcile": true,
+      "budget_exposure_accounted": true,
+      "native_result_saved": true,
+      "full_96_step_horizon": true,
+      "decision_audit": true
+    },
+    "qualifications": [
+      "Earlier failed-call charges remain unknown and fully reserved under the approved allowance; this is not a claim that provider billing is settled."
+    ],
+    "native_score": null,
+    "attempts": 1,
+    "input_tokens": 1709,
+    "output_tokens": 107,
+    "estimated_gateway_credit_usd": 0.00136939,
+    "missing_usage_attempts": 0,
+    "elapsed_seconds": 20.460506,
+    "models": [
+      "gpt-4.1-mini-2025-04-14"
+    ],
+    "returned_models": [
+      "gpt-4.1-mini-2025-04-14"
+    ],
+    "cost_qualification": "Token-derived uncached gateway-tariff upper estimate, not independently verified billing.",
+    "identity_qualification": "Returned model identifiers do not independently attest the actual served model.",
+    "cohort": "pilot_07"
+  },
+  {
     "task": "firm:factset",
     "purpose": "pilot",
     "status": "validated_complete",
@@ -214,7 +319,8 @@
       "all_usage_known": true,
       "raw_artifacts_present": true,
       "totals_reconcile": true,
-      "accounting_settled": true,
+      "budget_exposure_accounted": true,
+      "native_result_saved": true,
       "native_coverage": true,
       "frozen_case_ids": true,
       "native_score_artifact": true
@@ -231,9 +337,6 @@
     "output_tokens": 226,
     "estimated_gateway_credit_usd": 0.000855468,
     "missing_usage_attempts": 0,
-    "api_latency_seconds": [
-      14.61837340000784
-    ],
     "elapsed_seconds": 16.259527,
     "models": [
       "gpt-4.1-mini-2025-04-14"
@@ -241,17 +344,11 @@
     "returned_models": [
       "gpt-4.1-mini-2025-04-14"
     ],
-    "artifact_sha256": {
-      "run_manifest.json": "53a69427b548a57ee08edab48646c39f1852c44f1c410d4a411e1d70abaff972",
-      "api_attempts.jsonl": "44bf43db615229b289272fc8cf30d0d4f95a1a2f98d817cfb4a5db45d2f6ac13",
-      "native_result.json": "6a186f4e38e4577a0d62828d5aefc317415fa10d0e7c5772706d134a5e5d376e",
-      "runtime_identity.json": "7dd5332a45031a6fe332c2fe30736de47fb4519a5152c8ff72d55b584ceb38d2"
-    },
     "cost_qualification": "Token-derived uncached gateway-tariff upper estimate, not independently verified billing.",
-    "identity_qualification": "Returned model identifiers do not independently attest the actual served model."
+    "identity_qualification": "Returned model identifiers do not independently attest the actual served model.",
+    "cohort": "pilot_08"
   },
   {
-    "run_id": "20261017T105705282885Z",
     "task": "firm:FinCode",
     "purpose": "pilot",
     "status": "validated_complete",
@@ -263,7 +360,8 @@
       "all_usage_known": true,
       "raw_artifacts_present": true,
       "totals_reconcile": true,
-      "accounting_settled": true,
+      "budget_exposure_accounted": true,
+      "native_result_saved": true,
       "native_coverage": true,
       "frozen_case_ids": true,
       "native_score_artifact": true
@@ -280,9 +378,6 @@
     "output_tokens": 94,
     "estimated_gateway_credit_usd": 0.000484445,
     "missing_usage_attempts": 0,
-    "api_latency_seconds": [
-      13.657172400009586
-    ],
     "elapsed_seconds": 15.446469,
     "models": [
       "gpt-4.1-mini-2025-04-14"
@@ -290,17 +385,11 @@
     "returned_models": [
       "gpt-4.1-mini-2025-04-14"
     ],
-    "artifact_sha256": {
-      "run_manifest.json": "58cfb52f6cd727bbfa89eec18df235df8b19ed8412251fbcf83d8eae1aa92a6d",
-      "api_attempts.jsonl": "1140c6c1e0fa293ed9447c0ece3990c29046fae8f848c50ddd532cfb53b66f9d",
-      "native_result.json": "ee11948f4b6b3e61361d8a364c4a01fdba65730d82fb39c1bef5d618bcdcdfd9",
-      "runtime_identity.json": "636db6f495cfe291254bb60e2754b881c1fa5cb81fbb83824150863745f0edd4"
-    },
     "cost_qualification": "Token-derived uncached gateway-tariff upper estimate, not independently verified billing.",
-    "identity_qualification": "Returned model identifiers do not independently attest the actual served model."
+    "identity_qualification": "Returned model identifiers do not independently attest the actual served model.",
+    "cohort": "pilot_09"
   },
   {
-    "run_id": "20261017T110122613871Z",
     "task": "firm:finer",
     "purpose": "pilot",
     "status": "validated_complete",
@@ -312,7 +401,8 @@
       "all_usage_known": true,
       "raw_artifacts_present": true,
       "totals_reconcile": true,
-      "accounting_settled": true,
+      "budget_exposure_accounted": true,
+      "native_result_saved": true,
       "native_coverage": true,
       "frozen_case_ids": true,
       "native_score_artifact": true
@@ -329,9 +419,6 @@
     "output_tokens": 279,
     "estimated_gateway_credit_usd": 0.001863447,
     "missing_usage_attempts": 0,
-    "api_latency_seconds": [
-      15.208773999998812
-    ],
     "elapsed_seconds": 16.678006,
     "models": [
       "gpt-4.1-mini-2025-04-14"
@@ -339,17 +426,11 @@
     "returned_models": [
       "gpt-4.1-mini-2025-04-14"
     ],
-    "artifact_sha256": {
-      "run_manifest.json": "21cd70f84b8ed19802a5091f8e839a7019a7155cd6b6e99e561b099c156893f5",
-      "api_attempts.jsonl": "c4a8e335e281e748995e6aa2c3adde466b9259c7dce3bb7b429c9ec55d67e2df",
-      "native_result.json": "ee11948f4b6b3e61361d8a364c4a01fdba65730d82fb39c1bef5d618bcdcdfd9",
-      "runtime_identity.json": "1e2da8ad2508089d7600c2289fc4494a74577ed52771d30bd9f0899ac9101387"
-    },
     "cost_qualification": "Token-derived uncached gateway-tariff upper estimate, not independently verified billing.",
-    "identity_qualification": "Returned model identifiers do not independently attest the actual served model."
+    "identity_qualification": "Returned model identifiers do not independently attest the actual served model.",
+    "cohort": "pilot_10"
   },
   {
-    "run_id": "20261017T105943259902Z",
     "task": "firm:FinKnow",
     "purpose": "pilot",
     "status": "validated_complete",
@@ -361,7 +442,8 @@
       "all_usage_known": true,
       "raw_artifacts_present": true,
       "totals_reconcile": true,
-      "accounting_settled": true,
+      "budget_exposure_accounted": true,
+      "native_result_saved": true,
       "native_coverage": true,
       "frozen_case_ids": true,
       "native_score_artifact": true
@@ -378,9 +460,6 @@
     "output_tokens": 280,
     "estimated_gateway_credit_usd": 0.00085675,
     "missing_usage_attempts": 0,
-    "api_latency_seconds": [
-      14.596411100006662
-    ],
     "elapsed_seconds": 16.329192,
     "models": [
       "gpt-4.1-mini-2025-04-14"
@@ -388,17 +467,11 @@
     "returned_models": [
       "gpt-4.1-mini-2025-04-14"
     ],
-    "artifact_sha256": {
-      "run_manifest.json": "04b058c5563fafabf4f4508e53871118551baf232cae0ceae758b142a4d56992",
-      "api_attempts.jsonl": "09d62c3b9f18409a8aa7378ee591e5cc924fd1ed05fcafad8b821b08786fd46e",
-      "native_result.json": "ee11948f4b6b3e61361d8a364c4a01fdba65730d82fb39c1bef5d618bcdcdfd9",
-      "runtime_identity.json": "2ef3d467f396eb7828fbc5ed4604cc475d6e243a5f89698be5cdd4329e8f8850"
-    },
     "cost_qualification": "Token-derived uncached gateway-tariff upper estimate, not independently verified billing.",
-    "identity_qualification": "Returned model identifiers do not independently attest the actual served model."
+    "identity_qualification": "Returned model identifiers do not independently attest the actual served model.",
+    "cohort": "pilot_11"
   },
   {
-    "run_id": "20261017T110211377975Z",
     "task": "firm:formula",
     "purpose": "pilot",
     "status": "validated_complete",
@@ -410,7 +483,8 @@
       "all_usage_known": true,
       "raw_artifacts_present": true,
       "totals_reconcile": true,
-      "accounting_settled": true,
+      "budget_exposure_accounted": true,
+      "native_result_saved": true,
       "native_coverage": true,
       "frozen_case_ids": true,
       "native_score_artifact": true
@@ -427,9 +501,6 @@
     "output_tokens": 101,
     "estimated_gateway_credit_usd": 0.000371024,
     "missing_usage_attempts": 0,
-    "api_latency_seconds": [
-      13.412720399996033
-    ],
     "elapsed_seconds": 14.922318,
     "models": [
       "gpt-4.1-mini-2025-04-14"
@@ -437,17 +508,11 @@
     "returned_models": [
       "gpt-4.1-mini-2025-04-14"
     ],
-    "artifact_sha256": {
-      "run_manifest.json": "9a089c02224d65acc0446629ef8821f8f80bcf58ee57409fb98400181ec3ad03",
-      "api_attempts.jsonl": "2bd1a56a0c03ef6f1abe0ac914205458ece1f3b92ce6beabe13fa457e9088c34",
-      "native_result.json": "6a186f4e38e4577a0d62828d5aefc317415fa10d0e7c5772706d134a5e5d376e",
-      "runtime_identity.json": "87ceeca95c835716e9e23f51ec3902906dbd8f115d7bfd79bca753656e618dee"
-    },
     "cost_qualification": "Token-derived uncached gateway-tariff upper estimate, not independently verified billing.",
-    "identity_qualification": "Returned model identifiers do not independently attest the actual served model."
+    "identity_qualification": "Returned model identifiers do not independently attest the actual served model.",
+    "cohort": "pilot_12"
   },
   {
-    "run_id": "20261017T110023744544Z",
     "task": "firm:FormulaEval",
     "purpose": "pilot",
     "status": "validated_complete",
@@ -459,7 +524,8 @@
       "all_usage_known": true,
       "raw_artifacts_present": true,
       "totals_reconcile": true,
-      "accounting_settled": true,
+      "budget_exposure_accounted": true,
+      "native_result_saved": true,
       "native_coverage": true,
       "frozen_case_ids": true,
       "native_score_artifact": true
@@ -476,9 +542,6 @@
     "output_tokens": 98,
     "estimated_gateway_credit_usd": 0.000486368,
     "missing_usage_attempts": 0,
-    "api_latency_seconds": [
-      12.825638199981768
-    ],
     "elapsed_seconds": 14.743987,
     "models": [
       "gpt-4.1-mini-2025-04-14"
@@ -486,17 +549,11 @@
     "returned_models": [
       "gpt-4.1-mini-2025-04-14"
     ],
-    "artifact_sha256": {
-      "run_manifest.json": "f8e07749497d4af7b1a1f8a42723085a24bdb21898b9fc14bc7f2a1002010ed3",
-      "api_attempts.jsonl": "b370ac245a81ac2a83709c8752033ee90e7c15cbf8dd1cad3a367ce052d508a6",
-      "native_result.json": "ee11948f4b6b3e61361d8a364c4a01fdba65730d82fb39c1bef5d618bcdcdfd9",
-      "runtime_identity.json": "b65ee5bce69dc627d7d12a8404c52d3408c107d99e3d5bb1c6c254db0b1ff9bf"
-    },
     "cost_qualification": "Token-derived uncached gateway-tariff upper estimate, not independently verified billing.",
-    "identity_qualification": "Returned model identifiers do not independently attest the actual served model."
+    "identity_qualification": "Returned model identifiers do not independently attest the actual served model.",
+    "cohort": "pilot_13"
   },
   {
-    "run_id": "20261017T105843360473Z",
     "task": "firm:SEC-NUM",
     "purpose": "pilot",
     "status": "validated_complete",
@@ -508,7 +565,8 @@
       "all_usage_known": true,
       "raw_artifacts_present": true,
       "totals_reconcile": true,
-      "accounting_settled": true,
+      "budget_exposure_accounted": true,
+      "native_result_saved": true,
       "native_coverage": true,
       "frozen_case_ids": true,
       "native_score_artifact": true
@@ -525,9 +583,6 @@
     "output_tokens": 69,
     "estimated_gateway_credit_usd": 0.000923393,
     "missing_usage_attempts": 0,
-    "api_latency_seconds": [
-      1.4375381999998353
-    ],
     "elapsed_seconds": 3.077567,
     "models": [
       "gpt-4.1-mini-2025-04-14"
@@ -535,17 +590,11 @@
     "returned_models": [
       "gpt-4.1-mini-2025-04-14"
     ],
-    "artifact_sha256": {
-      "run_manifest.json": "168bf2329e9a24f8b5c6d8a52977c9a512093a40fbf1221b3524b2c6d6988f65",
-      "api_attempts.jsonl": "29ce2cd1070f64e6d912d7d0392f58ee76be4861e1c7ecf22df94d12556aa189",
-      "native_result.json": "ee11948f4b6b3e61361d8a364c4a01fdba65730d82fb39c1bef5d618bcdcdfd9",
-      "runtime_identity.json": "f89908b4d9fcbf7a7bb1b180c2ad40a06b9ac1bbed9ab0132f137e630633bad8"
-    },
     "cost_qualification": "Token-derived uncached gateway-tariff upper estimate, not independently verified billing.",
-    "identity_qualification": "Returned model identifiers do not independently attest the actual served model."
+    "identity_qualification": "Returned model identifiers do not independently attest the actual served model.",
+    "cohort": "pilot_14"
   },
   {
-    "run_id": "20261017T105900115570Z",
     "task": "firm:TAT-QA",
     "purpose": "pilot",
     "status": "validated_complete",
@@ -557,7 +606,8 @@
       "all_usage_known": true,
       "raw_artifacts_present": true,
       "totals_reconcile": true,
-      "accounting_settled": true,
+      "budget_exposure_accounted": true,
+      "native_result_saved": true,
       "native_coverage": true,
       "frozen_case_ids": true,
       "native_score_artifact": true
@@ -574,9 +624,6 @@
     "output_tokens": 165,
     "estimated_gateway_credit_usd": 0.000790748,
     "missing_usage_attempts": 0,
-    "api_latency_seconds": [
-      14.889560600015102
-    ],
     "elapsed_seconds": 16.61642,
     "models": [
       "gpt-4.1-mini-2025-04-14"
@@ -584,13 +631,250 @@
     "returned_models": [
       "gpt-4.1-mini-2025-04-14"
     ],
-    "artifact_sha256": {
-      "run_manifest.json": "45f2a784aa13c4c98006bc43b5aed0218ed622ea34f04fee2ff64e14fff978e7",
-      "api_attempts.jsonl": "7222c9d718ecbe645367cac91ae75392da1d3925934989c27cffed54817faef5",
-      "native_result.json": "ee11948f4b6b3e61361d8a364c4a01fdba65730d82fb39c1bef5d618bcdcdfd9",
-      "runtime_identity.json": "4f4881a5f6504413138386f3e6922374bdb0bb5b2e946db51910e3cde3631661"
-    },
     "cost_qualification": "Token-derived uncached gateway-tariff upper estimate, not independently verified billing.",
-    "identity_qualification": "Returned model identifiers do not independently attest the actual served model."
+    "identity_qualification": "Returned model identifiers do not independently attest the actual served model.",
+    "cohort": "pilot_15"
+  },
+  {
+    "task": "icbe",
+    "purpose": "pilot",
+    "status": "requires_review",
+    "checks": {
+      "execution_succeeded": false,
+      "execution_finished": false,
+      "all_attempts_finished": true,
+      "all_responses_valid": false,
+      "all_usage_known": false,
+      "raw_artifacts_present": false,
+      "totals_reconcile": true,
+      "budget_exposure_accounted": false,
+      "native_result_saved": false,
+      "native_workbook": false,
+      "all_decisions_logged": false
+    },
+    "qualifications": [
+      "Earlier failed-call charges remain unknown and fully reserved under the approved allowance; this is not a claim that provider billing is settled.",
+      "Two-round pilots cover the early native phase only. Workbook filename retains upstream 100Rounds regardless of configured horizon."
+    ],
+    "native_score": null,
+    "attempts": 2,
+    "input_tokens": 263,
+    "output_tokens": 150,
+    "estimated_gateway_credit_usd": 0.00015534,
+    "missing_usage_attempts": 1,
+    "elapsed_seconds": 15.219715,
+    "models": [
+      "gpt-4.1-mini-2025-04-14",
+      "gpt-4o-mini-2024-07-18"
+    ],
+    "returned_models": [
+      "gpt-4o-mini-2024-07-18",
+      "not_reported"
+    ],
+    "cost_qualification": "Token-derived uncached gateway-tariff upper estimate, not independently verified billing.",
+    "identity_qualification": "Returned model identifiers do not independently attest the actual served model.",
+    "cohort": "pilot_16"
+  },
+  {
+    "task": "icbe",
+    "purpose": "pilot",
+    "status": "validated_complete",
+    "checks": {
+      "execution_succeeded": true,
+      "execution_finished": true,
+      "all_attempts_finished": true,
+      "all_responses_valid": true,
+      "all_usage_known": true,
+      "raw_artifacts_present": true,
+      "totals_reconcile": true,
+      "budget_exposure_accounted": true,
+      "native_result_saved": true,
+      "native_workbook": true,
+      "full_ordered_pairs_and_rounds": true,
+      "unique_pair_round_records": true,
+      "each_pair_full_horizon": true,
+      "native_points_reconcile": true,
+      "all_decisions_logged": true
+    },
+    "qualifications": [
+      "Earlier failed-call charges remain unknown and fully reserved under the approved allowance; this is not a claim that provider billing is settled.",
+      "Two-round pilots cover the early native phase only. Workbook filename retains upstream 100Rounds regardless of configured horizon."
+    ],
+    "native_score": null,
+    "attempts": 24,
+    "input_tokens": 6516,
+    "output_tokens": 6368,
+    "estimated_gateway_credit_usd": 0.02296253,
+    "missing_usage_attempts": 0,
+    "elapsed_seconds": 63.104345,
+    "models": [
+      "deepseek-v3.2",
+      "gpt-4.1-mini-2025-04-14",
+      "gpt-4o-mini-2024-07-18"
+    ],
+    "returned_models": [
+      "deepseek-v3.2",
+      "gpt-4.1-mini-2025-04-14",
+      "gpt-4o-mini-2024-07-18"
+    ],
+    "cost_qualification": "Token-derived uncached gateway-tariff upper estimate, not independently verified billing.",
+    "identity_qualification": "Returned model identifiers do not independently attest the actual served model.",
+    "cohort": "pilot_17"
+  },
+  {
+    "task": "retail:dynamic_hard",
+    "purpose": "pilot",
+    "status": "validated_complete",
+    "checks": {
+      "execution_succeeded": true,
+      "execution_finished": true,
+      "all_attempts_finished": true,
+      "all_responses_valid": true,
+      "all_usage_known": true,
+      "raw_artifacts_present": true,
+      "totals_reconcile": true,
+      "budget_exposure_accounted": true,
+      "native_result_saved": true,
+      "daily_checkpoints": true,
+      "actual_daily_date_transitions": true,
+      "no_forced_day_transition": true
+    },
+    "qualifications": [
+      "Earlier failed-call charges remain unknown and fully reserved under the approved allowance; this is not a claim that provider billing is settled.",
+      "Retail needs review of tool errors and date transitions; checkpoint count alone does not establish decision quality."
+    ],
+    "native_score": null,
+    "attempts": 20,
+    "input_tokens": 253478,
+    "output_tokens": 2186,
+    "estimated_gateway_credit_usd": 0.168031866,
+    "missing_usage_attempts": 0,
+    "elapsed_seconds": 203.797841,
+    "models": [
+      "gpt-4.1-mini-2025-04-14"
+    ],
+    "returned_models": [
+      "gpt-4.1-mini-2025-04-14"
+    ],
+    "cost_qualification": "Token-derived uncached gateway-tariff upper estimate, not independently verified billing.",
+    "identity_qualification": "Returned model identifiers do not independently attest the actual served model.",
+    "cohort": "pilot_18"
+  },
+  {
+    "task": "retail:dynamic_middle",
+    "purpose": "pilot",
+    "status": "validated_complete",
+    "checks": {
+      "execution_succeeded": true,
+      "execution_finished": true,
+      "all_attempts_finished": true,
+      "all_responses_valid": true,
+      "all_usage_known": true,
+      "raw_artifacts_present": true,
+      "totals_reconcile": true,
+      "budget_exposure_accounted": true,
+      "native_result_saved": true,
+      "daily_checkpoints": true,
+      "actual_daily_date_transitions": true,
+      "no_forced_day_transition": true
+    },
+    "qualifications": [
+      "Earlier failed-call charges remain unknown and fully reserved under the approved allowance; this is not a claim that provider billing is settled.",
+      "Retail needs review of tool errors and date transitions; checkpoint count alone does not establish decision quality."
+    ],
+    "native_score": null,
+    "attempts": 19,
+    "input_tokens": 246115,
+    "output_tokens": 1562,
+    "estimated_gateway_credit_usd": 0.161714218,
+    "missing_usage_attempts": 0,
+    "elapsed_seconds": 159.618713,
+    "models": [
+      "gpt-4.1-mini-2025-04-14"
+    ],
+    "returned_models": [
+      "gpt-4.1-mini-2025-04-14"
+    ],
+    "cost_qualification": "Token-derived uncached gateway-tariff upper estimate, not independently verified billing.",
+    "identity_qualification": "Returned model identifiers do not independently attest the actual served model.",
+    "cohort": "pilot_19"
+  },
+  {
+    "task": "retail:still_hard",
+    "purpose": "pilot",
+    "status": "validated_complete",
+    "checks": {
+      "execution_succeeded": true,
+      "execution_finished": true,
+      "all_attempts_finished": true,
+      "all_responses_valid": true,
+      "all_usage_known": true,
+      "raw_artifacts_present": true,
+      "totals_reconcile": true,
+      "budget_exposure_accounted": true,
+      "native_result_saved": true,
+      "daily_checkpoints": true,
+      "actual_daily_date_transitions": true,
+      "no_forced_day_transition": true
+    },
+    "qualifications": [
+      "Earlier failed-call charges remain unknown and fully reserved under the approved allowance; this is not a claim that provider billing is settled.",
+      "Retail needs review of tool errors and date transitions; checkpoint count alone does not establish decision quality."
+    ],
+    "native_score": null,
+    "attempts": 22,
+    "input_tokens": 361896,
+    "output_tokens": 4077,
+    "estimated_gateway_credit_usd": 0.242353134,
+    "missing_usage_attempts": 0,
+    "elapsed_seconds": 233.202849,
+    "models": [
+      "gpt-4.1-mini-2025-04-14"
+    ],
+    "returned_models": [
+      "gpt-4.1-mini-2025-04-14"
+    ],
+    "cost_qualification": "Token-derived uncached gateway-tariff upper estimate, not independently verified billing.",
+    "identity_qualification": "Returned model identifiers do not independently attest the actual served model.",
+    "cohort": "pilot_20"
+  },
+  {
+    "task": "retail:still_middle",
+    "purpose": "pilot",
+    "status": "validated_complete",
+    "checks": {
+      "execution_succeeded": true,
+      "execution_finished": true,
+      "all_attempts_finished": true,
+      "all_responses_valid": true,
+      "all_usage_known": true,
+      "raw_artifacts_present": true,
+      "totals_reconcile": true,
+      "budget_exposure_accounted": true,
+      "native_result_saved": true,
+      "daily_checkpoints": true,
+      "actual_daily_date_transitions": true,
+      "no_forced_day_transition": true
+    },
+    "qualifications": [
+      "Earlier failed-call charges remain unknown and fully reserved under the approved allowance; this is not a claim that provider billing is settled.",
+      "Retail needs review of tool errors and date transitions; checkpoint count alone does not establish decision quality."
+    ],
+    "native_score": null,
+    "attempts": 24,
+    "input_tokens": 266191,
+    "output_tokens": 2064,
+    "estimated_gateway_credit_usd": 0.175865648,
+    "missing_usage_attempts": 0,
+    "elapsed_seconds": 206.130642,
+    "models": [
+      "gpt-4.1-mini-2025-04-14"
+    ],
+    "returned_models": [
+      "gpt-4.1-mini-2025-04-14"
+    ],
+    "cost_qualification": "Token-derived uncached gateway-tariff upper estimate, not independently verified billing.",
+    "identity_qualification": "Returned model identifiers do not independently attest the actual served model.",
+    "cohort": "pilot_21"
   }
 ]

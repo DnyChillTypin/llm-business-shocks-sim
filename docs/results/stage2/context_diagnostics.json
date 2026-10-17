@@ -1,0 +1,90 @@
+{
+  "status": "passed",
+  "paid_api_calls": 0,
+  "scripted_icbe_decisions": 4,
+  "icbe_phases": [
+    {
+      "round": 1,
+      "phase": "baseline",
+      "request_bytes": 1340,
+      "max_output_tokens": 4096,
+      "verified_payoff_pairs": 4
+    },
+    {
+      "round": 26,
+      "phase": "expansion",
+      "request_bytes": 1353,
+      "max_output_tokens": 4096,
+      "verified_payoff_pairs": 4
+    },
+    {
+      "round": 51,
+      "phase": "volatility",
+      "request_bytes": 1365,
+      "max_output_tokens": 4096,
+      "verified_payoff_pairs": 4
+    },
+    {
+      "round": 76,
+      "phase": "contraction",
+      "request_bytes": 1354,
+      "max_output_tokens": 4096,
+      "verified_payoff_pairs": 4
+    }
+  ],
+  "retail_context_stress": [
+    {
+      "task": "retail_dynamic_hard",
+      "base_request_bytes": 69624,
+      "synthetic_sizing_scenarios": [
+        {
+          "additional_synthetic_bytes": 0,
+          "input_token_envelope": 73786,
+          "fits_current_262144_envelope": true
+        },
+        {
+          "additional_synthetic_bytes": 10000,
+          "input_token_envelope": 83786,
+          "fits_current_262144_envelope": true
+        },
+        {
+          "additional_synthetic_bytes": 50000,
+          "input_token_envelope": 123786,
+          "fits_current_262144_envelope": true
+        },
+        {
+          "additional_synthetic_bytes": 200000,
+          "input_token_envelope": 273786,
+          "fits_current_262144_envelope": false
+        }
+      ]
+    },
+    {
+      "task": "retail_dynamic_middle",
+      "base_request_bytes": 75181,
+      "synthetic_sizing_scenarios": [
+        {
+          "additional_synthetic_bytes": 0,
+          "input_token_envelope": 79343,
+          "fits_current_262144_envelope": true
+        },
+        {
+          "additional_synthetic_bytes": 10000,
+          "input_token_envelope": 89343,
+          "fits_current_262144_envelope": true
+        },
+        {
+          "additional_synthetic_bytes": 50000,
+          "input_token_envelope": 129343,
+          "fits_current_262144_envelope": true
+        },
+        {
+          "additional_synthetic_bytes": 200000,
+          "input_token_envelope": 279343,
+          "fits_current_262144_envelope": false
+        }
+      ]
+    }
+  ],
+  "qualification": "No late-phase model behavior or late-day Retail cost measured. Native daily conversation resets and token trimming do not prove constant context size. Stress bytes are hypothetical, not simulated business outcomes."
+}

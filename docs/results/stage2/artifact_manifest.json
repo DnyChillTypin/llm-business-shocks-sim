@@ -1,0 +1,24 @@
+{
+  "hash_rule": "SHA-256 UTF-8 text with CRLF normalized to LF",
+  "publication_scope": "Aggregate synthetic research metrics only; no request IDs, transcripts, approval history or account/billing records.",
+  "files": {
+    "budget_proposal_full_scope.json": "690269b1eb7bda498d38c78890331b657f60ef5605a694a60b9b84e702ef2b51",
+    "budget_proposal_nonretail_first_draft.json": "9ef753b3de6a82eef0bdd12292907bc10ebd53f302ab550caa4f063b703815c2",
+    "budget_summary.json": "bddbf5871035c88e22f0a667a1687c38f39322f27ebc52a2a8a2fa19f835730f",
+    "context_diagnostics.json": "680f7b0ea547cf51928e49e3ae78cbfb10a393b83781488a9f18e93b713b38c1",
+    "cost_projections.csv": "597cfef1b75f1ff7025b11d017b0782967c09218b470e38e7bb9876d7bfe4864",
+    "gateway_rates.json": "cd2cb10de7b40cdeda41d3a603d0936c160d0f4102d4fccd8a040a31febfc301",
+    "kaggle_pilot_validations.json": "c59d1157b0b22585a41873f3ad5d505232c59987985dcf96f7a9331340dca03e",
+    "kaggle_quality_reviews.json": "0ba56b19bed30170169bd8d4f9150d3e4e5c67d5aa19bbb80c36126238653837",
+    "kaggle_validation_daily.csv": "a644af471436d607c1bdc97706792d40e49750315c89b5f4b8cbf4ae4e63c658",
+    "kaggle_validation_summary.csv": "c2efadc04efb31634cc635f7df7c645c1eee9ffb41400d7c3cb1ef297cd4073b",
+    "kaggle_validation_summary.json": "fdd379f8e7265010b036ff7aba521405d1868ca38fd8e1f9389b4ae80be0c92d",
+    "matched_validation_inputs.json": "06c8beccdec409eef4a6c411618a1499ddffd4b5810faa021f539904fa309905",
+    "model_usage_summary.json": "9991aaca8ec35148a956662929f90c3e19619f7c938d0c4dbd808d9daa1e5c2a",
+    "native_pilot_validations.json": "6e4347ae5b37882dc4157fc1b744bc6f94c8e51fb01af89cf89d0262790052fa",
+    "pilot_cost_report.json": "0f5274cf601c093e7267a7cb8da06e12696f32ee6e2195e7802cda0efa3f0dc5",
+    "pilot_coverage.csv": "4658175bd76988cce0a61c849eeb7045213f23043a7c6699b2696e91f7daf464",
+    "pilot_usage.csv": "794512058f2dac1cced877fde530b2d1a5310264a9af2ffd78add7cadd1ff9ce",
+    "qc_summary.json": "5a67b531f7b98bc5158d6a592132a21f7abb0cb61b038e1cb49b437ae56e37f6"
+  }
+}

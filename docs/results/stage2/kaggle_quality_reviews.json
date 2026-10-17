@@ -1,0 +1,26 @@
+[
+  {
+    "status": "reviewed",
+    "decision": "retain_frozen_operational_policy",
+    "scenario": "control",
+    "decision_opportunities": 21,
+    "repair_days": 7,
+    "fallback_days": 1,
+    "invalid_responses": 8,
+    "rationale": "The observed failures are genuine cash-affordability errors, not a parser defect. Every final action is valid, fallbacks exactly match the frozen adaptive policy, and accounting checks pass. Retain the frozen operational policy to measure these failures rather than tuning away negative validation findings.",
+    "required_reporting": "Primary outcomes include all fallback days; disclose first-pass validity, repairs,  unassisted completion, fallback frequency and operating cost. Do not describe this as pure unassisted LLM performance.",
+    "evaluation_authorized": false
+  },
+  {
+    "status": "reviewed",
+    "decision": "retain_frozen_operational_policy",
+    "scenario": "delivery_disruption",
+    "decision_opportunities": 21,
+    "repair_days": 8,
+    "fallback_days": 2,
+    "invalid_responses": 10,
+    "rationale": "The observed failures are genuine cash-affordability errors, not a parser defect. Every final action is valid, fallbacks exactly match the frozen adaptive policy, and accounting checks pass. Retain the frozen operational policy to measure these failures rather than tuning away negative validation findings.",
+    "required_reporting": "Primary outcomes include all fallback days; disclose first-pass validity, repairs,  unassisted completion, fallback frequency and operating cost. Do not describe this as pure unassisted LLM performance.",
+    "evaluation_authorized": false
+  }
+]

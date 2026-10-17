@@ -73,10 +73,26 @@ def main():
                 if history.get("success") is not True:
                     raise ValueError("History endpoint did not return success.")
                 data = history["data"]
+                items = list(data.get("items", []))
+                total = data.get("total", len(items))
+                for page in range(2, 11):
+                    if len(items) >= total:
+                        break
+                    response = client.post("https://api.shopaikey.com/usage/histories", headers={"x-api-key": key},
+                                           json={"page": page, "page_size": 100})
+                    response.raise_for_status()
+                    following = response.json()
+                    if following.get("success") is not True:
+                        raise ValueError("History pagination did not return success.")
+                    batch = following["data"].get("items", [])
+                    if not batch:
+                        break
+                    items.extend(batch)
                 allowed = {"created_at", "model_name", "prompt_tokens", "completion_tokens", "cost", "type"}
                 result["history"] = {"source": "https://api.shopaikey.com/usage/histories", "total": data.get("total"),
                     "stats": {k: v for k, v in (data.get("stats") or {}).items() if type(v) in (int, float)},
-                    "items": [{k: v for k, v in row.items() if k in allowed} for row in data.get("items", [])],
+                    "pagination_complete": len(items) >= total,
+                    "items": [{k: v for k, v in row.items() if k in allowed} for row in items],
                     "qualification": "Provider account history; absent entries do not prove an unlogged failed request was unbilled."}
     except Exception as exc:
         # str(exc) may contain the credential-bearing /usage URL.

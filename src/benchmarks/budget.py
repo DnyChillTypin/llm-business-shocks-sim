@@ -1,7 +1,8 @@
 """Transactional, fail-closed allowance ledger for initially sequential paid jobs.
 
 Limits are conditional on the verified gateway tariff and token ceilings being
-honored. Unknown charges retain the full reservation and block subsequent calls.
+honored. Unknown charges retain the full reservation and block subsequent calls
+unless an explicit continuation approval records that bounded failure's full hold.
 USD-formatted gateway credit is distinct from the cash paid to buy that credit.
 """
 from __future__ import annotations

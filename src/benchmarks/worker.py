@@ -236,6 +236,9 @@ def beer_toolmap():
 def load_icbe():
     path = ROOT / "vendor/icbe-2026-strategic-behavior/LLMs_Business_Simulation.py"
     source = path.read_text(encoding="utf-8-sig")
+    if source.count("max_tokens=150") != 1:
+        raise RuntimeError("ICBE native output-limit adapter no longer matches the pinned source.")
+    source = source.replace("max_tokens=150", "max_tokens=ICBE_OUTPUT_TOKENS")
     # Preserve native payoffs, phases, prompts, ordered pairs and Excel exporter.
     # API/parse failures must be failures, not fabricated cooperation decisions.
     source = source.replace('return "COOPERATE" # Fallback', 'raise ValueError("Unparseable ICBE decision")')
@@ -249,6 +252,7 @@ def load_icbe():
     module = types.ModuleType("native_icbe")
     module.__file__ = str(path)
     module.ROUND_DELAY_SECONDS = 0.1
+    module.ICBE_OUTPUT_TOKENS = 4096
     exec(compile(source, str(path), "exec"), module.__dict__)
     async def scoped_decision(model, round_number, history, match, actor):
         with request_context(case_id=f"ordered_pair_{match-1:02d}", round=round_number, actor=actor,
@@ -312,6 +316,7 @@ def main():
             module = load_icbe()
             module.MODELS = config["icbe_models"]
             module.NUM_ROUNDS = config["icbe_rounds"]
+            module.ICBE_OUTPUT_TOKENS = config["max_output_tokens"]
             os.chdir(output)
             asyncio.run(module.main())
         (output / "native_result.json").write_text(json.dumps(result, indent=2, default=str), encoding="utf-8")

@@ -65,7 +65,8 @@ it does not automatically resume partially completed tasks.
 
 Paid execution now requires an immutable approved allowance and a persistent,
 shared spending ledger. The pilot allowance excludes full evaluation. Missing
-usage retains its reservation and blocks subsequent calls across both tracks;
+usage retains its full reservation; only explicitly recorded bounded failure
+holds under an approved continuation can avoid blocking subsequent calls.
 see [Stage 2 status](STAGE2_PILOTS.md) and [measured costs](COST_ESTIMATE.md).
 
 Calls have a 90-second request timeout, an output ceiling of 4,096 tokens, and a
@@ -103,6 +104,9 @@ All changes live in our launcher; pinned vendor files remain unchanged.
 - ICBE keeps native ordered matches, phase payoffs, prompts and Excel sheets;
   model IDs and endpoint are configured locally. API and decision-parse failures
   stop execution instead of defaulting to cooperation.
+  Stage 2 found the native 150-token output limit truncated a decision. The
+  documented compatibility cohort uses the configured 4,096-token ceiling and
+  requires one explicit, unambiguous decision. See [amendments](STAGE2_AMENDMENTS.md).
 
 The prepared suite uses CoT/ReAct, as agreed. Other upstream memory, ensemble,
 debate and prompt-training methods need their own experiments and configurations.

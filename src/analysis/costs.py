@@ -1,5 +1,6 @@
 """Measured pilot usage and explicitly partial projections; no model calls."""
 import json
+import math
 from datetime import datetime
 from pathlib import Path
 
@@ -17,6 +18,8 @@ def cost_report(root=ROOT):
         run = path.parent
         events = [json.loads(line) for line in (run / "api_attempts.jsonl").read_text(encoding="utf-8").splitlines()] if (run / "api_attempts.jsonl").exists() else []
         ends = [e for e in events if e["event"] == "finished"]
+        beginnings = [e for e in events if e["event"] == "started"]
+        setup_seconds = max(0, (datetime.fromisoformat(beginnings[0]["started_at_utc"]) - datetime.fromisoformat(manifest["started_at_utc"])).total_seconds()) if beginnings else 0
         validation = json.loads((run / "validation.json").read_text()) if (run / "validation.json").exists() else {}
         observations.append({"task": manifest["task"], "run_id": run.name, "execution_status": manifest["status"],
             "validation_status": validation.get("status", "not_validated"),
@@ -29,6 +32,7 @@ def cost_report(root=ROOT):
             "known_estimated_cost_usd": sum(e.get("cost_usd") or 0 for e in ends),
             "latency_seconds": [e["latency_seconds"] for e in ends], "native_score": validation.get("native_score"),
             "models": sorted({e["requested_model"] for e in ends}),
+            "setup_seconds": setup_seconds,
             "elapsed_seconds": (datetime.fromisoformat(manifest["finished_at_utc"]) - datetime.fromisoformat(manifest["started_at_utc"])).total_seconds()})
     for path in sorted((root / "results/runs/kaggle_retailbench").glob("*/run_manifest.json")):
         manifest = json.loads(path.read_text(encoding="utf-8"))
@@ -48,6 +52,7 @@ def cost_report(root=ROOT):
             "known_estimated_cost_usd": sum(e.get("cost_usd") or 0 for e in ends),
             "latency_seconds": [e["latency_seconds"] for e in ends], "native_score": None, "kaggle_summary": summary,
             "models": sorted({e["requested_model"] for e in ends}),
+            "completed_decisions": len((run / "actions.jsonl").read_text(encoding="utf-8").splitlines()) if (run / "actions.jsonl").exists() else 0,
             "elapsed_seconds": (datetime.fromisoformat(manifest["finished_at_utc"]) - datetime.fromisoformat(manifest["started_at_utc"])).total_seconds()})
     for task in TASKS:
         plan = run_plan(task)
@@ -64,7 +69,7 @@ def cost_report(root=ROOT):
             base = measurement["known_estimated_cost_usd"] * scale
             seconds = sum(measurement["latency_seconds"]) * scale
             calls = measurement["attempts"] * scale
-            wall = measurement["elapsed_seconds"] * scale
+            wall = measurement["setup_seconds"] + max(0, measurement["elapsed_seconds"] - measurement["setup_seconds"]) * scale
         rows.append({"task": task, "measured_run_id": measurement["run_id"] if measurement else None,
             "projection_status": "linear_single_pilot_scenario" if measurement else "not_estimable_yet",
             "full_units": plan["expected_units"], "full_horizon": plan["configured_horizon"],
@@ -85,14 +90,31 @@ def cost_report(root=ROOT):
             projected_calls_base=sum(r["attempts"] for r in kaggle) * 252 / kaggle_days,
             serialized_api_seconds_base=sum(sum(r["latency_seconds"]) for r in kaggle) * 252 / kaggle_days,
             projected_elapsed_seconds_base=sum(r["elapsed_seconds"] for r in kaggle) * 252 / kaggle_days)
+    snapshots = [*(root / "results/benchmarks").glob("*/*/budget_summary.json"),
+                 *(root / "results/runs/kaggle_retailbench").glob("*/budget_summary.json")]
+    states = [json.loads(p.read_text(encoding="utf-8")) for p in snapshots]
+    latest_budget = max(states, key=lambda b: b["attempts"]) if states else None
+    all_priced = kaggle_ready and all(r["cost_base_scenario_usd"] is not None for r in rows)
+    nonretail_high = sum(r["cost_high_scenario_usd"] or 0 for r in rows if not r["task"].startswith("retail:"))
+    pilot_exposure = latest_budget["exposure_usd"] if latest_budget else 0
+    full_high = sum(r["cost_high_scenario_usd"] or 0 for r in rows)
     totals = {"attempts": sum(r["attempts"] for r in observations),
         "known_estimated_cost_usd": sum(r["known_estimated_cost_usd"] for r in observations),
         "missing_usage_attempts": sum(r["missing_usage_attempts"] for r in observations),
         "validated_native_pilot_tasks": sum(bool(r.get("measured_run_id")) for r in rows),
         "known_projection_subtotal_base_usd": sum(r["cost_base_scenario_usd"] or 0 for r in rows),
         "unmeasured_tasks": [r["task"] for r in rows if r["projection_status"] == "not_estimable_yet"],
-        "full_suite_cost_estimate_usd": sum(r["cost_base_scenario_usd"] for r in rows) if kaggle_ready and all(r["cost_base_scenario_usd"] is not None for r in rows) else None,
-        "budget_decision": "No large-run cap recommended until missing pilots and charging reconciliation are complete.",
-        "qualification": "Gateway-credit tariff estimates, not independently verified billing. Subtotal excludes missing families; it is not a full-suite budget."}
+        "full_suite_cost_estimate_usd": sum(r["cost_base_scenario_usd"] for r in rows) if all_priced else None,
+        "full_suite_high_scenario_usd": full_high if all_priced else None,
+        "full_suite_projected_elapsed_hours_base": sum(r.get("projected_elapsed_seconds_base") or 0 for r in rows) / 3600 if all_priced else None,
+        "proposed_inclusive_full_cap_usd": math.ceil((full_high + pilot_exposure) / .8 / 10) * 10 if all_priced else None,
+        "proposed_inclusive_nonretail_cap_usd": math.ceil((nonretail_high + pilot_exposure) / .8) if all_priced else None,
+        "latest_budget": latest_budget,
+        "kaggle_validation_decisions": kaggle_days, "kaggle_validation_fallback_days": sum(r["kaggle_summary"]["fallback_days"] for r in kaggle),
+        "kaggle_validation_repair_days": sum(r["kaggle_summary"]["repair_days"] for r in kaggle),
+        "kaggle_first_pass_invalid_responses": sum(r["kaggle_summary"]["repair_days"] for r in kaggle),
+        "kaggle_invalid_responses_including_repairs": sum(r["kaggle_summary"]["invalid_responses"] for r in kaggle),
+        "budget_decision": "Proposals only, not authorization. Caps include all pilot exposure and at least 20% unallocated reserve. Retain the frozen operational Kaggle policy after documented constraint/fallback review; full evaluations require a separate approved allowance." if all_priced else "Complete remaining measurements before proposing a full cap.",
+        "qualification": "Gateway-credit tariff planning scenarios, not independently verified billing or statistical intervals. One-day/case extrapolation does not establish late-horizon reliability. No full evaluation is authorized by this report."}
     return {"purpose": "pilot_cost_planning_not_benchmark_evaluation", "observations": observations,
             "projections": rows, "totals": totals}

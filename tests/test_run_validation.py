@@ -58,4 +58,4 @@ class RunValidationTests(unittest.TestCase):
         report = validate_run(self.folder)
         self.assertEqual(report["status"], "requires_review")
         self.assertEqual(report["missing_usage_attempts"], 1)
-        self.assertFalse(report["checks"]["accounting_settled"])
+        self.assertFalse(report["checks"]["budget_exposure_accounted"])

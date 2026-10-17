@@ -31,7 +31,9 @@ def validate_run(folder):
         totals["input_tokens"] == sum((e.get("usage") or {}).get("prompt_tokens", 0) for e in finishes.values()) and
         totals["output_tokens"] == sum((e.get("usage") or {}).get("completion_tokens", 0) for e in finishes.values()))
     budget = read(folder / "budget_summary.json")
-    checks["accounting_settled"] = budget["pending_attempts"] == budget.get("blocking_uncertain_attempts", budget["uncertain_attempts"]) == 0
+    checks["budget_exposure_accounted"] = budget["pending_attempts"] == budget.get("blocking_uncertain_attempts", budget["uncertain_attempts"]) == 0
+    if budget.get("bounded_carried_attempts", 0):
+        qualifications.append("Earlier failed-call charges remain unknown and fully reserved under the approved allowance; this is not a claim that provider billing is settled.")
     checks["native_result_saved"] = (folder / "native_result.json").is_file()
     result = read(folder / "native_result.json") if checks["native_result_saved"] else None
     if isinstance(result, dict) and "total" in result:
@@ -57,6 +59,15 @@ def validate_run(folder):
             book = openpyxl.load_workbook(paths[0], read_only=True, data_only=True)
             try:
                 checks["full_ordered_pairs_and_rounds"] = book["Detailed Logs"].max_row - 1 == manifest["expected_units"] * manifest["configured_horizon"]
+                entries = list(book["Detailed Logs"].values)
+                records = [dict(zip(entries[0], row)) for row in entries[1:]]
+                checks["unique_pair_round_records"] = len({(r["Match ID"], r["Round"]) for r in records}) == len(records)
+                checks["each_pair_full_horizon"] = all({r["Round"] for r in records if r["Match ID"] == pair} == set(range(1, manifest["configured_horizon"] + 1)) for pair in range(1, manifest["expected_units"] + 1))
+                matrices = [((3, 3), (0, 5), (5, 0), (1, 1)), ((1, 1), (0, 4), (4, 0), (3, 3)),
+                            ((4, 4), (-3, 5), (5, -3), (2, 2)), ((1, 1), (-1, 3), (3, -1), (-2, -2))]
+                moves = {"COOPERATE": 0, "EXPLOIT": 1}
+                checks["native_points_reconcile"] = all((r["Pts A"], r["Pts B"]) ==
+                    matrices[min(3, (r["Round"] - 1) // 25)][moves[r["Move A"]] * 2 + moves[r["Move B"]]] for r in records)
             finally:
                 book.close()
         checks["all_decisions_logged"] = len(starts) == 2 * manifest["expected_units"] * manifest["configured_horizon"]

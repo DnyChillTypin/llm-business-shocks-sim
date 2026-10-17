@@ -1,0 +1,11 @@
+{
+  "approved": false,
+  "currency": "USD_gateway_credit",
+  "proposed_total_cap_inclusive_of_pilots": 350,
+  "carry_forward_existing_pilot_exposure_usd": 0.868873311,
+  "proposed_max_client_attempts_inclusive_of_pilots": 30000,
+  "unallocated_reserve_fraction_at_least": 0.2,
+  "retail_full_horizons_included": true,
+  "evaluation_requires_separate_approval": true,
+  "qualification": "Proposal from declared high planning scenarios, not a guaranteed worst-case bill. Preserve prior spending and held charges; do not reset the allowance."
+}

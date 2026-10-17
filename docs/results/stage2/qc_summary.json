@@ -1,0 +1,27 @@
+{
+  "stage": 2,
+  "status": "technical_work_and_quality_review_complete",
+  "automated_tests": 52,
+  "automated_test_status": "passed",
+  "frozen_design_checks": 31,
+  "frozen_design_status": "passed",
+  "native_pilot_task_ids_validated": 19,
+  "llm_validation_episodes": 2,
+  "llm_validation_decisions": 42,
+  "matched_free_validation_episodes": 4,
+  "model_api_attempts": 237,
+  "known_estimated_gateway_credit_usd": 0.849863719,
+  "fully_held_unknown_credit_usd": 0.019009592,
+  "total_credit_exposure_usd": 0.868873311,
+  "approved_pilot_cap_usd": 2,
+  "approved_max_attempts": 250,
+  "primary_evaluation_episodes_completed": 0,
+  "full_native_evaluation_runs_completed": 0,
+  "full_evaluation_approved": false,
+  "kaggle_quality_review": "retain_frozen_operational_policy_and_report_all_repairs_and_fallbacks",
+  "notebook_verification": {
+    "03_kaggle_llm_experiment.ipynb": "passed",
+    "04_results_analysis.ipynb": "passed"
+  },
+  "checked_on": "2026-10-17"
+}

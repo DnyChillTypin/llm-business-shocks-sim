@@ -16,7 +16,9 @@ def main():
     snapshot = json.loads(args.snapshot.read_text(encoding="utf-8"))
     items = snapshot["history"]["items"]
     matched, unresolved = [], []
-    for path in sorted((ROOT / "results/benchmarks").glob("*/*/api_attempts.jsonl")):
+    paths = [*(ROOT / "results/benchmarks").glob("*/*/api_attempts.jsonl"),
+             *(ROOT / "results/runs/kaggle_retailbench").glob("*/api_attempts.jsonl")]
+    for path in sorted(paths):
         for row in map(json.loads, path.read_text(encoding="utf-8").splitlines()):
             if row["event"] != "finished" or row["purpose"] != "pilot":
                 continue
@@ -32,13 +34,17 @@ def main():
             else:
                 unresolved.append({"attempt_id": row["attempt_id"], "failure_category": row.get("failure_category"),
                     "started_at_utc": row["started_at_utc"], "model": row["requested_model"],
-                    "reason": "No unique token/time-matched provider charge record; missing usage is not zero."})
+                    "usage_known": bool(usage),
+                    "reason": "SDK usage is known, but identical token/time entries do not uniquely identify a provider row." if usage else
+                              "No SDK usage or unique matching charge record; missing usage is not zero and its full reserve remains held."})
     report = {"snapshot_checked_at_utc": snapshot["checked_at_utc"], "matched_completed_attempts": len(matched),
         "matched_provider_reported_cost_usd": sum(r["provider_reported_cost_usd"] for r in matched),
         "matched_local_uncached_estimate_usd": sum(r["local_uncached_estimate_usd"] for r in matched),
         "unresolved_attempts": unresolved, "matches": matched, "ledger_modified": False,
-        "paid_calls_may_resume": not unresolved,
-        "qualification": "Matching provider history is available charging evidence, not independently audited billing. No charge inferred from an absent row."}
+        "known_usage_unmatched_history_attempts": sum(r["usage_known"] for r in unresolved),
+        "unknown_usage_attempts": sum(not r["usage_known"] for r in unresolved),
+        "provider_charges_fully_reconciled": not unresolved,
+        "qualification": "Matching provider history is available charging evidence, not independently audited billing. No charge inferred from an absent row. Further-call authorization and bounded held charges are determined separately by the approved allowance and ledger."}
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({k: v for k, v in report.items() if k != "matches"}, indent=2))

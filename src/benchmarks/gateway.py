@@ -5,6 +5,7 @@ import contextvars
 import hashlib
 import json
 import os
+import re
 import threading
 import time
 import uuid
@@ -191,8 +192,10 @@ class AttemptLog:
                 problem = "invalid_tool_arguments"
         request = json.loads((state["folder"] / "request.json").read_text(encoding="utf-8"))
         kind = state["record"]["context"].get("validation_kind")
-        if not problem and kind == "icbe" and not any(token in (content or "").upper() for token in ("OPTION A", "OPTION B")):
-            problem = "unparseable_icbe_decision"
+        if not problem and kind == "icbe":
+            decisions = re.findall(r"\bDECISION:\s*OPTION\s+([AB])\b", (content or "").upper())
+            if not decisions or len(set(decisions)) != 1:
+                problem = "missing_or_ambiguous_explicit_icbe_decision"
         requires_json = request.get("response_format", {}).get("type") in ("json_object", "json_schema") or kind in {"edt", "reasoning", "candidate", "judge", "beer"}
         if not problem and requires_json:
             try:

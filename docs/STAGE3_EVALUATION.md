@@ -18,6 +18,10 @@ For reasoning, save each native case result durably, including the frozen case I
 
 Require successful execution, complete raw local artifacts, valid decisions, reconciled usage, scorer outputs and exact case/horizon coverage before marking a task complete. Keep failed or incomplete attempts visible. Earlier held failed-call charges remain unknown and reserved. Inspect unusual BeerGame supply-chain totals against episode records; missing upstream metrics remain missing.
 
+Keep native metric units explicit: finer's native accuracy is over individual entity labels, while its `correct / total` counts exact cases. Publish both measures with their own denominators; do not relabel label accuracy as case accuracy. Offline saved-action replay audits BeerGame's cost totals. Its native backlog proxy repeats the final backlog, so a time average derived from weekly observations is reported separately without changing the native score.
+
+Paid decision adapters are unchanged from preparation commit `8322966`. Subsequent reporting and post-run validation work can make the tracked working tree dirty during a run; the run identity records that flag. Frozen prompts, model settings, case selection, native scoring and horizons remain unchanged.
+
 ## Evidence and publication
 
 Raw responses, transcripts, request identifiers, account snapshots, allowance approval history and detailed run mappings stay under ignored `results/` or `.cache/`. Publish aggregate task metrics, anonymous cohort labels, coverage, model identifiers, token-derived project costs, limitations and saved-output analysis only. Push code and reviewed aggregate results at useful milestones.

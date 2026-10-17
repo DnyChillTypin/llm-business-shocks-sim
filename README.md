@@ -7,10 +7,13 @@ inventory and pricing policies, and controlled business-shock experiments.**
 ![Python](https://img.shields.io/badge/Python-3.12-blue)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
-**Status:** verified Kaggle-driven RetailBench integration, two rule-based
-policies, four scenarios, 22 automated tests, and three executed research notebooks.
-LLM experiments and broader benchmark reruns are planned; current results are
-baseline simulations, not LLM performance claims.
+**Status:** Stage 2 pilots are complete; Stage 3 non-Retail evaluations are in progress.
+The project includes the Kaggle-driven RetailBench integration, genuine LLM validation
+pilots, guarded native evaluations, automated tests and five executed research notebooks.
+Primary Kaggle comparisons and the four full native Retail episodes remain outstanding.
+See the [native evaluation plan](docs/STAGE3_EVALUATION.md),
+[coverage table](docs/results/native_coverage.csv) and
+[saved evaluation notebook](notebooks/05_native_evaluation.ipynb).
 
 The three native repositories now have a local launcher, verified dependencies
 and readiness checks. Gateway JSON responses and native RetailBench streaming
@@ -126,8 +129,11 @@ episodes](docs/STAGE2_PILOTS.md), with **$0.869 conservative exposure across 237
 attempts** under the $2 cap. The [executed analysis notebook](notebooks/04_results_analysis.ipynb)
 records negative outcomes, repairs, fallbacks and retained failed-request charges.
 The [full-scope base estimate](docs/COST_ESTIMATE.md) is $136.58 gateway credit;
-a proposed $6 first-draft route covers non-Retail evaluation plus Kaggle. Both
-evaluation routes await approval. Primary comparisons have not started.
+the $6 inclusive first-draft route is now authorized for non-Retail evaluation,
+with an allocation reserved for later Kaggle work. Native tasks run sequentially
+with artifact review between tasks. The four full native Retail episodes remain
+deferred, so completing this route does not complete the original Stage 3 scope.
+Primary Kaggle comparisons have not started.
 
 - Validate the implemented LLM policy with genuine bounded pilots, then measure
   validity, cost and performance against the baselines under an evaluation budget.

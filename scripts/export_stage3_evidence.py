@@ -12,6 +12,7 @@ from src.benchmarks.budget import BudgetLedger
 from src.benchmarks.common import TASKS
 from src.benchmarks.planning import run_plan
 from src.benchmarks.validation import validate_run
+from src.analysis.native_metrics import reasoning_metric
 
 PUBLIC = ROOT / "docs/results/stage3"
 PRIVATE = ROOT / "results/analysis/stage3"
@@ -56,10 +57,16 @@ def cohort_record(folder, manifest, label):
         write_json(folder / "validation.json", validation)
     score = validation.get("native_score") if validation else None
     status = validation["status"] if validation else manifest["status"]
+    cases = [read(p) for p in sorted((folder / "case_records").glob("*.json"))]
+    metric = reasoning_metric(manifest["task"], score, cases) if validation and isinstance(score, dict) and "accuracy" in score else {}
     record = {"cohort": label, "task": manifest["task"], "status": status,
               "method_classification": classification(manifest["task"]),
               "expected_units": manifest["expected_units"], "configured_horizon": manifest["configured_horizon"],
-              "saved_reasoning_cases": len(list((folder / "case_records").glob("*.json"))),
+              "saved_reasoning_cases": len(cases),
+              "native_accuracy_unit": metric.get("native_accuracy_unit"),
+              "native_correct_units": metric.get("native_correct_units"),
+              "native_scored_units": metric.get("native_scored_units"),
+              "exact_case_accuracy": metric.get("exact_case_accuracy"),
               "correct": score.get("correct") if isinstance(score, dict) else None,
               "scored_cases": score.get("total") if isinstance(score, dict) else None,
               "accuracy": score.get("accuracy") if isinstance(score, dict) else None,
@@ -71,11 +78,13 @@ def cohort_record(folder, manifest, label):
               "output_tokens": sum((e.get("usage") or {}).get("completion_tokens", 0) for e in finishes),
               "estimated_gateway_credits": sum(e.get("cost_usd") or 0 for e in finishes),
               "api_seconds": sum(e["latency_seconds"] for e in finishes),
+              "elapsed_seconds": validation["elapsed_seconds"] if validation else None,
               "failure_category": manifest.get("failure_category"),
               "requested_models": sorted({e["requested_model"] for e in starts}),
               "returned_models": sorted({e.get("returned_model") or "not_reported" for e in finishes}),
               "checks": validation["checks"] if validation else {},
-              "project_commit": read(folder / "runtime_identity.json")["project_commit"]}
+              "project_commit": read(folder / "runtime_identity.json")["project_commit"],
+              "project_tracked_dirty": read(folder / "runtime_identity.json")["project_tracked_dirty"]}
     return record, validation
 
 
@@ -83,17 +92,21 @@ def task_metrics(folder, validation, label):
     task, score = validation["task"], validation["native_score"]
     if task == "firm:consulting":
         return {"cohort": label, "task": task, "sessions": score["num_finished"], "native_mean_judge_scores": score["metrics"],
+                "outcome_units": "Judge rubric scores from 0 to 10",
                 "qualification": "Scores are judgments by the substituted judge model, not independent human ratings."}
     if task == "firm:beergame":
         episodes = [{k: e.get(k) for k in ("scenario_id", "weeks_completed", "controlled_role", "opponent_policy",
                     "total_cost_controlled", "total_cost_supply_chain", "bullwhip_controlled", "avg_backlog_controlled")}
                     for e in score["episode_metrics"]]
         return {"cohort": label, "task": task, "episodes": episodes,
+                "outcome_units": "Native simulation monetary units, distinct from gateway credits",
+                "offline_saved_action_audit": read(folder / "beer_audit.json") if (folder / "beer_audit.json").exists() else None,
                 "native_aggregate_metrics": {k: v for k, v in score.items() if k != "episode_metrics"},
                 "qualification": "Inspect supply-chain amplification separately from controlled-retailer cost. Missing upstream aggregate metrics remain null."}
     if task == "firm:edt":
         rollout = read(next(folder.rglob("rollout.json")))
         return {"cohort": label, "task": task, "rollout_summary": {k: v for k, v in rollout.items() if type(v) in (int, float, bool) or v is None},
+                "outcome_units": "Native synthetic business monetary units, distinct from gateway credits",
                 "synthetic_business_metrics": {k: v for k, v in rollout.get("metrics", {}).items() if type(v) in (int, float) or v is None},
                 "qualification": "One configured scenario; synthetic model outcome, not a causal estimate of real business performance."}
     if task == "icbe":
@@ -117,6 +130,7 @@ def task_metrics(folder, validation, label):
                            "cooperation_rate_b": sum(r["Move B"] == "COOPERATE" for r in records) / len(records),
                            "points_a": sum(r["Pts A"] for r in records), "points_b": sum(r["Pts B"] for r in records)})
         return {"cohort": label, "task": task, "phase_metrics": phases,
+                "outcome_units": "Native game payoff points and cooperation proportions",
                 "qualification": "One ordered match per model pair; rounds are dependent observations. Output ceiling is 4096 rather than upstream 150 tokens."}
     return None
 
@@ -171,7 +185,7 @@ def main():
     write_json(PUBLIC / "family_metrics.json", metrics)
     write_json(PUBLIC / "budget_summary.json", budget)
     write_csv(PUBLIC / "native_coverage.csv", coverage)
-    usage = [{k: v for k, v in c.items() if k not in {"checks", "requested_models", "returned_models", "project_commit"}} for c in cohorts]
+    usage = [{k: v for k, v in c.items() if k not in {"checks", "requested_models", "returned_models", "project_commit", "project_tracked_dirty"}} for c in cohorts]
     write_csv(PUBLIC / "evaluation_usage.csv", usage)
     write_csv(ROOT / "docs/results/native_coverage.csv", coverage)
     write_json(PRIVATE / "index.json", mapping)

@@ -50,9 +50,18 @@ def validate_run(folder):
     elif task == "firm:consulting" and result:
         checks["native_coverage"] = (result["num_cases"] == result["num_finished"] == manifest["expected_units"] and result["num_failed"] == 0)
         checks["judge_observed"] = any(e["context"].get("validation_kind") == "judge" for e in starts.values())
+        judges = [e for e in starts.values() if e["context"].get("validation_kind") == "judge"]
+        checks["every_frozen_case_judged_once"] = (len(judges) == manifest["expected_units"] and
+            {e["context"].get("case_id") for e in judges} == set(manifest["selected_case_ids"]))
     elif task == "firm:beergame" and result:
         checks["native_coverage"] = result["episodes"] == manifest["expected_units"]
         checks["full_25_week_horizon"] = all(e.get("weeks_completed") == 25 for e in result["episode_metrics"])
+        episodes = [read(p) for p in folder.rglob("episode_*.json")]
+        checks["saved_weekly_transitions"] = (len(episodes) == manifest["expected_units"] and
+            all(len(e["steps"]) == 25 and [s["step_out"]["obs"]["week"] for s in e["steps"]] == list(range(1, 26)) for e in episodes))
+        frozen = read(Path(__file__).resolve().parents[2] / "docs/results/native_episode_manifest.json")["beergame"][:manifest["expected_units"]]
+        checks["frozen_scenarios"] = ({e["scenario_id"]: e["episode_config"] for e in episodes} ==
+            {e["scenario_id"]: e["config"] for e in frozen})
     elif task == "firm:edt":
         rollouts = list(folder.rglob("rollout.json"))
         checks["full_96_step_horizon"] = len(rollouts) == manifest["expected_units"] and all(read(p)["steps"] == 96 for p in rollouts)
@@ -69,6 +78,9 @@ def validate_run(folder):
                 records = [dict(zip(entries[0], row)) for row in entries[1:]]
                 checks["unique_pair_round_records"] = len({(r["Match ID"], r["Round"]) for r in records}) == len(records)
                 checks["each_pair_full_horizon"] = all({r["Round"] for r in records if r["Match ID"] == pair} == set(range(1, manifest["configured_horizon"] + 1)) for pair in range(1, manifest["expected_units"] + 1))
+                frozen = read(Path(__file__).resolve().parents[2] / "docs/results/native_episode_manifest.json")["icbe"]
+                expected_pairs = {(e["model_a"], e["model_b"]) for e in frozen}
+                checks["frozen_ordered_model_pairs"] = {(r["Model A"], r["Model B"]) for r in records} == expected_pairs
                 matrices = [((3, 3), (0, 5), (5, 0), (1, 1)), ((1, 1), (0, 4), (4, 0), (3, 3)),
                             ((4, 4), (-3, 5), (5, -3), (2, 2)), ((1, 1), (-1, 3), (3, -1), (-2, -2))]
                 moves = {"COOPERATE": 0, "EXPLOIT": 1}
@@ -93,6 +105,9 @@ def validate_run(folder):
         qualifications.append("Retail needs review of tool errors and date transitions; checkpoint count alone does not establish decision quality.")
     else:
         checks["known_native_validator"] = False
+    if task in {"firm:consulting", "firm:beergame"} and result:
+        saved = list(folder.rglob("test_results.json"))
+        checks["native_score_artifact"] = len(saved) == 1 and read(saved[0])["test_results"] == result
     elapsed = (datetime.fromisoformat(manifest["finished_at_utc"]) - datetime.fromisoformat(manifest["started_at_utc"])).total_seconds()
     return {"run_id": folder.name, "task": task, "purpose": manifest["purpose"],
             "status": "validated_complete" if all(checks.values()) else "requires_review",

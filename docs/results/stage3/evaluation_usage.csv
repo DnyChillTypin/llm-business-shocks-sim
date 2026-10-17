@@ -1,4 +1,12 @@
-cohort,task,status,method_classification,expected_units,configured_horizon,saved_reasoning_cases,correct,scored_cases,accuracy,no_answer,attempts,completed_responses,invalid_responses,unknown_usage_responses,input_tokens,output_tokens,estimated_gateway_credits,api_seconds,failure_category
-evaluation_01,firm:FinCode,validated_complete,native logic with substituted model,7,,7,7,7,1.0,0,7,7,0,0,2697,891,0.004012052,26.57215680007357,
-evaluation_02,firm:CodeFinQA,validated_complete,native logic with substituted model,50,,50,41,50,0.82,0,50,50,0,0,61728,5779,0.054368056,151.57596360018943,
-evaluation_03,firm:CodeTAT-QA,validated_complete,native logic with substituted model,50,,50,49,50,0.98,0,50,50,0,0,30308,5104,0.03250396,127.08280510018812,
+cohort,task,status,method_classification,expected_units,configured_horizon,saved_reasoning_cases,native_accuracy_unit,native_correct_units,native_scored_units,exact_case_accuracy,correct,scored_cases,accuracy,no_answer,attempts,completed_responses,invalid_responses,unknown_usage_responses,input_tokens,output_tokens,estimated_gateway_credits,api_seconds,elapsed_seconds,failure_category
+evaluation_01,firm:FinCode,validated_complete,native logic with substituted model,7,,7,case,7,7,1.0,7,7,1.0,0,7,7,0,0,2697,891,0.004012052,26.57215680007357,28.715872,
+evaluation_02,firm:CodeFinQA,validated_complete,native logic with substituted model,50,,50,case,41,50,0.82,41,50,0.82,0,50,50,0,0,61728,5779,0.054368056,151.57596360018943,154.562949,
+evaluation_03,firm:CodeTAT-QA,validated_complete,native logic with substituted model,50,,50,case,49,50,0.98,49,50,0.98,0,50,50,0,0,30308,5104,0.03250396,127.08280510018812,130.325491,
+evaluation_04,firm:SEC-NUM,validated_complete,native logic with substituted model,50,,50,case,44,50,0.88,44,50,0.88,0,50,50,0,0,73786,5176,0.060549215,105.09885900007794,107.965379,
+evaluation_05,firm:TAT-QA,validated_complete,native logic with substituted model,50,,50,case,48,50,0.96,48,50,0.96,0,50,50,0,0,33572,4247,0.032398872,168.72419150010683,171.390227,
+evaluation_06,firm:ConvFinQA,validated_complete,native logic with substituted model,50,,50,case,35,50,0.7,35,50,0.7,0,50,50,0,0,57000,4571,0.048242006,111.23777300002985,114.178085,
+evaluation_07,firm:FinKnow,validated_complete,native logic with substituted model,50,,50,case,46,50,0.92,46,50,0.92,0,50,50,0,0,11208,9042,0.030358562,137.58116019977024,140.270255,
+evaluation_08,firm:FormulaEval,validated_complete,native logic with substituted model,50,,50,case,47,50,0.94,47,50,0.94,0,50,50,0,0,19837,5678,0.027265419,158.7468452002504,180.96017,
+evaluation_09,firm:finer,validated_complete,native logic with substituted model,50,,50,entity_label,146,200,0.44,22,50,0.73,0,50,50,0,0,89985,13186,0.091460762,194.658326499979,197.364179,
+evaluation_10,firm:formula,validated_complete,native logic with substituted model,50,,50,case,37,50,0.74,37,50,0.74,0,50,50,0,0,9298,7677,0.025635863,140.43904870003462,143.332809,
+evaluation_11,firm:factset,validated_complete,Factset extension with substituted model,50,,50,case,25,50,0.5,25,50,0.5,0,50,50,0,0,21129,7228,0.032066295,158.42271149979206,161.147217,

@@ -59,3 +59,19 @@ class RunValidationTests(unittest.TestCase):
         self.assertEqual(report["status"], "requires_review")
         self.assertEqual(report["missing_usage_attempts"], 1)
         self.assertFalse(report["checks"]["budget_exposure_accounted"])
+
+    def test_consulting_requires_one_real_judge_response_for_every_frozen_case(self):
+        path = self.folder / "run_manifest.json"
+        manifest = json.loads(path.read_text())
+        manifest.update(task="firm:consulting", expected_units=2, selected_case_ids=["case0", "case1"])
+        self.write("run_manifest.json", manifest)
+        result = {"num_cases": 2, "num_finished": 2, "num_failed": 0, "metrics": {"overall": 8}}
+        self.write("native_result.json", result)
+        self.write("native/test_results.json", {"test_results": result})
+        self.events[0]["context"]["validation_kind"] = "judge"
+        self.events_write()
+        report = validate_run(self.folder)
+        self.assertTrue(report["checks"]["native_coverage"])
+        self.assertTrue(report["checks"]["judge_observed"])
+        self.assertFalse(report["checks"]["every_frozen_case_judged_once"])
+        self.assertEqual(report["status"], "requires_review")

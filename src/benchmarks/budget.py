@@ -31,6 +31,32 @@ def nanos(value) -> int:
 
 
 class BudgetLedger:
+    @staticmethod
+    def amend_allowance(old, new, path):
+        """Explicit approval amendment; preserve every existing attempt and charge."""
+        allowed = {"cap_usd", "scope_caps_usd", "approval_reference", "approved_at_utc",
+                   "qualification", "bounded_unknown_failure_categories"}
+        if any(old.get(k) != new.get(k) for k in set(old) | set(new) if k not in allowed):
+            raise BudgetStop("Allowance amendment cannot change identity, rates, purposes, models or attempt limits.")
+        if new.get("approved") is not True or not new.get("approval_reference") or new["approval_reference"] == old["approval_reference"]:
+            raise BudgetStop("A new explicit approval reference is required.")
+        if nanos(new["cap_usd"]) < nanos(old["cap_usd"]) or any(nanos(new["scope_caps_usd"].get(k, 0)) < nanos(v) for k, v in old["scope_caps_usd"].items()):
+            raise BudgetStop("This amendment may only increase the approved allowance/allocation.")
+        if sum(nanos(v) for v in new["scope_caps_usd"].values()) > nanos(new["cap_usd"]):
+            raise BudgetStop("Amended allocations exceed the aggregate allowance.")
+        digest = lambda m: hashlib.sha256(json.dumps(m, sort_keys=True).encode()).hexdigest()
+        db = sqlite3.connect(path)
+        try:
+            with db:
+                db.execute("BEGIN IMMEDIATE")
+                if db.execute("SELECT fingerprint FROM config").fetchone()[0] != digest(old):
+                    raise BudgetStop("Previous allowance fingerprint does not match the existing ledger.")
+                db.execute("CREATE TABLE IF NOT EXISTS allowance_amendments (at TEXT, previous_manifest TEXT, new_manifest TEXT)")
+                db.execute("INSERT INTO allowance_amendments VALUES (?,?,?)", (utc_now(), json.dumps(old), json.dumps(new)))
+                db.execute("UPDATE config SET fingerprint=?", (digest(new),))
+        finally:
+            db.close()
+
     def __init__(self, manifest: dict, ledger_path: Path, *, run_id: str, scope="native"):
         self.manifest = manifest
         self.path, self.run_id, self.scope = Path(ledger_path), run_id, scope
@@ -70,6 +96,16 @@ class BudgetLedger:
                 reserved_nanos INTEGER, actual_nanos INTEGER, status TEXT,
                 input_bound INTEGER, output_bound INTEGER, started_at TEXT,
                 finished_at TEXT, uncertainty_reason TEXT)""")
+            db.execute("CREATE TABLE IF NOT EXISTS bounded_holds (attempt_id TEXT PRIMARY KEY, approval_reference TEXT, at TEXT, explanation TEXT)")
+
+    def retain_bounded_failed_charge(self, attempt_id, explanation):
+        """Keep the full failed-call reserve, without inventing tokens or a bill."""
+        with self._connect() as db:
+            db.execute("BEGIN IMMEDIATE")
+            row = db.execute("SELECT status,uncertainty_reason,actual_nanos,reserved_nanos FROM attempts WHERE id=?", (attempt_id,)).fetchone()
+            if not row or row[0] != "uncertain" or row[2] is not None or row[1] not in self.manifest.get("bounded_unknown_failure_categories", []):
+                raise BudgetStop("Only explicitly authorized, bounded failed requests may carry their full reserve forward.")
+            db.execute("INSERT INTO bounded_holds VALUES (?,?,?,?)", (attempt_id, self.manifest["approval_reference"], utc_now(), explanation))
 
     @contextmanager
     def _connect(self):
@@ -99,7 +135,7 @@ class BudgetLedger:
         reserve = self.cost(model, input_bound, output_bound)
         with self._connect() as db:
             db.execute("BEGIN IMMEDIATE")
-            if db.execute("SELECT 1 FROM attempts WHERE status='uncertain' LIMIT 1").fetchone():
+            if db.execute("SELECT 1 FROM attempts WHERE status='uncertain' AND id NOT IN (SELECT attempt_id FROM bounded_holds) LIMIT 1").fetchone():
                 raise BudgetStop("Unresolved usage/charges block further paid calls; reconcile the ledger.")
             if db.execute("SELECT 1 FROM attempts WHERE status='pending' AND run_id != ? LIMIT 1",
                           (self.run_id,)).fetchone():
@@ -137,6 +173,7 @@ class BudgetLedger:
     def summary(self):
         with self._connect() as db:
             rows = db.execute("SELECT status,reserved_nanos,actual_nanos FROM attempts").fetchall()
+            carried = db.execute("SELECT COUNT(*),COALESCE(SUM(a.reserved_nanos),0) FROM attempts a JOIN bounded_holds h ON a.id=h.attempt_id WHERE a.status='uncertain'").fetchone()
         known = sum(r[2] for r in rows if r[2] is not None)
         held = sum(max(0, r[1] - (r[2] or 0)) for r in rows if r[0] != "settled")
         return {"budget_id": self.manifest["budget_id"], "currency": self.manifest["currency"],
@@ -145,6 +182,8 @@ class BudgetLedger:
                 "exposure_usd": (known + held) / float(SCALE),
                 "pending_attempts": sum(r[0] == "pending" for r in rows),
                 "uncertain_attempts": sum(r[0] == "uncertain" for r in rows),
+                "bounded_carried_attempts": carried[0], "bounded_carried_reserve_usd": carried[1] / float(SCALE),
+                "blocking_uncertain_attempts": sum(r[0] == "uncertain" for r in rows) - carried[0],
                 "cap_usd": self.cap / float(SCALE), "allowance_sha256": self.fingerprint,
                 "cost_basis": "Token-derived uncached tariff upper estimate; provider billing is not independently verified.",
                 "limit_qualification": "Conditional on applicable tariff and gateway honoring token limits; not a provider-side quota."}

@@ -1,0 +1,28 @@
+{
+  "approved_cap_usd": 2,
+  "max_attempts": 250,
+  "scope_caps_usd": {
+    "native": 1.5,
+    "kaggle": 0.5
+  },
+  "approval_reference": "User: ok ill raise the limit to $2, go finish stage 2. Total inclusive cap; retain earlier failed-call full reserve as unknown; 250 aggregate client attempts unchanged.",
+  "approved_at_utc": "2026-10-17T14:46:08.759962+00:00",
+  "ledger_before_attempt_count": 22,
+  "budget_summary": {
+    "budget_id": "stage2_pilot_v1",
+    "currency": "USD_gateway_credit",
+    "attempts": 22,
+    "known_cost_usd": 0.01899748,
+    "unresolved_reserved_usd": 0.0076905,
+    "exposure_usd": 0.02668798,
+    "pending_attempts": 0,
+    "uncertain_attempts": 1,
+    "bounded_carried_attempts": 1,
+    "bounded_carried_reserve_usd": 0.0076905,
+    "blocking_uncertain_attempts": 0,
+    "cap_usd": 2.0,
+    "allowance_sha256": "a548fa88146424f2db9f5e673c038482a7452b93ad3ff7df6a9e44f50b7a7914",
+    "cost_basis": "Token-derived uncached tariff upper estimate; provider billing is not independently verified.",
+    "limit_qualification": "Conditional on applicable tariff and gateway honoring token limits; not a provider-side quota."
+  }
+}

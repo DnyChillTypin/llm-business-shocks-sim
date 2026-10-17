@@ -316,7 +316,7 @@ def main():
             asyncio.run(module.main())
         (output / "native_result.json").write_text(json.dumps(result, indent=2, default=str), encoding="utf-8")
         budget_state = budget.summary()
-        if budget_state["pending_attempts"] or budget_state["uncertain_attempts"]:
+        if budget_state["pending_attempts"] or budget_state["blocking_uncertain_attempts"]:
             raise BudgetStop("Run has unresolved attempts; it cannot be marked complete.")
         if isinstance(result, dict) and "total" in result and result["total"] != plan["expected_units"]:
             raise RuntimeError("Native scorer did not account for every selected case.")

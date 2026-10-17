@@ -31,7 +31,7 @@ def validate_run(folder):
         totals["input_tokens"] == sum((e.get("usage") or {}).get("prompt_tokens", 0) for e in finishes.values()) and
         totals["output_tokens"] == sum((e.get("usage") or {}).get("completion_tokens", 0) for e in finishes.values()))
     budget = read(folder / "budget_summary.json")
-    checks["accounting_settled"] = budget["pending_attempts"] == budget["uncertain_attempts"] == 0
+    checks["accounting_settled"] = budget["pending_attempts"] == budget.get("blocking_uncertain_attempts", budget["uncertain_attempts"]) == 0
     checks["native_result_saved"] = (folder / "native_result.json").is_file()
     result = read(folder / "native_result.json") if checks["native_result_saved"] else None
     if isinstance(result, dict) and "total" in result:

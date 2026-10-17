@@ -166,7 +166,7 @@ class AttemptLog:
             (self.output / "budget_summary.json").write_text(json.dumps(self.budget.summary(), indent=2), encoding="utf-8")
         if not valid_usage and not error:
             raise BudgetStop("Completion usage is missing; reservation retained and subsequent calls blocked.")
-        if self.budget.summary()["uncertain_attempts"] and not error:
+        if self.budget.summary()["blocking_uncertain_attempts"] and not error:
             raise BudgetStop("Reported usage exceeded the declared envelope; review charging before more calls.")
 
     @fatal_accounting

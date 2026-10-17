@@ -18,6 +18,46 @@ from src.benchmarks.gateway import request_context
 
 
 class BudgetTests(unittest.TestCase):
+    def test_approved_cap_amendment_preserves_spend_and_a_bounded_failed_reservation(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "allowance.sqlite"
+            old = manifest()
+            first = BudgetLedger(old, path, run_id="first")
+            first.reserve("known", "test", 100, 100)
+            first.settle("known", input_tokens=4, output_tokens=3)
+            first.reserve("failed", "test", 100, 100)
+            first.settle("failed", uncertain_reason="api_InternalServerError_http_503")
+            prior = first.summary()
+            new = {**old, "cap_usd": 2, "scope_caps_usd": {"native": 1.5, "kaggle": .5},
+                   "approval_reference": "User explicitly increases cap and requests continued pilots",
+                   "bounded_unknown_failure_categories": ["api_InternalServerError_http_503"]}
+            BudgetLedger.amend_allowance(old, new, path)
+            second = BudgetLedger(new, path, run_id="second")
+            with self.assertRaises(BudgetStop):
+                second.reserve("blocked", "test", 100, 100)
+            second.retain_bounded_failed_charge("failed", "Retain original full reservation; billing remains unknown.")
+            after = second.summary()
+            self.assertEqual(after["attempts"], 2)
+            self.assertEqual(after["known_cost_usd"], prior["known_cost_usd"])
+            self.assertEqual(after["exposure_usd"], prior["exposure_usd"])
+            self.assertEqual(after["uncertain_attempts"], 1)
+            self.assertEqual(after["blocking_uncertain_attempts"], 0)
+            second.reserve("next", "test", 100, 100)
+            self.assertEqual(second.summary()["attempts"], 3)
+
+    def test_amendment_cannot_change_rates_or_clear_unbounded_usage(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "allowance.sqlite"
+            old = manifest()
+            first = BudgetLedger(old, path, run_id="first")
+            changed = {**old, "approval_reference": "new", "rates": {"test": {"input_per_million": 0, "output_per_million": 0}}}
+            with self.assertRaises(BudgetStop):
+                BudgetLedger.amend_allowance(old, changed, path)
+            first.reserve("excess", "test", 1, 1)
+            first.settle("excess", input_tokens=2, output_tokens=2)
+            with self.assertRaises(BudgetStop):
+                first.retain_bounded_failed_charge("excess", "Cannot excuse a bound breach.")
+
     def test_powershell_bom_manifest_uses_the_same_shared_allowance(self):
         with tempfile.TemporaryDirectory() as directory:
             folder = Path(directory)

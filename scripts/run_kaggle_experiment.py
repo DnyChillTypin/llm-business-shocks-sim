@@ -102,7 +102,7 @@ def main():
             frame, summary = run_episode(prepared, run, scenario=episode["scenario"], policy=episode["policy"], decide=decide)
             if summary["days"] != design["horizon_days"] or not summary["accounting_reconciled"]:
                 raise RuntimeError("Episode horizon/accounting validation failed.")
-            if budget and (budget.summary()["pending_attempts"] or budget.summary()["uncertain_attempts"]):
+            if budget and (budget.summary()["pending_attempts"] or budget.summary()["blocking_uncertain_attempts"]):
                 raise RuntimeError("Unresolved paid attempt accounting.")
             manifest.update(status="validated_complete", completed_days=summary["days"],
                 fallback_review_required=summary["fallback_days"] / summary["decision_opportunities"] > .05)

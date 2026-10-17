@@ -1,0 +1,23 @@
+{
+  "dataset": {
+    "reference": "atomicd/retail-store-inventory-and-demand-forecasting",
+    "version": 8,
+    "csv_file": "sales_data.csv",
+    "csv_sha256": "96f107b42042d5b21fcae88c7dfc98aab036788aaae73fb3605546cfc06135ff",
+    "url": "https://www.kaggle.com/datasets/atomicd/retail-store-inventory-and-demand-forecasting"
+  },
+  "retailbench": {
+    "url": "https://github.com/linghuazhang01/RetailBench.git",
+    "commit": "f1d37b35abfa60ef5599e56d2cdbdaa4fd9b8bf3"
+  },
+  "reference_repositories": {
+    "FirmBench": {
+      "url": "https://github.com/sduyangmin/FirmBench.git",
+      "commit": "fe0edb02bfa298c0f407468255e2dbdf73f4b65b"
+    },
+    "ICBE": {
+      "url": "https://github.com/ruxi-stnmr/icbe-2026-strategic-behavior-llms.git",
+      "commit": "ad29de11a0161cf6503516edc7d37f5104d22259"
+    }
+  }
+}

@@ -1,0 +1,8 @@
+# Dependencies for the current data integration, baseline policies and notebook.
+pandas>=2.2
+numpy>=1.26
+matplotlib>=3.8
+nbformat>=5.10
+ipykernel>=6.29
+nbclient>=0.10
+jinja2>=3.1

@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "study_type": "Kaggle-driven RetailBench adaptation, not a native benchmark reproduction",
+  "source_url": "https://www.kaggle.com/datasets/atomicd/retail-store-inventory-and-demand-forecasting",
+  "raw_sha256": "96f107b42042d5b21fcae88c7dfc98aab036788aaae73fb3605546cfc06135ff",
+  "retailbench_commit": "f1d37b35abfa60ef5599e56d2cdbdaa4fd9b8bf3",
+  "store_id": "S004",
+  "selection": "Upper-median training demand coefficient of variation; ties by store/product ID.",
+  "source_rows": 76000,
+  "source_series": 100,
+  "train_end": "2023-04-01",
+  "validation_start": "2023-04-02",
+  "validation_end": "2023-08-31",
+  "test_start": "2023-09-01",
+  "episode_end": "2023-09-21",
+  "settings": {
+    "horizon": 21,
+    "train_fraction": 0.6,
+    "validation_fraction": 0.2,
+    "elasticity": 1.5,
+    "purchase_cost_ratio": 0.6,
+    "holding_cost_ratio": 0.001,
+    "lead_days": 2,
+    "disrupted_lead_days": 5,
+    "max_order_days": 10,
+    "initial_cash_days": 20,
+    "shock_start_day": 8,
+    "shock_end_day": 14,
+    "surge_multiplier": 1.5,
+    "decline_multiplier": 0.7,
+    "price_multipliers": [
+      0.9,
+      1.0,
+      1.1
+    ]
+  },
+  "catalog": [
+    {
+      "sku_id": "P0006",
+      "category": "Groceries",
+      "reference_price": 36.56,
+      "training_mean_demand": 122.73684210526316,
+      "unit_cost": 21.936,
+      "initial_inventory": 421,
+      "max_order_quantity": 1228
+    }
+  ],
+  "initial_funds": 53847.10736842106,
+  "assumptions": [
+    "Synthetic estimated Demand is treated as reference-price demand, not causal ground truth.",
+    "Only episode-start Inventory Level initializes stock; future recorded stock/sales/orders never overwrite simulated outcomes.",
+    "Reference prices and demand means use training data only; initial inventory is observed at episode start.",
+    "Supplier cost, lead time, holding cost and elasticity are assumptions; monetary units are unspecified.",
+    "One assumed supplier; unlimited capacity; no reviews, returns, news, substitution, rent or spoilage.",
+    "Daily unmet demand is observable after the day ends; future demand and shock schedules are hidden from policies.",
+    "Calendar customer counts are null: no customer traffic is inferred or fabricated."
+  ]
+}

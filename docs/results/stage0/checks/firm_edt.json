@@ -1,0 +1,27 @@
+{
+  "task": "firm:edt",
+  "status": "passed",
+  "verified_at_utc": "2026-10-17T09:52:44.787738+00:00",
+  "purpose": "Offline scripted readiness, not LLM benchmark results",
+  "details": {
+    "episodes": 1,
+    "native_horizon": 96,
+    "native_bptk_abm_rollout": true,
+    "metric_names": [
+      "cash",
+      "cash_flow",
+      "profit_margin",
+      "overall_profit_margin",
+      "avg_utilization",
+      "overall_avg_utilization",
+      "revenue_risk",
+      "accumulated_earnings",
+      "accumulated_revenue",
+      "accumulated_expenses",
+      "avg_consulting_fee",
+      "overall_avg_consulting_fee",
+      "episode_metrics"
+    ],
+    "paid_api_calls": 0
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "command": [
+    "<PROJECT>\\.venv\\Scripts\\python.exe",
+    "scripts/run_benchmarks.py",
+    "check"
+  ],
+  "exit_code": 0,
+  "finished_at_utc": "2026-10-17T09:52:13.574490+00:00",
+  "paid_api_calls": 0
+}

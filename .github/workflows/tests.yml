@@ -32,5 +32,7 @@ jobs:
         run: .venv/bin/python -c "import nbformat; from pathlib import Path; [nbformat.validate(nbformat.read(p, as_version=4)) for p in Path('notebooks').glob('*.ipynb')]"
       - name: Run research validity checks
         run: .venv/bin/python -m unittest discover -s tests -v
-      - name: Execute the full notebook without API calls
+      - name: Execute the integration notebook without API calls
         run: .venv/bin/python scripts/verify_notebook.py
+      - name: Execute the setup evidence notebook without API calls
+        run: .venv/bin/python scripts/verify_notebook.py --notebook notebooks/02_benchmark_setup.ipynb

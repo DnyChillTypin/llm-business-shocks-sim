@@ -8,7 +8,7 @@ inventory and pricing policies, and controlled business-shock experiments.**
 ![License](https://img.shields.io/badge/License-MIT-green)
 
 **Status:** verified Kaggle-driven RetailBench integration, two rule-based
-policies, four scenarios, 12 validity tests, and an executed research notebook.
+policies, four scenarios, 19 automated tests, and two executed research notebooks.
 LLM experiments and broader benchmark reruns are planned; current results are
 baseline simulations, not LLM performance claims.
 
@@ -16,6 +16,10 @@ The three native repositories now have a local launcher, verified dependencies
 and readiness checks. Gateway JSON responses and native RetailBench streaming
 have been tested. See [benchmark setup](docs/BENCHMARKS.md) and the
 [setup notebook](notebooks/02_benchmark_setup.ipynb) before starting paid runs.
+
+The staged execution plan is in [docs/EXECUTION_PLAN.md](docs/EXECUTION_PLAN.md).
+Stage 0 verification and rerun instructions are in [docs/STAGE0_HANDOFF.md](docs/STAGE0_HANDOFF.md).
+Completed stages and meaningful milestones are committed and pushed to GitHub.
 
 ## The business question
 

@@ -1,0 +1,48 @@
+{
+  "compiler": "<LOCALAPPDATA>\\Programs\\MiKTeX\\miktex\\bin\\x64\\pdflatex.exe",
+  "version": "MiKTeX-pdfTeX 4.23 (MiKTeX 25.12)",
+  "commands": [
+    {
+      "command": [
+        "<LOCALAPPDATA>\\Programs\\MiKTeX\\miktex\\bin\\x64\\pdflatex.exe",
+        "--disable-installer",
+        "--no-shell-escape",
+        "-interaction=nonstopmode",
+        "-halt-on-error",
+        "smoke.tex"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "<LOCALAPPDATA>\\Programs\\MiKTeX\\miktex\\bin\\x64\\bibtex.exe",
+        "smoke"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "<LOCALAPPDATA>\\Programs\\MiKTeX\\miktex\\bin\\x64\\pdflatex.exe",
+        "--disable-installer",
+        "--no-shell-escape",
+        "-interaction=nonstopmode",
+        "-halt-on-error",
+        "smoke.tex"
+      ],
+      "exit_code": 0
+    },
+    {
+      "command": [
+        "<LOCALAPPDATA>\\Programs\\MiKTeX\\miktex\\bin\\x64\\pdflatex.exe",
+        "--disable-installer",
+        "--no-shell-escape",
+        "-interaction=nonstopmode",
+        "-halt-on-error",
+        "smoke.tex"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "pdf_exists": true,
+  "checked_at_utc": "2026-10-17T09:49:50.599935+00:00"
+}

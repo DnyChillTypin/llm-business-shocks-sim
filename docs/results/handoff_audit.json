@@ -1,0 +1,143 @@
+{
+  "stage": 0,
+  "status": "local_quality_gates_passed",
+  "verified_at_utc": "2026-10-17T09:52:44.787738+00:00",
+  "source_commit": "88261b3666c132d62e39cb16ef2c398853e0ddc7",
+  "paid_api_calls": 0,
+  "spending_authorization": "No pilot or evaluation budget approved",
+  "inputs": {
+    "verified_at_utc": "2026-10-17T09:50:45.574714+00:00",
+    "source_commit": "88261b3666c132d62e39cb16ef2c398853e0ddc7",
+    "vendors": {
+      "RetailBench": {
+        "head": "f1d37b35abfa60ef5599e56d2cdbdaa4fd9b8bf3",
+        "tracked_clean": true
+      },
+      "FirmBench": {
+        "head": "fe0edb02bfa298c0f407468255e2dbdf73f4b65b",
+        "tracked_clean": true
+      },
+      "icbe-2026-strategic-behavior": {
+        "head": "ad29de11a0161cf6503516edc7d37f5104d22259",
+        "tracked_clean": true
+      }
+    },
+    "dataset": {
+      "sha256": "96f107b42042d5b21fcae88c7dfc98aab036788aaae73fb3605546cfc06135ff",
+      "configured_hash_matches": true,
+      "rows": 76000,
+      "series": 100,
+      "days_per_series_min": 760,
+      "days_per_series_max": 760,
+      "date_min": "2022-01-01",
+      "date_max": "2024-01-30"
+    },
+    "retail_lfs": {
+      "files": 93958,
+      "total_bytes": 29010737647,
+      "checked_out": 93958,
+      "downloaded": 93958,
+      "verification": "LFS inventory, not a full content hash audit"
+    },
+    "launchable_tasks": [
+      "retail:dynamic_middle",
+      "retail:dynamic_hard",
+      "retail:still_middle",
+      "retail:still_hard",
+      "firm:FinCode",
+      "firm:CodeFinQA",
+      "firm:CodeTAT-QA",
+      "firm:SEC-NUM",
+      "firm:TAT-QA",
+      "firm:ConvFinQA",
+      "firm:FinKnow",
+      "firm:FormulaEval",
+      "firm:finer",
+      "firm:formula",
+      "firm:factset",
+      "firm:consulting",
+      "firm:beergame",
+      "firm:edt",
+      "icbe"
+    ],
+    "baseline_summary_matches_previous": true,
+    "env_ignored": true,
+    "env_untracked": true,
+    "paid_api_calls": 0
+  },
+  "checks": {
+    "isolated_timeout_test": {
+      "passed": true,
+      "evidence": "docs/results/stage0/formula_timeout/result.json"
+    },
+    "automated_tests": {
+      "passed": true,
+      "count": 19,
+      "evidence": "docs/results/stage0/tests/console.log"
+    },
+    "dependency_consistency": {
+      "passed": true,
+      "evidence": "docs/results/stage0/dependencies/console.log"
+    },
+    "notebooks": {
+      "passed": true,
+      "executed": [
+        "01_kaggle_retailbench_integration.ipynb",
+        "02_benchmark_setup.ipynb"
+      ],
+      "paid_api_calls": 0
+    },
+    "native_readiness": {
+      "passed": true,
+      "count": 20,
+      "evidence": "docs/results/benchmark_readiness.json"
+    },
+    "baseline_reproduction": {
+      "passed": true,
+      "rtol": 1e-12,
+      "atol": 1e-09
+    },
+    "latex_toolchain": {
+      "passed": true,
+      "version": "MiKTeX-pdfTeX 4.23 (MiKTeX 25.12)",
+      "passes": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "evidence": "docs/results/stage0/latex/result.json"
+    },
+    "secret_exclusion": {
+      "passed": true,
+      "method": "Exact configured credential values checked against all 82 tracked/trackable files; credential values were not printed. .env is ignored and untracked.",
+      "checked_at_utc": "2026-10-17T09:53:43.944233+00:00"
+    }
+  },
+  "github": {
+    "base_commit_ci": {
+      "sha": "88261b3666c132d62e39cb16ef2c398853e0ddc7",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/DnyChillTypin/llm-business-shocks-sim/actions/runs/39012994479",
+      "created_at": "2026-10-17T07:16:03Z"
+    },
+    "stage_commit_ci": "Verify after pushing; outcome reported in the stage checkpoint response and local github_ci_after.json."
+  },
+  "timeout_diagnosis": "Sandbox restriction suspected: diagnostic and full suite pass outside sandbox. No implementation defect reproduced; no formula helper edit. Exact sandbox mechanism not independently isolated.",
+  "remaining_work": [
+    "Freeze the research design in Stage 1.",
+    "Implement bounded pilot controls, full attempt/cost logging and enforceable spending guard before paid pilots.",
+    "Implement Kaggle LLM policy and split/window controls.",
+    "Agree pilot and total spending caps; current gateway balance and full-run cost unknown.",
+    "Execute paid native and matched Kaggle evaluations.",
+    "Analyze results, compile and visually verify findings report, complete portfolio release checks."
+  ],
+  "limitations": [
+    "Readiness outputs are scripted setup checks, not real-model benchmark results.",
+    "Gateway evidence is historical. No independently attested model identity.",
+    "LFS presence verified through inventory, not full content rehash.",
+    "Environment snapshot is not a tested cross-platform lockfile.",
+    "Original one-series test pilot is exploratory."
+  ]
+}

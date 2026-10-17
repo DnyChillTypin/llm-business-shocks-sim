@@ -1,0 +1,6 @@
+test_infinite_program_times_out (test_benchmark_launcher.FormulaWorkerTests.test_infinite_program_times_out) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 2.030s
+
+OK

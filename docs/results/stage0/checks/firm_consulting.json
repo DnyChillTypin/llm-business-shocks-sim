@@ -1,0 +1,12 @@
+{
+  "task": "firm:consulting",
+  "status": "passed",
+  "verified_at_utc": "2026-10-17T09:52:44.787738+00:00",
+  "purpose": "Offline scripted readiness, not LLM benchmark results",
+  "details": {
+    "available_cases": 60,
+    "selected_cases": 10,
+    "scripted_interview_and_judge": true,
+    "paid_api_calls": 0
+  }
+}

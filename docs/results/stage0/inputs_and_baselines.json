@@ -1,0 +1,60 @@
+{
+  "verified_at_utc": "2026-10-17T09:50:45.574714+00:00",
+  "source_commit": "88261b3666c132d62e39cb16ef2c398853e0ddc7",
+  "vendors": {
+    "RetailBench": {
+      "head": "f1d37b35abfa60ef5599e56d2cdbdaa4fd9b8bf3",
+      "tracked_clean": true
+    },
+    "FirmBench": {
+      "head": "fe0edb02bfa298c0f407468255e2dbdf73f4b65b",
+      "tracked_clean": true
+    },
+    "icbe-2026-strategic-behavior": {
+      "head": "ad29de11a0161cf6503516edc7d37f5104d22259",
+      "tracked_clean": true
+    }
+  },
+  "dataset": {
+    "sha256": "96f107b42042d5b21fcae88c7dfc98aab036788aaae73fb3605546cfc06135ff",
+    "configured_hash_matches": true,
+    "rows": 76000,
+    "series": 100,
+    "days_per_series_min": 760,
+    "days_per_series_max": 760,
+    "date_min": "2022-01-01",
+    "date_max": "2024-01-30"
+  },
+  "retail_lfs": {
+    "files": 93958,
+    "total_bytes": 29010737647,
+    "checked_out": 93958,
+    "downloaded": 93958,
+    "verification": "LFS inventory, not a full content hash audit"
+  },
+  "launchable_tasks": [
+    "retail:dynamic_middle",
+    "retail:dynamic_hard",
+    "retail:still_middle",
+    "retail:still_hard",
+    "firm:FinCode",
+    "firm:CodeFinQA",
+    "firm:CodeTAT-QA",
+    "firm:SEC-NUM",
+    "firm:TAT-QA",
+    "firm:ConvFinQA",
+    "firm:FinKnow",
+    "firm:FormulaEval",
+    "firm:finer",
+    "firm:formula",
+    "firm:factset",
+    "firm:consulting",
+    "firm:beergame",
+    "firm:edt",
+    "icbe"
+  ],
+  "baseline_summary_matches_previous": true,
+  "env_ignored": true,
+  "env_untracked": true,
+  "paid_api_calls": 0
+}

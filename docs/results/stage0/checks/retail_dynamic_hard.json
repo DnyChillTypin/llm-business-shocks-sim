@@ -1,0 +1,13 @@
+{
+  "task": "retail:dynamic_hard",
+  "status": "passed",
+  "verified_at_utc": "2026-10-17T09:52:44.787738+00:00",
+  "purpose": "Offline scripted readiness, not LLM benchmark results",
+  "details": {
+    "config": "dynamic_hard",
+    "tool_count": 18,
+    "one_native_day": true,
+    "step_result_type": "dict",
+    "paid_api_calls": 0
+  }
+}

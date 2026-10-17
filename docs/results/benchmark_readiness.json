@@ -1,11 +1,11 @@
 {
-  "verified_at_utc": "2026-10-17T07:12:49.478651+00:00",
+  "verified_at_utc": "2026-10-17T09:52:44.787738+00:00",
   "purpose": "Setup verification; scripted/local checks are not LLM benchmark results.",
   "checks": [
     {
       "task": "dependencies",
       "status": "passed",
-      "evidence": "results/setup_checks/20261017T070828308351Z/dependencies/check_result.json",
+      "evidence": "docs/results/stage0/checks/dependencies.json",
       "details": {
         "imports": [
           "sentence_transformers",
@@ -23,7 +23,7 @@
     {
       "task": "retail:dynamic_middle",
       "status": "passed",
-      "evidence": "results/setup_checks/20261017T070828308351Z/retail_dynamic_middle/check_result.json",
+      "evidence": "docs/results/stage0/checks/retail_dynamic_middle.json",
       "details": {
         "config": "dynamic_middle",
         "tool_count": 12,
@@ -35,7 +35,7 @@
     {
       "task": "retail:dynamic_hard",
       "status": "passed",
-      "evidence": "results/setup_checks/20261017T070828308351Z/retail_dynamic_hard/check_result.json",
+      "evidence": "docs/results/stage0/checks/retail_dynamic_hard.json",
       "details": {
         "config": "dynamic_hard",
         "tool_count": 18,
@@ -47,7 +47,7 @@
     {
       "task": "retail:still_middle",
       "status": "passed",
-      "evidence": "results/setup_checks/20261017T070828308351Z/retail_still_middle/check_result.json",
+      "evidence": "docs/results/stage0/checks/retail_still_middle.json",
       "details": {
         "config": "still_middle",
         "tool_count": 15,
@@ -59,7 +59,7 @@
     {
       "task": "retail:still_hard",
       "status": "passed",
-      "evidence": "results/setup_checks/20261017T070828308351Z/retail_still_hard/check_result.json",
+      "evidence": "docs/results/stage0/checks/retail_still_hard.json",
       "details": {
         "config": "still_hard",
         "tool_count": 15,
@@ -71,7 +71,7 @@
     {
       "task": "firm:FinCode",
       "status": "passed",
-      "evidence": "results/setup_checks/20261017T070828308351Z/firm_FinCode/check_result.json",
+      "evidence": "docs/results/stage0/checks/firm_FinCode.json",
       "details": {
         "samples": 7,
         "native_processor": "DataProcessor",
@@ -83,7 +83,7 @@
     {
       "task": "firm:CodeFinQA",
       "status": "passed",
-      "evidence": "results/setup_checks/20261017T070828308351Z/firm_CodeFinQA/check_result.json",
+      "evidence": "docs/results/stage0/checks/firm_CodeFinQA.json",
       "details": {
         "samples": 50,
         "native_processor": "DataProcessor",
@@ -95,7 +95,7 @@
     {
       "task": "firm:CodeTAT-QA",
       "status": "passed",
-      "evidence": "results/setup_checks/20261017T070828308351Z/firm_CodeTAT-QA/check_result.json",
+      "evidence": "docs/results/stage0/checks/firm_CodeTAT-QA.json",
       "details": {
         "samples": 50,
         "native_processor": "DataProcessor",
@@ -107,7 +107,7 @@
     {
       "task": "firm:SEC-NUM",
       "status": "passed",
-      "evidence": "results/setup_checks/20261017T070828308351Z/firm_SEC-NUM/check_result.json",
+      "evidence": "docs/results/stage0/checks/firm_SEC-NUM.json",
       "details": {
         "samples": 50,
         "native_processor": "DataProcessor",
@@ -119,7 +119,7 @@
     {
       "task": "firm:TAT-QA",
       "status": "passed",
-      "evidence": "results/setup_checks/20261017T070828308351Z/firm_TAT-QA/check_result.json",
+      "evidence": "docs/results/stage0/checks/firm_TAT-QA.json",
       "details": {
         "samples": 50,
         "native_processor": "DataProcessor",
@@ -131,7 +131,7 @@
     {
       "task": "firm:ConvFinQA",
       "status": "passed",
-      "evidence": "results/setup_checks/20261017T070828308351Z/firm_ConvFinQA/check_result.json",
+      "evidence": "docs/results/stage0/checks/firm_ConvFinQA.json",
       "details": {
         "samples": 50,
         "native_processor": "DataProcessor",
@@ -143,7 +143,7 @@
     {
       "task": "firm:FinKnow",
       "status": "passed",
-      "evidence": "results/setup_checks/20261017T070828308351Z/firm_FinKnow/check_result.json",
+      "evidence": "docs/results/stage0/checks/firm_FinKnow.json",
       "details": {
         "samples": 50,
         "native_processor": "DataProcessor",
@@ -155,7 +155,7 @@
     {
       "task": "firm:FormulaEval",
       "status": "passed",
-      "evidence": "results/setup_debug/formula_real/check_result.json",
+      "evidence": "docs/results/stage0/checks/firm_FormulaEval.json",
       "details": {
         "samples": 50,
         "native_processor": "DataProcessor",
@@ -167,7 +167,7 @@
     {
       "task": "firm:finer",
       "status": "passed",
-      "evidence": "results/setup_checks/20261017T070828308351Z/firm_finer/check_result.json",
+      "evidence": "docs/results/stage0/checks/firm_finer.json",
       "details": {
         "samples": 50,
         "native_processor": "DataProcessor",
@@ -179,7 +179,7 @@
     {
       "task": "firm:formula",
       "status": "passed",
-      "evidence": "results/setup_checks/20261017T070828308351Z/firm_formula/check_result.json",
+      "evidence": "docs/results/stage0/checks/firm_formula.json",
       "details": {
         "samples": 50,
         "native_processor": "DataProcessor",
@@ -191,7 +191,7 @@
     {
       "task": "firm:factset",
       "status": "passed",
-      "evidence": "results/setup_checks/20261017T070828308351Z/firm_factset/check_result.json",
+      "evidence": "docs/results/stage0/checks/firm_factset.json",
       "details": {
         "samples": 50,
         "native_processor": "DataProcessor",
@@ -203,7 +203,7 @@
     {
       "task": "firm:consulting",
       "status": "passed",
-      "evidence": "results/setup_checks/20261017T070828308351Z/firm_consulting/check_result.json",
+      "evidence": "docs/results/stage0/checks/firm_consulting.json",
       "details": {
         "available_cases": 60,
         "selected_cases": 10,
@@ -214,7 +214,7 @@
     {
       "task": "firm:beergame",
       "status": "passed",
-      "evidence": "results/setup_checks/20261017T070828308351Z/firm_beergame/check_result.json",
+      "evidence": "docs/results/stage0/checks/firm_beergame.json",
       "details": {
         "episodes": 2,
         "weeks_each": 25,
@@ -232,7 +232,7 @@
           "episode_metrics": [
             {
               "scenario_id": "default_typical",
-              "episode_id": "d24e10b8-9937-4100-a13a-0b4f0aa0a3a4",
+              "episode_id": "374c5835-e498-479a-8660-25b8bb3884c6",
               "weeks_completed": 25,
               "controlled_role": "retailer",
               "opponent_policy": "typical",
@@ -243,7 +243,7 @@
             },
             {
               "scenario_id": "default_smoothing_4",
-              "episode_id": "ad5bbf4c-0243-42e9-b6f5-94efcb2877a7",
+              "episode_id": "d2f1918c-22a6-46f0-a6e1-dab50ce462f3",
               "weeks_completed": 25,
               "controlled_role": "retailer",
               "opponent_policy": "smoothing:4",
@@ -260,7 +260,7 @@
     {
       "task": "firm:edt",
       "status": "passed",
-      "evidence": "results/setup_checks/20261017T070828308351Z/firm_edt/check_result.json",
+      "evidence": "docs/results/stage0/checks/firm_edt.json",
       "details": {
         "episodes": 1,
         "native_horizon": 96,
@@ -286,7 +286,7 @@
     {
       "task": "icbe",
       "status": "passed",
-      "evidence": "results/setup_checks/20261017T070828308351Z/icbe/check_result.json",
+      "evidence": "docs/results/stage0/checks/icbe.json",
       "details": {
         "ordered_matches": 6,
         "rounds_per_match": 100,
@@ -338,9 +338,12 @@
     "pandas": "2.3.0"
   },
   "notes": [
-    "All pinned vendor source files remain unchanged.",
-    "FormulaEval reference completion rechecked after the Windows dataclass compatibility fix.",
-    "Factset is an explicitly labeled adapter extension, not supported by the native processor.",
-    "EDT uses the native model through BPTK full-episode execution; its upstream session transport is unsupported for ABM."
-  ]
+    "All 20 offline checks passed in a single Stage 0 batch.",
+    "All pinned vendor tracked files remain unchanged.",
+    "Gateway evidence is historical and was not rerun in Stage 0.",
+    "FormulaEval timeout diagnostic and all 19 tests passed outside the restricted agent sandbox.",
+    "Factset remains a labeled local extension. EDT remains a scenario-level native ABM compatibility path."
+  ],
+  "gateway_verified_at_utc": "2026-10-17T07:12:49.478651+00:00",
+  "offline_batch": "results/setup_checks/20261017T094838624213Z"
 }

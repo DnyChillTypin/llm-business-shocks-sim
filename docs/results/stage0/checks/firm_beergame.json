@@ -1,0 +1,47 @@
+{
+  "task": "firm:beergame",
+  "status": "passed",
+  "verified_at_utc": "2026-10-17T09:52:44.787738+00:00",
+  "purpose": "Offline scripted readiness, not LLM benchmark results",
+  "details": {
+    "episodes": 2,
+    "weeks_each": 25,
+    "mcp_full_horizon": true,
+    "metrics": {
+      "episodes": 2,
+      "avg_total_cost_controlled": 9858.5,
+      "std_total_cost_controlled": 2258.5,
+      "avg_bullwhip_controlled": null,
+      "std_bullwhip_controlled": null,
+      "avg_total_backlog_controlled": null,
+      "std_total_backlog_controlled": null,
+      "avg_total_inventory_controlled": null,
+      "std_total_inventory_controlled": null,
+      "episode_metrics": [
+        {
+          "scenario_id": "default_typical",
+          "episode_id": "374c5835-e498-479a-8660-25b8bb3884c6",
+          "weeks_completed": 25,
+          "controlled_role": "retailer",
+          "opponent_policy": "typical",
+          "total_cost_controlled": 7600.0,
+          "total_cost_supply_chain": 35011670100.0,
+          "bullwhip_controlled": 0.0,
+          "avg_backlog_controlled": 0.0
+        },
+        {
+          "scenario_id": "default_smoothing_4",
+          "episode_id": "d2f1918c-22a6-46f0-a6e1-dab50ce462f3",
+          "weeks_completed": 25,
+          "controlled_role": "retailer",
+          "opponent_policy": "smoothing:4",
+          "total_cost_controlled": 12117.0,
+          "total_cost_supply_chain": 636994.0,
+          "bullwhip_controlled": 0.0,
+          "avg_backlog_controlled": 280.0
+        }
+      ]
+    },
+    "paid_api_calls": 0
+  }
+}

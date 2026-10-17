@@ -1,0 +1,19 @@
+{
+  "command": [
+    "<PROJECT>\\.venv\\Scripts\\python.exe",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tests",
+    "-p",
+    "test_benchmark_launcher.py",
+    "-k",
+    "test_infinite_program_times_out",
+    "-v"
+  ],
+  "exit_code": 0,
+  "started_at_utc": "2026-10-17T09:47:20.301655+00:00",
+  "finished_at_utc": "2026-10-17T09:47:24.234616+00:00",
+  "paid_api_calls": 0
+}

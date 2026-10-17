@@ -1,0 +1,12 @@
+{
+  "command": [
+    "<PROJECT>\\.venv\\Scripts\\python.exe",
+    "-m",
+    "pip",
+    "check"
+  ],
+  "exit_code": 0,
+  "started_at_utc": "2026-10-17T09:47:35.005823+00:00",
+  "finished_at_utc": "2026-10-17T09:47:35.776536+00:00",
+  "paid_api_calls": 0
+}

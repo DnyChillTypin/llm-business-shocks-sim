@@ -1,0 +1,346 @@
+{
+  "verified_at_utc": "2026-10-17T07:12:49.478651+00:00",
+  "purpose": "Setup verification; scripted/local checks are not LLM benchmark results.",
+  "checks": [
+    {
+      "task": "dependencies",
+      "status": "passed",
+      "evidence": "results/setup_checks/20261017T070828308351Z/dependencies/check_result.json",
+      "details": {
+        "imports": [
+          "sentence_transformers",
+          "faiss",
+          "openpyxl",
+          "tabulate",
+          "bs4",
+          "BPTK_Py",
+          "mcp.server.fastmcp",
+          "agents.mcp"
+        ],
+        "paid_api_calls": 0
+      }
+    },
+    {
+      "task": "retail:dynamic_middle",
+      "status": "passed",
+      "evidence": "results/setup_checks/20261017T070828308351Z/retail_dynamic_middle/check_result.json",
+      "details": {
+        "config": "dynamic_middle",
+        "tool_count": 12,
+        "one_native_day": true,
+        "step_result_type": "dict",
+        "paid_api_calls": 0
+      }
+    },
+    {
+      "task": "retail:dynamic_hard",
+      "status": "passed",
+      "evidence": "results/setup_checks/20261017T070828308351Z/retail_dynamic_hard/check_result.json",
+      "details": {
+        "config": "dynamic_hard",
+        "tool_count": 18,
+        "one_native_day": true,
+        "step_result_type": "dict",
+        "paid_api_calls": 0
+      }
+    },
+    {
+      "task": "retail:still_middle",
+      "status": "passed",
+      "evidence": "results/setup_checks/20261017T070828308351Z/retail_still_middle/check_result.json",
+      "details": {
+        "config": "still_middle",
+        "tool_count": 15,
+        "one_native_day": true,
+        "step_result_type": "dict",
+        "paid_api_calls": 0
+      }
+    },
+    {
+      "task": "retail:still_hard",
+      "status": "passed",
+      "evidence": "results/setup_checks/20261017T070828308351Z/retail_still_hard/check_result.json",
+      "details": {
+        "config": "still_hard",
+        "tool_count": 15,
+        "one_native_day": true,
+        "step_result_type": "dict",
+        "paid_api_calls": 0
+      }
+    },
+    {
+      "task": "firm:FinCode",
+      "status": "passed",
+      "evidence": "results/setup_checks/20261017T070828308351Z/firm_FinCode/check_result.json",
+      "details": {
+        "samples": 7,
+        "native_processor": "DataProcessor",
+        "source": "vendor\\FirmBench\\StructuredReasoning\\data\\aoa_sampled_test\\sampled_jsonl\\FinCode__sample_7_seed42.jsonl",
+        "extension": false,
+        "paid_api_calls": 0
+      }
+    },
+    {
+      "task": "firm:CodeFinQA",
+      "status": "passed",
+      "evidence": "results/setup_checks/20261017T070828308351Z/firm_CodeFinQA/check_result.json",
+      "details": {
+        "samples": 50,
+        "native_processor": "DataProcessor",
+        "source": "vendor\\FirmBench\\StructuredReasoning\\data\\aoa_sampled_test\\sampled_jsonl\\CodeFinQA__sample_50_seed42.jsonl",
+        "extension": false,
+        "paid_api_calls": 0
+      }
+    },
+    {
+      "task": "firm:CodeTAT-QA",
+      "status": "passed",
+      "evidence": "results/setup_checks/20261017T070828308351Z/firm_CodeTAT-QA/check_result.json",
+      "details": {
+        "samples": 50,
+        "native_processor": "DataProcessor",
+        "source": "vendor\\FirmBench\\StructuredReasoning\\data\\aoa_sampled_test\\sampled_jsonl\\CodeTAT-QA__sample_50_seed42.jsonl",
+        "extension": false,
+        "paid_api_calls": 0
+      }
+    },
+    {
+      "task": "firm:SEC-NUM",
+      "status": "passed",
+      "evidence": "results/setup_checks/20261017T070828308351Z/firm_SEC-NUM/check_result.json",
+      "details": {
+        "samples": 50,
+        "native_processor": "DataProcessor",
+        "source": "vendor\\FirmBench\\StructuredReasoning\\data\\aoa_sampled_test\\sampled_jsonl\\SEC-NUM__sample_50_seed42.jsonl",
+        "extension": false,
+        "paid_api_calls": 0
+      }
+    },
+    {
+      "task": "firm:TAT-QA",
+      "status": "passed",
+      "evidence": "results/setup_checks/20261017T070828308351Z/firm_TAT-QA/check_result.json",
+      "details": {
+        "samples": 50,
+        "native_processor": "DataProcessor",
+        "source": "vendor\\FirmBench\\StructuredReasoning\\data\\aoa_sampled_test\\sampled_jsonl\\TAT-QA__sample_50_seed42.jsonl",
+        "extension": false,
+        "paid_api_calls": 0
+      }
+    },
+    {
+      "task": "firm:ConvFinQA",
+      "status": "passed",
+      "evidence": "results/setup_checks/20261017T070828308351Z/firm_ConvFinQA/check_result.json",
+      "details": {
+        "samples": 50,
+        "native_processor": "DataProcessor",
+        "source": "vendor\\FirmBench\\StructuredReasoning\\data\\aoa_sampled_test\\sampled_jsonl\\ConvFinQA__sample_50_seed42.jsonl",
+        "extension": false,
+        "paid_api_calls": 0
+      }
+    },
+    {
+      "task": "firm:FinKnow",
+      "status": "passed",
+      "evidence": "results/setup_checks/20261017T070828308351Z/firm_FinKnow/check_result.json",
+      "details": {
+        "samples": 50,
+        "native_processor": "DataProcessor",
+        "source": "vendor\\FirmBench\\StructuredReasoning\\data\\aoa_sampled_test\\sampled_jsonl\\FinKnow__sample_50_seed42.jsonl",
+        "extension": false,
+        "paid_api_calls": 0
+      }
+    },
+    {
+      "task": "firm:FormulaEval",
+      "status": "passed",
+      "evidence": "results/setup_debug/formula_real/check_result.json",
+      "details": {
+        "samples": 50,
+        "native_processor": "DataProcessor",
+        "source": "vendor\\FirmBench\\StructuredReasoning\\data\\aoa_sampled_test\\sampled_jsonl\\FormulaEval__sample_50_seed42.jsonl",
+        "extension": false,
+        "paid_api_calls": 0
+      }
+    },
+    {
+      "task": "firm:finer",
+      "status": "passed",
+      "evidence": "results/setup_checks/20261017T070828308351Z/firm_finer/check_result.json",
+      "details": {
+        "samples": 50,
+        "native_processor": "DataProcessor",
+        "source": "vendor\\FirmBench\\StructuredReasoning\\data\\aoa_sampled_test\\sampled_jsonl\\finer__sample_50_seed42.jsonl",
+        "extension": false,
+        "paid_api_calls": 0
+      }
+    },
+    {
+      "task": "firm:formula",
+      "status": "passed",
+      "evidence": "results/setup_checks/20261017T070828308351Z/firm_formula/check_result.json",
+      "details": {
+        "samples": 50,
+        "native_processor": "DataProcessor",
+        "source": "vendor\\FirmBench\\StructuredReasoning\\data\\aoa_sampled_test\\sampled_jsonl\\formula__sample_50_seed42.jsonl",
+        "extension": false,
+        "paid_api_calls": 0
+      }
+    },
+    {
+      "task": "firm:factset",
+      "status": "passed",
+      "evidence": "results/setup_checks/20261017T070828308351Z/firm_factset/check_result.json",
+      "details": {
+        "samples": 50,
+        "native_processor": "DataProcessor",
+        "source": "vendor\\FirmBench\\StructuredReasoning\\data\\aoa_sampled_test\\sampled_jsonl\\factset__sample_50_seed42.jsonl",
+        "extension": true,
+        "paid_api_calls": 0
+      }
+    },
+    {
+      "task": "firm:consulting",
+      "status": "passed",
+      "evidence": "results/setup_checks/20261017T070828308351Z/firm_consulting/check_result.json",
+      "details": {
+        "available_cases": 60,
+        "selected_cases": 10,
+        "scripted_interview_and_judge": true,
+        "paid_api_calls": 0
+      }
+    },
+    {
+      "task": "firm:beergame",
+      "status": "passed",
+      "evidence": "results/setup_checks/20261017T070828308351Z/firm_beergame/check_result.json",
+      "details": {
+        "episodes": 2,
+        "weeks_each": 25,
+        "mcp_full_horizon": true,
+        "metrics": {
+          "episodes": 2,
+          "avg_total_cost_controlled": 9858.5,
+          "std_total_cost_controlled": 2258.5,
+          "avg_bullwhip_controlled": null,
+          "std_bullwhip_controlled": null,
+          "avg_total_backlog_controlled": null,
+          "std_total_backlog_controlled": null,
+          "avg_total_inventory_controlled": null,
+          "std_total_inventory_controlled": null,
+          "episode_metrics": [
+            {
+              "scenario_id": "default_typical",
+              "episode_id": "d24e10b8-9937-4100-a13a-0b4f0aa0a3a4",
+              "weeks_completed": 25,
+              "controlled_role": "retailer",
+              "opponent_policy": "typical",
+              "total_cost_controlled": 7600.0,
+              "total_cost_supply_chain": 35011670100.0,
+              "bullwhip_controlled": 0.0,
+              "avg_backlog_controlled": 0.0
+            },
+            {
+              "scenario_id": "default_smoothing_4",
+              "episode_id": "ad5bbf4c-0243-42e9-b6f5-94efcb2877a7",
+              "weeks_completed": 25,
+              "controlled_role": "retailer",
+              "opponent_policy": "smoothing:4",
+              "total_cost_controlled": 12117.0,
+              "total_cost_supply_chain": 636994.0,
+              "bullwhip_controlled": 0.0,
+              "avg_backlog_controlled": 280.0
+            }
+          ]
+        },
+        "paid_api_calls": 0
+      }
+    },
+    {
+      "task": "firm:edt",
+      "status": "passed",
+      "evidence": "results/setup_checks/20261017T070828308351Z/firm_edt/check_result.json",
+      "details": {
+        "episodes": 1,
+        "native_horizon": 96,
+        "native_bptk_abm_rollout": true,
+        "metric_names": [
+          "cash",
+          "cash_flow",
+          "profit_margin",
+          "overall_profit_margin",
+          "avg_utilization",
+          "overall_avg_utilization",
+          "revenue_risk",
+          "accumulated_earnings",
+          "accumulated_revenue",
+          "accumulated_expenses",
+          "avg_consulting_fee",
+          "overall_avg_consulting_fee",
+          "episode_metrics"
+        ],
+        "paid_api_calls": 0
+      }
+    },
+    {
+      "task": "icbe",
+      "status": "passed",
+      "evidence": "results/setup_checks/20261017T070828308351Z/icbe/check_result.json",
+      "details": {
+        "ordered_matches": 6,
+        "rounds_per_match": 100,
+        "market_phases": 4,
+        "excel_export": true,
+        "scripted_decisions": true,
+        "paid_api_calls": 0
+      }
+    }
+  ],
+  "gateway": {
+    "checks": [
+      {
+        "requested_model": "gpt-4.1-mini-2025-04-14",
+        "returned_model": "gpt-4.1-mini-2025-04-14",
+        "json_response_pass": true
+      },
+      {
+        "requested_model": "gpt-4o-mini-2024-07-18",
+        "returned_model": "gpt-4o-mini-2024-07-18",
+        "json_response_pass": true
+      },
+      {
+        "requested_model": "deepseek-v3.2",
+        "returned_model": "deepseek-v3.2",
+        "json_response_pass": true
+      },
+      {
+        "native_retail_stream_pass": true
+      }
+    ],
+    "usage": {
+      "attempts": 4,
+      "completed": 4,
+      "input_tokens": 111,
+      "output_tokens": 65,
+      "missing_usage_responses": 0
+    }
+  },
+  "dependency_versions": {
+    "openai": "2.54.0",
+    "openai-agents": "0.20.0",
+    "mcp": "1.30.0",
+    "bptk-py": "2.4.1",
+    "sentence-transformers": "6.1.0",
+    "faiss-cpu": "1.15.1",
+    "openpyxl": "3.1.5",
+    "numpy": "2.3.1",
+    "pandas": "2.3.0"
+  },
+  "notes": [
+    "All pinned vendor source files remain unchanged.",
+    "FormulaEval reference completion rechecked after the Windows dataclass compatibility fix.",
+    "Factset is an explicitly labeled adapter extension, not supported by the native processor.",
+    "EDT uses the native model through BPTK full-episode execution; its upstream session transport is unsupported for ABM."
+  ]
+}

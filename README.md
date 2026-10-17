@@ -12,6 +12,11 @@ policies, four scenarios, 12 validity tests, and an executed research notebook.
 LLM experiments and broader benchmark reruns are planned; current results are
 baseline simulations, not LLM performance claims.
 
+The three native repositories now have a local launcher, verified dependencies
+and readiness checks. Gateway JSON responses and native RetailBench streaming
+have been tested. See [benchmark setup](docs/BENCHMARKS.md) and the
+[setup notebook](notebooks/02_benchmark_setup.ipynb) before starting paid runs.
+
 ## The business question
 
 How should a retailer adjust replenishment and prices when demand rises, demand

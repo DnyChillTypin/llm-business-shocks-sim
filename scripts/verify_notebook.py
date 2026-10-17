@@ -4,6 +4,7 @@ No global kernel registration, API calls, or edits to vendor/raw inputs.
 Run: .\.venv\Scripts\python.exe scripts/verify_notebook.py
 """
 import json
+import argparse
 import sys
 import tempfile
 from pathlib import Path
@@ -14,7 +15,12 @@ from jupyter_client.kernelspec import KernelSpecManager
 from nbclient import NotebookClient
 
 root = Path(__file__).resolve().parents[1]
-path = root / "notebooks/01_kaggle_retailbench_integration.ipynb"
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument("--notebook", default="notebooks/01_kaggle_retailbench_integration.ipynb")
+args = parser.parse_args()
+path = (root / args.notebook).resolve()
+if not path.is_relative_to(root / "notebooks"):
+    raise ValueError("Choose a notebook inside this project's notebooks directory.")
 cache = root / ".cache"
 cache.mkdir(exist_ok=True)
 notebook = nbformat.read(path, as_version=4)

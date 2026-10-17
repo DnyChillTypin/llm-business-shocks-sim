@@ -31,7 +31,7 @@ upstream checkout remains unmodified. This is not an official leaderboard run.
   Kaggle through the setup script and consult the publisher's current terms.
 - Small aggregate results and figures are supplied as a project demonstration.
 
-## Additional benchmark references: execution not yet implemented here
+## Additional benchmarks: prepared execution and local validation
 
 - FirmBench: https://github.com/sduyangmin/FirmBench
   (upstream Apache-2.0 license).
@@ -39,5 +39,8 @@ upstream checkout remains unmodified. This is not an official leaderboard run.
   https://github.com/ruxi-stnmr/icbe-2026-strategic-behavior-llms
   (consult the upstream repository for its terms).
 
-These sources inform planned benchmark work. Their presence in the research plan
-does not imply that their suites have been reproduced by this project.
+Our launcher reuses native FirmBench agents/processors and ICBE's game logic.
+Local scripted checks validate their execution; full paid model runs have not
+been completed. Windows execution, the Factset extension, the EDT transport
+adaptation, and ICBE failure handling are documented in `docs/BENCHMARKS.md`.
+The pinned source checkouts retain their upstream licenses and remain unchanged.

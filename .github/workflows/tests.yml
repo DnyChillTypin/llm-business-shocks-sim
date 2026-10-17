@@ -26,8 +26,10 @@ jobs:
           .venv/bin/python -m pip install -r requirements-research.txt
       - name: Prepare pinned source and verified dataset
         run: .venv/bin/python scripts/setup_project.py
+      - name: Prepare small ICBE source for failure-handling test
+        run: .venv/bin/python scripts/setup_benchmarks.py --only ICBE
       - name: Validate notebook structure
-        run: .venv/bin/python -c "import nbformat; nbformat.validate(nbformat.read('notebooks/01_kaggle_retailbench_integration.ipynb', as_version=4))"
+        run: .venv/bin/python -c "import nbformat; from pathlib import Path; [nbformat.validate(nbformat.read(p, as_version=4)) for p in Path('notebooks').glob('*.ipynb')]"
       - name: Run research validity checks
         run: .venv/bin/python -m unittest discover -s tests -v
       - name: Execute the full notebook without API calls

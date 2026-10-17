@@ -1,0 +1,17 @@
+# Install after requirements-research.txt; includes the agreed CoT/ReAct methods.
+-r requirements-research.txt
+openai>=2.0,<3
+python-dotenv>=1.0
+tiktoken>=0.7
+scipy>=1.10
+scikit-learn>=1.0
+tabulate>=0.9
+requests>=2.31
+beautifulsoup4>=4.12
+tqdm>=4.65
+openpyxl>=3.1
+sentence-transformers>=2.2
+faiss-cpu>=1.7.4
+bptk-py==2.4.1
+openai-agents==0.20.0
+mcp==1.30.0

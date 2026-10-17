@@ -1,0 +1,17 @@
+{
+  "primary_model": "gpt-4.1-mini-2025-04-14",
+  "judge_model": "gpt-4o-mini-2024-07-18",
+  "icbe_models": ["gpt-4.1-mini-2025-04-14", "gpt-4o-mini-2024-07-18", "deepseek-v3.2"],
+  "max_output_tokens": 4096,
+  "request_timeout_seconds": 90,
+  "workers": 1,
+  "seed": 42,
+  "retail_days": 180,
+  "retail_strategy_turns": 10,
+  "retail_execution_turns": 20,
+  "consulting_cases": 10,
+  "consulting_turns": 12,
+  "icbe_rounds": 100,
+  "max_api_calls_per_task": 6000,
+  "description": "All task families with bounded cases and native horizons, using substituted gateway models. This is not exact paper/model reproduction."
+}

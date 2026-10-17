@@ -1,0 +1,15 @@
+{
+  "stage": 3,
+  "execution_route": "non-Retail first pass",
+  "route_status": "in_progress_or_incomplete",
+  "original_full_stage_status": "incomplete_Retail_deferred",
+  "validated_tasks": 3,
+  "deferred_tasks": 4,
+  "research_qualifications": [
+    "Substituted gateway models; not exact published-model reproduction.",
+    "Factset extension is reported separately.",
+    "No cross-family pooled score.",
+    "Returned model identifiers do not independently attest served model weights.",
+    "Raw transcripts and account metadata remain in ignored local evidence."
+  ]
+}

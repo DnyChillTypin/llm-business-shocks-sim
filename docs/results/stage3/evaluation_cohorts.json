@@ -1,0 +1,134 @@
+[
+  {
+    "cohort": "evaluation_01",
+    "task": "firm:FinCode",
+    "status": "validated_complete",
+    "method_classification": "native logic with substituted model",
+    "expected_units": 7,
+    "configured_horizon": null,
+    "saved_reasoning_cases": 7,
+    "correct": 7,
+    "scored_cases": 7,
+    "accuracy": 1.0,
+    "no_answer": 0,
+    "attempts": 7,
+    "completed_responses": 7,
+    "invalid_responses": 0,
+    "unknown_usage_responses": 0,
+    "input_tokens": 2697,
+    "output_tokens": 891,
+    "estimated_gateway_credits": 0.004012052,
+    "api_seconds": 26.57215680007357,
+    "failure_category": null,
+    "requested_models": [
+      "gpt-4.1-mini-2025-04-14"
+    ],
+    "returned_models": [
+      "gpt-4.1-mini-2025-04-14"
+    ],
+    "checks": {
+      "execution_succeeded": true,
+      "execution_finished": true,
+      "all_attempts_finished": true,
+      "all_responses_valid": true,
+      "all_usage_known": true,
+      "raw_artifacts_present": true,
+      "totals_reconcile": true,
+      "budget_exposure_accounted": true,
+      "native_result_saved": true,
+      "native_coverage": true,
+      "frozen_case_ids": true,
+      "native_score_artifact": true,
+      "case_records_reconcile": true
+    },
+    "project_commit": "8322966d56a930b50bd01d7f4caa8d29364156b3"
+  },
+  {
+    "cohort": "evaluation_02",
+    "task": "firm:CodeFinQA",
+    "status": "validated_complete",
+    "method_classification": "native logic with substituted model",
+    "expected_units": 50,
+    "configured_horizon": null,
+    "saved_reasoning_cases": 50,
+    "correct": 41,
+    "scored_cases": 50,
+    "accuracy": 0.82,
+    "no_answer": 0,
+    "attempts": 50,
+    "completed_responses": 50,
+    "invalid_responses": 0,
+    "unknown_usage_responses": 0,
+    "input_tokens": 61728,
+    "output_tokens": 5779,
+    "estimated_gateway_credits": 0.054368056,
+    "api_seconds": 151.57596360018943,
+    "failure_category": null,
+    "requested_models": [
+      "gpt-4.1-mini-2025-04-14"
+    ],
+    "returned_models": [
+      "gpt-4.1-mini-2025-04-14"
+    ],
+    "checks": {
+      "execution_succeeded": true,
+      "execution_finished": true,
+      "all_attempts_finished": true,
+      "all_responses_valid": true,
+      "all_usage_known": true,
+      "raw_artifacts_present": true,
+      "totals_reconcile": true,
+      "budget_exposure_accounted": true,
+      "native_result_saved": true,
+      "native_coverage": true,
+      "frozen_case_ids": true,
+      "native_score_artifact": true,
+      "case_records_reconcile": true
+    },
+    "project_commit": "8322966d56a930b50bd01d7f4caa8d29364156b3"
+  },
+  {
+    "cohort": "evaluation_03",
+    "task": "firm:CodeTAT-QA",
+    "status": "validated_complete",
+    "method_classification": "native logic with substituted model",
+    "expected_units": 50,
+    "configured_horizon": null,
+    "saved_reasoning_cases": 50,
+    "correct": 49,
+    "scored_cases": 50,
+    "accuracy": 0.98,
+    "no_answer": 0,
+    "attempts": 50,
+    "completed_responses": 50,
+    "invalid_responses": 0,
+    "unknown_usage_responses": 0,
+    "input_tokens": 30308,
+    "output_tokens": 5104,
+    "estimated_gateway_credits": 0.03250396,
+    "api_seconds": 127.08280510018812,
+    "failure_category": null,
+    "requested_models": [
+      "gpt-4.1-mini-2025-04-14"
+    ],
+    "returned_models": [
+      "gpt-4.1-mini-2025-04-14"
+    ],
+    "checks": {
+      "execution_succeeded": true,
+      "execution_finished": true,
+      "all_attempts_finished": true,
+      "all_responses_valid": true,
+      "all_usage_known": true,
+      "raw_artifacts_present": true,
+      "totals_reconcile": true,
+      "budget_exposure_accounted": true,
+      "native_result_saved": true,
+      "native_coverage": true,
+      "frozen_case_ids": true,
+      "native_score_artifact": true,
+      "case_records_reconcile": true
+    },
+    "project_commit": "8322966d56a930b50bd01d7f4caa8d29364156b3"
+  }
+]

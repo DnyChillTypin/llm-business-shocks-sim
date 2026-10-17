@@ -38,6 +38,8 @@ jobs:
         run: .venv/bin/python scripts/check_research_design.py
       - name: Verify aggregate-only public pilot package
         run: .venv/bin/python scripts/check_public_stage2.py
+      - name: Verify aggregate-only native evaluation package
+        run: .venv/bin/python scripts/check_public_stage3.py
       - name: Execute the integration notebook without API calls
         run: .venv/bin/python scripts/verify_notebook.py
       - name: Execute the setup evidence notebook without API calls
@@ -46,3 +48,5 @@ jobs:
         run: .venv/bin/python scripts/verify_notebook.py --notebook notebooks/03_kaggle_llm_experiment.ipynb
       - name: Execute saved pilot-cost analysis without API calls
         run: .venv/bin/python scripts/verify_notebook.py --notebook notebooks/04_results_analysis.ipynb
+      - name: Execute saved native evaluation analysis without API calls
+        run: .venv/bin/python scripts/verify_notebook.py --notebook notebooks/05_native_evaluation.ipynb

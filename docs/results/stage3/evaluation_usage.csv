@@ -1,0 +1,4 @@
+cohort,task,status,method_classification,expected_units,configured_horizon,saved_reasoning_cases,correct,scored_cases,accuracy,no_answer,attempts,completed_responses,invalid_responses,unknown_usage_responses,input_tokens,output_tokens,estimated_gateway_credits,api_seconds,failure_category
+evaluation_01,firm:FinCode,validated_complete,native logic with substituted model,7,,7,7,7,1.0,0,7,7,0,0,2697,891,0.004012052,26.57215680007357,
+evaluation_02,firm:CodeFinQA,validated_complete,native logic with substituted model,50,,50,41,50,0.82,0,50,50,0,0,61728,5779,0.054368056,151.57596360018943,
+evaluation_03,firm:CodeTAT-QA,validated_complete,native logic with substituted model,50,,50,49,50,0.98,0,50,50,0,0,30308,5104,0.03250396,127.08280510018812,

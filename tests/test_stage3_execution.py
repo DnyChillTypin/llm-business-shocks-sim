@@ -2,7 +2,7 @@ import json
 import tempfile
 import unittest
 from pathlib import Path
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 
 from budget_fixture import manifest
 from src.benchmarks.budget import BudgetLedger
@@ -63,3 +63,14 @@ class CaseRecordingTests(unittest.TestCase):
                 evaluate((1, {}), None)
             self.assertEqual(native.call_count, 1)
             self.assertFalse(list(Path(directory).glob("*.json")))
+
+    def test_recording_failure_also_stops_queued_cases(self):
+        with tempfile.TemporaryDirectory() as directory:
+            native = Mock(return_value=({"success": True, "is_correct": True}, None))
+            evaluate = recording_evaluator(native, directory, ["one", "two"])
+            with patch("src.benchmarks.reasoning_records.os.replace", side_effect=OSError("disk failure")):
+                with self.assertRaises(OSError):
+                    evaluate((0, {}), None)
+            with self.assertRaises(DecisionFailure):
+                evaluate((1, {}), None)
+            self.assertEqual(native.call_count, 1)

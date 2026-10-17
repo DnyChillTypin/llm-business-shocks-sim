@@ -1,0 +1,185 @@
+"""Rebuild aggregate Stage 3 evidence from local saved runs; never calls an API."""
+import csv
+import hashlib
+import json
+import sys
+from collections import defaultdict
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+from src.benchmarks.budget import BudgetLedger
+from src.benchmarks.common import TASKS
+from src.benchmarks.planning import run_plan
+from src.benchmarks.validation import validate_run
+
+PUBLIC = ROOT / "docs/results/stage3"
+PRIVATE = ROOT / "results/analysis/stage3"
+
+
+def read(path):
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def write_json(path, value):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(value, indent=2, ensure_ascii=False, allow_nan=False) + "\n", encoding="utf-8")
+
+
+def write_csv(path, rows):
+    if not rows:
+        return
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("w", encoding="utf-8", newline="") as stream:
+        writer = csv.DictWriter(stream, fieldnames=list(rows[0]))
+        writer.writeheader()
+        writer.writerows(rows)
+
+
+def classification(task):
+    if task == "firm:factset":
+        return "Factset extension with substituted model"
+    if task in {"icbe", "firm:edt"}:
+        return "native logic with compatibility adaptation and substituted models"
+    return "native logic with substituted model"
+
+
+def cohort_record(folder, manifest, label):
+    events_path = folder / "api_attempts.jsonl"
+    events = [json.loads(line) for line in events_path.read_text(encoding="utf-8").splitlines()] if events_path.exists() else []
+    starts = [e for e in events if e["event"] == "started"]
+    finishes = [e for e in events if e["event"] == "finished"]
+    parses = [e for e in events if e["event"] == "parse_checked"]
+    validation = None
+    if (folder / "exit_status.json").exists() and manifest.get("status") == "execution_finished_requires_artifact_review":
+        validation = validate_run(folder)
+        write_json(folder / "validation.json", validation)
+    score = validation.get("native_score") if validation else None
+    status = validation["status"] if validation else manifest["status"]
+    record = {"cohort": label, "task": manifest["task"], "status": status,
+              "method_classification": classification(manifest["task"]),
+              "expected_units": manifest["expected_units"], "configured_horizon": manifest["configured_horizon"],
+              "saved_reasoning_cases": len(list((folder / "case_records").glob("*.json"))),
+              "correct": score.get("correct") if isinstance(score, dict) else None,
+              "scored_cases": score.get("total") if isinstance(score, dict) else None,
+              "accuracy": score.get("accuracy") if isinstance(score, dict) else None,
+              "no_answer": score.get("no_answer") if isinstance(score, dict) else None,
+              "attempts": len(starts), "completed_responses": sum(e["status"] == "completed" for e in finishes),
+              "invalid_responses": sum(e.get("parse_status") != "valid" for e in parses),
+              "unknown_usage_responses": sum(e.get("cost_usd") is None for e in finishes),
+              "input_tokens": sum((e.get("usage") or {}).get("prompt_tokens", 0) for e in finishes),
+              "output_tokens": sum((e.get("usage") or {}).get("completion_tokens", 0) for e in finishes),
+              "estimated_gateway_credits": sum(e.get("cost_usd") or 0 for e in finishes),
+              "api_seconds": sum(e["latency_seconds"] for e in finishes),
+              "failure_category": manifest.get("failure_category"),
+              "requested_models": sorted({e["requested_model"] for e in starts}),
+              "returned_models": sorted({e.get("returned_model") or "not_reported" for e in finishes}),
+              "checks": validation["checks"] if validation else {},
+              "project_commit": read(folder / "runtime_identity.json")["project_commit"]}
+    return record, validation
+
+
+def task_metrics(folder, validation, label):
+    task, score = validation["task"], validation["native_score"]
+    if task == "firm:consulting":
+        return {"cohort": label, "task": task, "sessions": score["num_finished"], "native_mean_judge_scores": score["metrics"],
+                "qualification": "Scores are judgments by the substituted judge model, not independent human ratings."}
+    if task == "firm:beergame":
+        episodes = [{k: e.get(k) for k in ("scenario_id", "weeks_completed", "controlled_role", "opponent_policy",
+                    "total_cost_controlled", "total_cost_supply_chain", "bullwhip_controlled", "avg_backlog_controlled")}
+                    for e in score["episode_metrics"]]
+        return {"cohort": label, "task": task, "episodes": episodes,
+                "native_aggregate_metrics": {k: v for k, v in score.items() if k != "episode_metrics"},
+                "qualification": "Inspect supply-chain amplification separately from controlled-retailer cost. Missing upstream aggregate metrics remain null."}
+    if task == "firm:edt":
+        rollout = read(next(folder.rglob("rollout.json")))
+        return {"cohort": label, "task": task, "rollout_summary": {k: v for k, v in rollout.items() if type(v) in (int, float, bool) or v is None},
+                "synthetic_business_metrics": {k: v for k, v in rollout.get("metrics", {}).items() if type(v) in (int, float) or v is None},
+                "qualification": "One configured scenario; synthetic model outcome, not a causal estimate of real business performance."}
+    if task == "icbe":
+        import openpyxl
+        book = openpyxl.load_workbook(next(folder.glob("*.xlsx")), read_only=True, data_only=True)
+        try:
+            entries = list(book["Detailed Logs"].values)
+            rows = [dict(zip(entries[0], values)) for values in entries[1:]]
+        finally:
+            book.close()
+        grouped = defaultdict(list)
+        for row in rows:
+            grouped[(row["Match ID"], row["Market Phase"])].append(row)
+        phases = []
+        # Header names are checked against the saved native workbook before export.
+        for (pair, phase), records in grouped.items():
+            first = records[0]
+            phases.append({"ordered_pair": pair, "phase": phase,
+                           "model_a": first["Model A"], "model_b": first["Model B"], "rounds": len(records),
+                           "cooperation_rate_a": sum(r["Move A"] == "COOPERATE" for r in records) / len(records),
+                           "cooperation_rate_b": sum(r["Move B"] == "COOPERATE" for r in records) / len(records),
+                           "points_a": sum(r["Pts A"] for r in records), "points_b": sum(r["Pts B"] for r in records)})
+        return {"cohort": label, "task": task, "phase_metrics": phases,
+                "qualification": "One ordered match per model pair; rounds are dependent observations. Output ceiling is 4096 rather than upstream 150 tokens."}
+    return None
+
+
+def main():
+    PUBLIC.mkdir(parents=True, exist_ok=True)
+    manifests = sorted((ROOT / "results/benchmarks").glob("*/*/run_manifest.json"))
+    selected = [(p.parent, read(p)) for p in manifests if read(p).get("purpose") == "evaluation"]
+    selected.sort(key=lambda item: item[1]["started_at_utc"])
+    cohorts, metrics, mapping = [], [], []
+    for index, (folder, manifest) in enumerate(selected, 1):
+        label = f"evaluation_{index:02d}"
+        record, validation = cohort_record(folder, manifest, label)
+        cohorts.append(record)
+        mapping.append({"cohort": label, "local_folder": str(folder), "validation": validation})
+        if validation and validation["status"] == "validated_complete":
+            metric = task_metrics(folder, validation, label)
+            if metric:
+                metrics.append(metric)
+    coverage = []
+    for task in TASKS:
+        plan = run_plan(task, purpose="evaluation")
+        runs = [c for c in cohorts if c["task"] == task]
+        complete = [c for c in runs if c["status"] == "validated_complete"]
+        coverage.append({"task": task, "method_classification": classification(task),
+            "status": "deferred" if task.startswith("retail:") else "validated_complete" if complete else runs[-1]["status"] if runs else "planned",
+            "planned_units": plan["expected_units"], "configured_horizon": plan["configured_horizon"],
+            "validated_units": plan["expected_units"] if complete else 0,
+            "evaluation_cohorts": len(runs), "failed_or_incomplete_cohorts": sum(c["status"] != "validated_complete" for c in runs),
+            "qualifications": "Retail excluded from this execution route; original scope remains outstanding." if task.startswith("retail:") else ""})
+    allowance = read(ROOT / ".cache/approvals/stage3_nonretail_v1.json")
+    ledger = BudgetLedger(allowance, ROOT / "results/budgets" / (allowance["budget_id"] + ".sqlite"), run_id="stage3_export")
+    summary = ledger.summary()
+    transition = read(ROOT / "results/verification/stage3/allowance_transition.json")
+    budget = {k: summary[k] for k in ("currency", "attempts", "known_cost_usd", "unresolved_reserved_usd", "exposure_usd",
+              "pending_attempts", "uncertain_attempts", "bounded_carried_attempts", "blocking_uncertain_attempts", "cap_usd")}
+    budget.update(prior_pilot_exposure=transition["before"]["exposure_usd"], prior_pilot_attempts=transition["before"]["attempts"],
+                  scope_caps=allowance["scope_caps_usd"], total_attempt_ceiling=allowance["max_attempts"],
+                  unallocated_reserve=allowance["cap_usd"] - sum(allowance["scope_caps_usd"].values()),
+                  qualification="Token-derived uncached tariff upper estimates plus full unknown-charge holds; not independently verified provider billing.")
+    status = {"stage": 3, "execution_route": "non-Retail first pass",
+              "route_status": "validated_complete" if all(r["status"] == "validated_complete" for r in coverage if not r["task"].startswith("retail:")) else "in_progress_or_incomplete",
+              "original_full_stage_status": "incomplete_Retail_deferred",
+              "validated_tasks": sum(r["status"] == "validated_complete" for r in coverage),
+              "deferred_tasks": sum(r["status"] == "deferred" for r in coverage),
+              "research_qualifications": ["Substituted gateway models; not exact published-model reproduction.",
+                  "Factset extension is reported separately.", "No cross-family pooled score.",
+                  "Returned model identifiers do not independently attest served model weights.",
+                  "Raw transcripts and account metadata remain in ignored local evidence."]}
+    write_json(PUBLIC / "status.json", status)
+    write_json(PUBLIC / "evaluation_cohorts.json", cohorts)
+    write_json(PUBLIC / "family_metrics.json", metrics)
+    write_json(PUBLIC / "budget_summary.json", budget)
+    write_csv(PUBLIC / "native_coverage.csv", coverage)
+    usage = [{k: v for k, v in c.items() if k not in {"checks", "requested_models", "returned_models", "project_commit"}} for c in cohorts]
+    write_csv(PUBLIC / "evaluation_usage.csv", usage)
+    write_csv(ROOT / "docs/results/native_coverage.csv", coverage)
+    write_json(PRIVATE / "index.json", mapping)
+    write_json(ROOT / "results/benchmarks/coverage.json", {"coverage": coverage, "local_cohorts": mapping})
+    files = [p for p in PUBLIC.iterdir() if p.is_file() and p.name != "artifact_manifest.json"]
+    write_json(PUBLIC / "artifact_manifest.json", {p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(files)})
+    print(json.dumps({**status, "aggregate_exposure_credits": summary["exposure_usd"]}, indent=2))
+
+
+if __name__ == "__main__":
+    main()

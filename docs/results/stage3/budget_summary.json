@@ -1,0 +1,21 @@
+{
+  "currency": "USD_gateway_credit",
+  "attempts": 344,
+  "known_cost_usd": 0.940747787,
+  "unresolved_reserved_usd": 0.019009592,
+  "exposure_usd": 0.959757379,
+  "pending_attempts": 0,
+  "uncertain_attempts": 3,
+  "bounded_carried_attempts": 3,
+  "blocking_uncertain_attempts": 0,
+  "cap_usd": 6.0,
+  "prior_pilot_exposure": 0.868873311,
+  "prior_pilot_attempts": 237,
+  "scope_caps": {
+    "native": 4.2,
+    "kaggle": 0.6
+  },
+  "total_attempt_ceiling": 3000,
+  "unallocated_reserve": 1.2000000000000002,
+  "qualification": "Token-derived uncached tariff upper estimates plus full unknown-charge holds; not independently verified provider billing."
+}

@@ -24,6 +24,7 @@ def main():
     parser.add_argument("--scenario", choices=["control", "demand_surge", "demand_decline", "delivery_disruption"])
     parser.add_argument("--execute-paid", action="store_true")
     parser.add_argument("--budget", type=Path)
+    parser.add_argument("--retry-failed", action="store_true", help="Start a fresh episode after inspecting a saved failed pilot; never resume or repeat a completed episode.")
     args = parser.parse_args()
     from src.research.design import validate_design, canonical_hash
     validate_design(ROOT)
@@ -64,21 +65,24 @@ def main():
     stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
     results = ROOT / "results/runs/kaggle_retailbench"
     for index, episode in enumerate(episodes):
-        episode_id = canonical_hash({**episode, "frozen_design_sha256": hashlib.sha256((ROOT / "docs/results/study_design_manifest.json").read_bytes()).hexdigest()})
+        episode_id = canonical_hash({**episode, "frozen_design_sha256": canonical_hash(json.loads((ROOT / "docs/results/study_design_manifest.json").read_text(encoding="utf-8")))})
+        rerun_of = []
         if paid:
             for existing in results.glob("*/run_manifest.json"):
                 prior = json.loads(existing.read_text())
                 if prior.get("fallback_review_required"):
                     parser.error("A previous episode exceeded the fallback review trigger; resolve that quality gate first.")
                 if prior.get("episode_id") == episode_id:
-                    parser.error("Pilot episode already has a saved attempt; inspect it rather than silently rerunning.")
+                    if prior.get("status") != "incomplete" or not args.retry_failed:
+                        parser.error("Pilot episode already has a saved attempt; only an inspected failed episode may use --retry-failed.")
+                    rerun_of.append(existing.parent.name)
         run = results / f"{purpose}_{stamp}_{index:02d}"
         run.mkdir(parents=True)
         selected = episode["series"]
         prepared = ROOT / "data/processed/kaggle_retailbench" / f"{window}_{selected['store_id']}_{selected['product_id']}"
         prepare_dataset(ROOT / study["dataset"]["path"], prepared, store_id=selected["store_id"],
             product_ids=[selected["product_id"]], episode_start=design["windows"][window]["start"])
-        manifest = {"episode_id": episode_id, **episode, "status": "running", "expected_days": design["horizon_days"],
+        manifest = {"episode_id": episode_id, **episode, "status": "running", "expected_days": design["horizon_days"], "rerun_of": rerun_of,
             "started_at_utc": datetime.now(timezone.utc).isoformat(),
             "project_commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
             "project_tracked_dirty": bool(subprocess.check_output(["git", "status", "--porcelain", "--untracked-files=no"], cwd=ROOT, text=True).strip()),

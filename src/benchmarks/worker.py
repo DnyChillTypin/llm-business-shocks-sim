@@ -202,6 +202,11 @@ def run_firm(task, output, config):
         processor, samples, path = structured_samples(task)
         if config.get("_case_limit"):
             samples = samples[:config["_case_limit"]]
+        if config.get("_purpose") == "evaluation":
+            import utils.tools as native_tools
+            from .reasoning_records import recording_evaluator
+            native_tools.evaluate_single_test_sample = recording_evaluator(
+                native_tools.evaluate_single_test_sample, output / "case_records", config["_selected_case_ids"])
         return agent.run("eval_only", samples, processor, {"task_name": task, "save_dir": str(output),
                          "test_workers": config["workers"], "json_mode": True, "source_file": str(path)})
     if task == "consulting":
@@ -291,6 +296,8 @@ def main():
     budget = load_budget(args.budget.resolve(), run_id=output.name, scope="native", base_url=base_url, purpose=plan["purpose"])
     if args.task not in budget.manifest.get("allowed_tasks", []):
         raise BudgetStop("This task is not listed in the approved allowance.")
+    if plan["purpose"] == "evaluation" and args.task not in budget.manifest.get("evaluation_tasks", []):
+        raise BudgetStop("This task is not listed in the approved evaluation scope.")
     counts = install_gateway_clients(output, config, budget=budget)
     import subprocess
     from src.research.design import canonical_hash, text_hash

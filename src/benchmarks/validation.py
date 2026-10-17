@@ -41,6 +41,12 @@ def validate_run(folder):
         checks["frozen_case_ids"] = {e["context"]["case_id"] for e in starts.values()} == set(manifest["selected_case_ids"])
         saved = list(folder.rglob("test_results.json"))
         checks["native_score_artifact"] = len(saved) == 1 and read(saved[0])["test_results"] == result
+        if manifest["purpose"] == "evaluation":
+            records = [read(p) for p in sorted((folder / "case_records").glob("*.json"))]
+            checks["case_records_reconcile"] = (len(records) == manifest["expected_units"]
+                and [r["case_id"] for r in records] == manifest["selected_case_ids"]
+                and sum(bool(r["result"]["is_correct"]) for r in records) == result["correct"]
+                and all(r["result"]["success"] for r in records))
     elif task == "firm:consulting" and result:
         checks["native_coverage"] = (result["num_cases"] == result["num_finished"] == manifest["expected_units"] and result["num_failed"] == 0)
         checks["judge_observed"] = any(e["context"].get("validation_kind") == "judge" for e in starts.values())
@@ -71,7 +77,8 @@ def validate_run(folder):
             finally:
                 book.close()
         checks["all_decisions_logged"] = len(starts) == 2 * manifest["expected_units"] * manifest["configured_horizon"]
-        qualifications.append("Two-round pilots cover the early native phase only. Workbook filename retains upstream 100Rounds regardless of configured horizon.")
+        if manifest["purpose"] == "pilot":
+            qualifications.append("Two-round pilots cover the early native phase only. Workbook filename retains upstream 100Rounds regardless of configured horizon.")
     elif task.startswith("retail:"):
         checkpoints = [p for p in (folder / "checkpoints").glob("*.json") if re.fullmatch(r"day_\d+_checkpoint.json", p.name)]
         checks["daily_checkpoints"] = len(checkpoints) == manifest["configured_horizon"]

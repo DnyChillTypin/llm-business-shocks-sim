@@ -33,10 +33,19 @@ def nanos(value) -> int:
 
 class BudgetLedger:
     @staticmethod
-    def amend_allowance(old, new, path):
+    def amend_allowance(old, new, path, *, authorize_evaluation=False):
         """Explicit approval amendment; preserve every existing attempt and charge."""
         allowed = {"cap_usd", "scope_caps_usd", "approval_reference", "approved_at_utc",
                    "qualification", "bounded_unknown_failure_categories"}
+        if authorize_evaluation:
+            allowed |= {"allowed_purposes", "evaluation_tasks", "max_attempts"}
+            if (set(new.get("allowed_purposes", [])) != {"pilot", "evaluation"}
+                    or not set(old.get("allowed_purposes", [])) <= set(new["allowed_purposes"])
+                    or type(new.get("max_attempts")) is not int
+                    or new["max_attempts"] < old["max_attempts"]
+                    or not new.get("evaluation_tasks")
+                    or not set(new["evaluation_tasks"]) <= set(new.get("allowed_tasks", []))):
+                raise BudgetStop("Evaluation transition requires explicit task coverage and a nondecreasing attempt limit.")
         if any(old.get(k) != new.get(k) for k in set(old) | set(new) if k not in allowed):
             raise BudgetStop("Allowance amendment cannot change identity, rates, purposes, models or attempt limits.")
         if new.get("approved") is not True or not new.get("approval_reference") or new["approval_reference"] == old["approval_reference"]:

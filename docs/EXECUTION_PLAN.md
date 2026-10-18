@@ -232,6 +232,8 @@ Use the one-episode commands in `docs/results/stage5/launch_plan.csv` after exec
 
 ## Stage 6 — Analyze findings and robustness
 
+The [Stage 6 preparation checkpoint](STAGE6_PREPARATION.md) pins the completed evidence and records concrete output counts, frozen formulas, implementation gaps and the free sensitivity scope. Preparation is complete; analysis execution is not.
+
 **Purpose / contribution.** Turn episode evidence into proportional conclusions, including failure and uncertainty rather than treating days as independent trials.
 
 **Tasks, in order.** Validate manifests and duplicate IDs; reconcile attempt/episode counts; produce native coverage and family-specific scores; calculate paired Kaggle effects and phase-specific behavior; inspect at least one success and one failure trace where available; report reliability/cost beside business results; run only preselected affordable robustness checks; write claim-to-artifact mappings.
@@ -242,10 +244,12 @@ If time/budget permit, prioritize **a second non-overlapping untouched test wind
 
 For assumption robustness, first run free baselines at elasticity 0.75 and 2.25 alongside the primary 1.5. These show simulator sensitivity only. If they materially change the comparison context and budget permits, run matched LLM/baseline sensitivity blocks; do not claim LLM robustness from baseline-only runs. Add severity/duration only after that, as a separately labeled extension. A longer recovery horizon can resolve censoring but requires matched control/shock reruns and additional calls; never extend only an unfavorable policy post hoc.
 
-**Files / commands / outputs.** Build `src/analysis/metrics.py` for reusable metrics and notebook `04_results_analysis.ipynb` for explanation. **To implement:** its cells load explicit run IDs, validate completeness, compute contrasts, plot contribution/service and event-aligned actions, summarize costs, and export CSV/LaTeX tables plus PDF/PNG figures. Then run:
+**Files / commands / outputs.** Build `src/analysis/metrics.py` and notebook `08_findings_and_robustness.ipynb`; preserve notebook 04 as the historical pilot/cost checkpoint. `scripts/check_stage6_readiness.py` now verifies the prepared source snapshot without API calls. **Analysis still to implement:** notebook 08 loads manifest-selected saved evidence, validates completeness, computes contrasts, plots contribution/service and event-aligned actions, summarizes costs, and exports CSV/LaTeX tables plus PDF/PNG figures. Available preparation check and future notebook command:
 
 ```powershell
-& $py scripts/verify_notebook.py --notebook notebooks/04_results_analysis.ipynb
+& $py scripts/check_stage6_readiness.py
+# After notebook 08 is implemented during Stage 6 execution:
+& $py scripts/verify_notebook.py --notebook notebooks/08_findings_and_robustness.ipynb
 ```
 
 Save exports under `results/tables/<analysis_id>/` and `results/figures/<analysis_id>/`, with source-run hashes in `analysis_manifest.json`. Publish a small sanitized subset under `docs/results/` and `docs/assets/` for reproducibility without paid reruns. Keep native and adapted result tables distinct.

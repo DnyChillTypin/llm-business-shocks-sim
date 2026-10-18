@@ -1,0 +1,59 @@
+{
+  "stage": 6,
+  "status": "prepared_not_executed",
+  "prepared_on": "2026-10-18",
+  "analysis_executed": false,
+  "new_model_completion_calls": 0,
+  "new_simulation_episodes": 0,
+  "source_commit": "0af4710",
+  "source_snapshot_sha256": "e4dd0072e6b6614639475f0982c6c73a9a61e2a2e4da979dd74b6f37df9262e1",
+  "analysis_plan_sha256": "079fc9b499339afb1bd3bf3f2de9d315006d6fc8f29c67953df396d156bc5d39",
+  "pinned_source_files": 38,
+  "frozen_design_checks": 31,
+  "stage5_exit_gate_passed": true,
+  "native_coverage": {
+    "validated": 14,
+    "failed": 1,
+    "deferred": 4
+  },
+  "private_source_preflight": {
+    "episodes": 36,
+    "action_records": 756,
+    "observation_records": 756,
+    "primary_llm_episodes": 12,
+    "request_starts": 396,
+    "known_usage_records": 396,
+    "latency_records": 396,
+    "primary_quality_reviews": 12,
+    "ledger_and_allowance_unchanged": true,
+    "no_model_calls_or_simulation_runs": true
+  },
+  "budget_snapshot": {
+    "currency": "USD_gateway_credit",
+    "inclusive_cap_credits": 10.0,
+    "native_scope_cap_credits": 4.2,
+    "kaggle_scope_cap_credits": 3.8,
+    "unallocated_reserve_credits": 2.0,
+    "total_project_attempts": 1834,
+    "inclusive_project_exposure_credits": 2.186206858,
+    "known_project_cost_credits": 2.127122649,
+    "retained_unknown_attempts": 8,
+    "retained_unknown_charge_credits": 0.059084209,
+    "all_primary_attempts": 396,
+    "primary_exposure_credits": 0.252123564,
+    "successful_primary_cohort_cost_credits": 0.252123564,
+    "kaggle_scope_exposure_credits": 0.299574828,
+    "remaining_kaggle_scope_credits": 3.500425172,
+    "global_attempt_ceiling": 3000,
+    "pending_attempts": 0,
+    "blocking_unknown_attempts": 0,
+    "qualification": "Token-derived project estimates with full unknown-charge holds, not independently verified provider billing; local limits depend on tariffs and gateway token ceilings."
+  },
+  "implementation_status": {
+    "metrics_module_present": false,
+    "robustness_module_present": false,
+    "final_analysis_notebook_present": false
+  },
+  "scientific_qualification": "Preparation pins existing evidence and frozen methods; it does not compute new contrasts, recovery results or robustness outcomes.",
+  "next_action": "On instruction to execute Stage 6: implement and validate the analysis, extract saved actions/attempt metadata, run the free baseline sensitivity, export figures/tables and claim-to-artifact mappings."
+}

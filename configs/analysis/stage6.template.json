@@ -1,0 +1,193 @@
+{
+  "stage": 6,
+  "status": "analysis_template_only",
+  "approved": false,
+  "analysis_executed": false,
+  "paid_calls_authorized": false,
+  "study_sha256": "075f6d1137cf259a8550f27b78ba2685488b8a8174e30826b71a11833341f790",
+  "source_snapshot_sha256": "e4dd0072e6b6614639475f0982c6c73a9a61e2a2e4da979dd74b6f37df9262e1",
+  "primary_window": {
+    "start": "2023-09-22",
+    "end": "2023-10-12",
+    "purpose": "fixed_descriptive_comparison_no_tuning",
+    "prior_manual_outcome_use": "uncertain_user_report_2026-10-17",
+    "pristine_unseen_claim_allowed": false
+  },
+  "phase_days": {
+    "pre_shock": [
+      1,
+      7
+    ],
+    "shock": [
+      8,
+      14
+    ],
+    "post_shock": [
+      15,
+      21
+    ]
+  },
+  "primary_outcome": "21-day contribution; sum(revenue - cost_of_goods_sold - holding_cost)",
+  "primary_comparator": "adaptive",
+  "secondary_comparator": "fixed",
+  "primary_contrasts": "LLM minus baseline per series and shock; 9 adaptive primary and 9 fixed secondary rows",
+  "control_adjusted_contrast": "(LLM_shock - LLM_control) - (baseline_shock - baseline_control)",
+  "relative_gain": "100 * (LLM - baseline) / abs(baseline); NA if abs(baseline) <= 1e-9",
+  "recovery": {
+    "first_candidate_day": 15,
+    "consecutive_days": 3,
+    "last_observed_day": 21,
+    "criterion": "zero lost sales each day and abs(shock_closing_inventory - paired_control_closing_inventory) <= 0.2 * max(paired_control_closing_inventory, 1) each day",
+    "reported_delay_days": "first_qualifying_day - 14",
+    "unobserved": "right_censored_at_day_21; never encode as zero or 21-day exact recovery"
+  },
+  "inference": {
+    "experimental_unit": "matched series-window block; three selected blocks in the primary matrix",
+    "daily_observations_independent": false,
+    "primary_reporting": "per-block effects and per-scenario equal-weight mean, median, range and sign counts",
+    "population_significance_claims": false,
+    "bootstrap_daily_rows": false,
+    "practical_superiority_threshold": null,
+    "practical_superiority_claim_allowed": false,
+    "fallback_free_analysis": "secondary and selected; never replace primary operational outcomes",
+    "adaptation_definition": "within-episode behavioral response to changed observable conditions; no model-weight learning claim"
+  },
+  "summary_rules": {
+    "per_scenario": "Three equal-weight series-window effects: mean, median, minimum, maximum, positive/zero/negative counts; raw values before rounding.",
+    "contribution": "Report absolute and relative effects and shock-minus-control interactions; do not use raw win counts alone as adaptation evidence.",
+    "fill_rate": "Sum sales / sum demand within each episode or phase; 1 if demand is zero, with explicit zero-demand flag. Service contrasts also labeled in percentage points.",
+    "inventory": "Mean pre-arrival closing units; terminal on-hand and pipeline units/value reported separately.",
+    "terminal_on_hand": "Last closing_inventory + last arrivals_next_day, matching the native end-of-day arrival convention.",
+    "terminal_pipeline": "Initial on_order + sum(executed order quantities) - sum(arrivals_next_day). Value on-hand and pipeline at observed unit_cost.",
+    "financial_check": "Initial funds - purchase cost + revenue - holding cost equals final funds; final cash plus stock/pipeline minus initial assets equals contribution, tolerance 1e-6.",
+    "behavioral_response": "First day on/after day 8 with order quantity differing by >=1 or a different allowed price multiplier versus same-policy control. Plot pre-shock differences too; do not force them to zero.",
+    "observability": "Demand shocks first enter completed history on day 9; delivery lead-time changes are observable on day 8. Action divergence can also include model sampling/routing variation.",
+    "recovery_reporting": "Candidate starts 15 through 19, each with three observed qualifying days by day 21; report start, confirmation=start+2 and delay=start-14. Otherwise null delay and right-censored at day 21, with seven postshock follow-up days.",
+    "recovery_interpretation": "Operational inventory/service normalization, not recovery of cumulative contribution. Never encode censoring as zero or exact day-21 recovery.",
+    "operating_policy": "Keep all 17 fallback days in primary results. Fallback-free subsets are secondary and selected, never substitutes for the primary matrix.",
+    "cost": "Separate primary vs repair attempts and native vs Kaggle vs pilot cohorts. Retain every failed charge/hold; never subtract gateway credit from simulator contribution."
+  },
+  "expected_output_rows": {
+    "episode_metrics": 36,
+    "paired_shock_contrasts": 18,
+    "control_comparisons": 6,
+    "policy_shock_minus_control": 27,
+    "per_scenario_summaries": 6,
+    "phase_summaries": 108,
+    "action_traces": 756,
+    "behavioral_response": 27,
+    "recovery": 27,
+    "llm_episode_reliability_costs": 12,
+    "baseline_elasticity_summary": 72,
+    "native_task_coverage": 19
+  },
+  "native_reporting": {
+    "validated_tasks": 14,
+    "failed_tasks": 1,
+    "deferred_tasks": 4,
+    "reasoning": "Ten native reasoning datasets (457 cases) and separate 50-case Factset extension. Preserve native per-task denominators; finer uses entity labels, with exact-case accuracy separately labeled.",
+    "consulting": "Ten cases with judge dimensions and 0-10 overall score; preserve provenance of eight recovered complete cases and all failed-cohort costs.",
+    "beergame": "Two 25-week scenarios; distinguish native terminal backlog proxy from verified time-average backlog. Keep large upstream costs and absent aggregates.",
+    "edt": "One scenario decision followed by 96 ABM steps; no claim of within-rollout LLM adaptation.",
+    "icbe": "Retained validity failure after 177/600 complete valid rounds; no final full-game score, full phase plot or replacement response.",
+    "retail": "All four full native Retail episodes remain deferred; no performance score imputed.",
+    "pooling": "No cross-family pooled score or exact published-model reproduction claim."
+  },
+  "baseline_elasticity_sensitivity": {
+    "executed": false,
+    "elasticities": [
+      0.75,
+      1.5,
+      2.25
+    ],
+    "primary_elasticity": 1.5,
+    "reused_primary_baseline_episodes": 24,
+    "new_baseline_episodes": 48,
+    "new_policy_days": 1008,
+    "total_summary_rows": 72,
+    "policies": [
+      "fixed",
+      "adaptive"
+    ],
+    "model_completion_calls": 0,
+    "isolation": "Copy prepared inputs into separately labeled sensitivity directories; change only the recorded elasticity assumption. Do not edit frozen configs, primary inputs, primary validator or primary results.",
+    "validation": "Add a separate baseline-only replay/accounting check bound to the declared override and unchanged raw demand/calibration/initial state. Reuse the existing 1.5 baseline results.",
+    "claim_limit": "Baseline simulator sensitivity only. Do not reuse original LLM actions as evidence of LLM robustness or select favorable assumptions to replace primary results."
+  },
+  "paid_extensions": {
+    "enabled": false,
+    "candidates": [
+      "second non-overlapping window",
+      "independent LLM repetitions",
+      "matched LLM elasticity extension"
+    ],
+    "requirement": "Separate reviewed protocol, scope, untouched-window qualification and cost allocation before any extra model calls; the 10-credit ceiling alone does not approve extra experiments."
+  },
+  "diagnostic_illustrations": {
+    "selection_status": "Post-outcome illustrations chosen from the Stage 5 descriptive evidence, not confirmatory samples.",
+    "all_conditions_visible": true,
+    "examples": [
+      {
+        "store_id": "S001",
+        "product_id": "P0001",
+        "scenario": "delivery_disruption",
+        "purpose": "Raw positive LLM-versus-adaptive contribution and service tradeoff"
+      },
+      {
+        "store_id": "S004",
+        "product_id": "P0006",
+        "scenario": "demand_surge",
+        "purpose": "Six fallback days and negative raw contribution contrast"
+      }
+    ],
+    "rule": "Show all condition-level tables/traces; examples supplement rather than select or omit evidence."
+  },
+  "files_to_implement": [
+    "src/analysis/metrics.py",
+    "src/analysis/robustness.py",
+    "scripts/export_stage6_analysis.py",
+    "scripts/run_baseline_sensitivity.py",
+    "scripts/check_public_stage6.py",
+    "notebooks/08_findings_and_robustness.ipynb"
+  ],
+  "reusable_files": [
+    "src/analysis/native_metrics.py",
+    "src/analysis/costs.py",
+    "src/experiments/kaggle_validation.py",
+    "scripts/check_public_stage5.py",
+    "notebooks/04_results_analysis.ipynb",
+    "notebooks/05_native_evaluation.ipynb",
+    "notebooks/07_primary_shock_comparisons.ipynb"
+  ],
+  "destinations": {
+    "private": "results/analysis/<analysis_id> with source manifest, extracted actions/attempts, tables and figures",
+    "public": "docs/results/stage6 plus reviewed docs/assets/stage6 PNG/PDF figures and generated CSV/LaTeX tables",
+    "notebook": "New notebook 08; keep notebook 04 as the historical pilot/cost checkpoint"
+  },
+  "planned_figures": [
+    "Per-series raw and control-adjusted contribution contrasts",
+    "Contribution and service by pre/shock/post phase",
+    "Event-aligned inventory/order/price traces with fallback markers",
+    "Recovery starts and censored cases",
+    "Validity/repair/fallback and latency/credit summaries",
+    "Baseline-only elasticity sensitivity"
+  ],
+  "verification_cases": [
+    "Missing/duplicate day or episode must stop analysis",
+    "Relative gains with negative and near-zero denominators",
+    "Weighted fill rate and zero-demand flag",
+    "Recovery at first/last admissible start; incomplete three-day window; one-unit inventory floor",
+    "Closing versus next-day-arrival stock and pipeline/cash conservation",
+    "Fallbacks retained in operational denominators",
+    "Primary/repair attempts and old held charges counted once",
+    "Native finer labels and terminal backlog proxy remain distinct",
+    "Sensitivity isolation, baseline parity and no API client construction"
+  ],
+  "time_and_cost": {
+    "estimated_active_hours": "2-4 for implementation, analysis and figure/QC review",
+    "core_analysis_model_calls": 0,
+    "baseline_sensitivity_model_calls": 0,
+    "new_gateway_credit_required": 0,
+    "qualification": "Extra model experiments are optional, disabled and excluded from the core Stage 6 exit gate."
+  }
+}

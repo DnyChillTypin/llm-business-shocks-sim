@@ -1,7 +1,7 @@
 {
   "stage": 8,
   "all_local_checks_passed": true,
-  "exit_gate_passed": false,
+  "exit_gate_passed": true,
   "gates": [
     {
       "gate": "R1",
@@ -54,7 +54,7 @@
     {
       "gate": "R9",
       "name": "Reader and release review",
-      "status": "local_pass_pending_ci",
+      "status": "passed",
       "evidence": "README; docs/REPRODUCIBILITY.md; ci_receipt.json at final signoff"
     }
   ],

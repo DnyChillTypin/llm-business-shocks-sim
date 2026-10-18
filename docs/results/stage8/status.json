@@ -1,9 +1,9 @@
 {
   "stage": 8,
-  "status": "ready_for_ci",
+  "status": "complete",
   "checked_on": "2026-10-18",
   "local_release_qc_complete": true,
-  "exit_gate_passed": false,
+  "exit_gate_passed": true,
   "tested_source_commit": "0615016e823df125a045fcf67469c3c3164d66b9",
   "source_snapshot_sha256": "6e6d24578469853e141a801a6e874709b494b1215056d556eb5ba74be28d82f1",
   "report_pdf_sha256": "f06c146513fa0d0db223becd8e4db8d5c1b90373e20502ecc39d64bbea63e11f",
@@ -25,5 +25,6 @@
     "saved_action_replay_episodes": 36
   },
   "release_scope": "Preliminary portfolio findings, not completion of original native coverage.",
-  "final_head_ci": "Required Research validation workflow is checked again at the final pushed head; live URL recorded in delivery handoff."
+  "final_head_ci": "Required Research validation workflow is checked again at the final pushed head; live URL recorded in delivery handoff.",
+  "reviewed_candidate_commit": "55267679c817e4d4715e8c8ae7ed05f9a9960cf3"
 }

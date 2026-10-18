@@ -1,7 +1,7 @@
 {
   "status": "passed",
-  "tracked_files": 345,
-  "reachable_history_blobs": 503,
+  "tracked_files": 346,
+  "reachable_history_blobs": 521,
   "history_scanned": true,
   "pdf_inspection": true,
   "pdf_objects_inspected": 33,

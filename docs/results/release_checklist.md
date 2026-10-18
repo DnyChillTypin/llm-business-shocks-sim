@@ -1,6 +1,6 @@
 # Preliminary portfolio release checklist
 
-Local QC is complete. Final signoff awaits the reviewed-candidate GitHub workflow.
+Stage 8 is complete for the preliminary portfolio deliverable.
 Original native benchmark coverage remains incomplete (14 validated, one ICBE failure, four Retail tasks deferred).
 
 | Gate | Result | Evidence |
@@ -13,7 +13,7 @@ Original native benchmark coverage remains incomplete (14 validated, one ICBE fa
 | R6: Report verification | passed | [Report rebuild](stage8/verification.json) and [visual binding](stage7/visual_review.json) |
 | R7: Citation and attribution | passed | [Citation checks](stage8/citation_checks.json) and [attribution](../RELEASE_ATTRIBUTION.md) |
 | R8: Publication boundary | passed | [Privacy scan](stage8/privacy.json) |
-| R9: Reader and release review | local_pass_pending_ci | [Reproduction guide](../REPRODUCIBILITY.md); exact-head CI pending |
+| R9: Reader and release review | passed | [Passing candidate CI](https://github.com/DnyChillTypin/llm-business-shocks-sim/actions/runs/39145619324) and [reproduction guide](../REPRODUCIBILITY.md) |
 
 The receipt pins the passing reviewed-candidate workflow. The final publication head is checked again after pushing; its live run is linked in the delivery handoff.
 

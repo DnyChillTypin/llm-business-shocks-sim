@@ -1,6 +1,6 @@
 # Stage 3 evaluation results
 
-The non-Retail execution route has stopped for quality-control review: **14 tasks are validated and ICBE failed on an invalid response**. All 507 reasoning cases, EDT, both BeerGame scenarios and all ten Consulting cases are validated. ICBE coverage is incomplete, and four 180-day native Retail episodes remain deferred under the approved 6-credit route. Kaggle primary comparisons have not started.
+The native execution checkpoint retains **14 validated tasks and ICBE's invalid-response failure**. The review disposition is to retain that failure under the frozen protocol and proceed to [Stage 4 preparation](STAGE4_PREPARATION.md), without an amended ICBE run. All 507 reasoning cases, EDT, both BeerGame scenarios and all ten Consulting cases are validated. ICBE coverage is incomplete, and four 180-day native Retail episodes remain deferred under the approved 6-credit route. Kaggle primary comparisons have not started.
 
 ## Reasoning
 
@@ -67,7 +67,7 @@ The continuation stopped at **match 2, round 78, actor B**. DeepSeek returned `f
 
 There are **355 valid logical decisions**, comprising 38 verified replays and 317 fresh valid responses, plus the one invalid response. These cover **177 fully valid rounds**: one complete 100-round match and 77 rounds of the second match. The invalid round is excluded from completed-round counts. The native simulator produced no final workbook, so no full ICBE score or phase-cooperation plot is reported. The remaining choices are unexecuted, not missing answers silently counted as valid.
 
-This continuation used **318 new attempts and 0.292842452 estimated gateway credits**. Across pilots and all evaluations, conservative exposure is **1.934083294 credits**: 1.874999085 known token-derived costs plus 0.059084209 in eight fully retained unknown-charge holds, over 1,438 physical attempts. There are no pending requests. Budget headroom does not authorize changing the frozen response protocol or resampling the invalid choice. Fourteen non-Retail tasks remain validated; ICBE requires a methodology decision, and the four Retail tasks remain deferred.
+This continuation used **318 new attempts and 0.292842452 estimated gateway credits**. Across pilots and all evaluations, conservative exposure is **1.934083294 credits**: 1.874999085 known token-derived costs plus 0.059084209 in eight fully retained unknown-charge holds, over 1,438 physical attempts. There are no pending requests. Budget headroom does not authorize changing the frozen response protocol or resampling the invalid choice. Fourteen non-Retail tasks remain validated; ICBE's failed coverage is retained without a replacement cohort, and the four Retail tasks remain deferred.
 
 ## Evidence
 

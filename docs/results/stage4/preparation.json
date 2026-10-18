@@ -1,0 +1,102 @@
+{
+  "stage": 4,
+  "status": "preparation_ready_execution_not_complete",
+  "stage4_exit_gate_passed": false,
+  "checked_on": "2026-10-18",
+  "native_disposition": {
+    "validated_nonretail_tasks": 14,
+    "icbe": "retain_frozen_validity_failure_no_amended_run",
+    "retail_tasks_deferred": 4,
+    "original_native_scope_complete": false
+  },
+  "preparation_verification": {
+    "kaggle_contract_tests": 5,
+    "test_status": "passed",
+    "frozen_design_checks": 31,
+    "design_status": "passed",
+    "dry_run_episodes": 36,
+    "dry_run_unique_episodes": 36,
+    "primary_llm_decisions": 252,
+    "model_completion_calls": 0,
+    "primary_policy_episodes_executed": 0
+  },
+  "planned_primary_matrix": {
+    "series": [
+      {
+        "store_id": "S001",
+        "product_id": "P0001",
+        "training_rank_zero_based": 25
+      },
+      {
+        "store_id": "S004",
+        "product_id": "P0006",
+        "training_rank_zero_based": 50
+      },
+      {
+        "store_id": "S003",
+        "product_id": "P0016",
+        "training_rank_zero_based": 75
+      }
+    ],
+    "window": {
+      "start": "2023-09-22",
+      "end": "2023-10-12",
+      "purpose": "fixed_descriptive_comparison_no_tuning",
+      "prior_manual_outcome_use": "uncertain_user_report_2026-10-17",
+      "pristine_unseen_claim_allowed": false
+    },
+    "horizon_days": 21,
+    "scenarios": [
+      "control",
+      "demand_surge",
+      "demand_decline",
+      "delivery_disruption"
+    ],
+    "policies": [
+      "fixed",
+      "adaptive",
+      "llm_with_fallback"
+    ],
+    "episodes": 36,
+    "policy_days": 756,
+    "llm_episodes": 12,
+    "primary_llm_decisions": 252,
+    "maximum_attempts_including_repairs": 504,
+    "experimental_units": "three selected matched series-window blocks; daily rows are dependent"
+  },
+  "existing_validation_pilot_evidence": {
+    "llm_episodes": 2,
+    "decision_opportunities": 42,
+    "first_pass_valid": 27,
+    "model_decisions_after_repair": 39,
+    "repair_days": 15,
+    "fallback_days": 3,
+    "fallback_review": "retain_frozen_operational_policy",
+    "primary_evaluation_evidence": false
+  },
+  "remaining_stage4_gates": [
+    "all_three_series_validation_window_contract_matrix",
+    "expanded_matching_and_accounting_audit",
+    "baseline_scripted_and_primary_saved_run_validation",
+    "immutable_primary_episode_identity_and_duplicate_safeguards",
+    "cumulative_budget_and_per_episode_fallback_review_safeguards",
+    "saved_only_readiness_notebook"
+  ],
+  "budget_snapshot": {
+    "currency": "USD_gateway_credit",
+    "total_project_attempts": 1438,
+    "inclusive_project_exposure_credits": 1.934083294,
+    "inclusive_cap_credits": 6,
+    "kaggle_scope_cap_credits": 0.6,
+    "prior_kaggle_attempts": 65,
+    "prior_kaggle_exposure_credits": 0.047451264,
+    "remaining_kaggle_scope_credits": 0.552548736,
+    "primary_base_projection_credits": 0.21493599000000002,
+    "primary_high_planning_projection_credits": 0.42987198000000004,
+    "primary_projected_attempts": 342,
+    "qualification": "Token-derived project estimates plus full unknown-charge holds. Forecast scenarios are not guaranteed cost bounds or provider billing."
+  },
+  "paid_primary_authorized_by_preparation": false,
+  "current_paid_launcher_scope": "validation pilot only; primary evaluation blocked",
+  "next_action": "Execute Stage 4 offline expansion and execution/validation safeguards; reserve primary comparisons for Stage 5."
+}

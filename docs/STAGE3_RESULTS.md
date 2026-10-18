@@ -59,8 +59,12 @@ All ten cases are now validated: eight recovered complete sessions and two fresh
 
 Overall scores range from 8 to 8.5. These are judgments by the substituted interviewer/judge model, not independent human ratings. Ten selected case sessions do not provide independent model replications.
 
+## ICBE continuation
+
+The initial full run stopped at round 20 of its first match on HTTP 503 and cancellation of the paired request. Its 38 valid observed decisions cover 19 complete rounds; both unknown failed-request charges remain fully reserved. Before further calls, the actual pinned simulator reproduced all 38 full requests in an offline probe. Continuation replays these real responses only at identical native requests, reconstructing the same histories and points. New calls begin at unfinished choices. Invalid model decisions cannot be silently resampled through this mechanism, and original source costs are not counted again for replay. See the [execution record](STAGE3_EVALUATION.md).
+
 ## Evidence
 
 The [coverage table](results/native_coverage.csv), [aggregate evaluation evidence](results/stage3/evaluation_cohorts.json) and [inclusive budget summary](results/stage3/budget_summary.json) retain current completion and expense denominators. The [executed analysis notebook](../notebooks/05_native_evaluation.ipynb) checks aggregate hashes and runs without credentials or paid calls. Request-level artifacts and account metadata remain local.
 
-The [execution plan](STAGE3_EVALUATION.md) records scope, compatibility adapters and quality gates. All 59 automated tests passed at the reasoning checkpoint, and 63 passed after the evidence-recovery checks were added. Four original Retail evaluations remain outstanding regardless of the non-Retail route's eventual completion.
+The [execution plan](STAGE3_EVALUATION.md) records scope, compatibility adapters and quality gates. All 59 automated tests passed at the reasoning checkpoint, 63 after Consulting recovery, and 66 after exact-request ICBE replay. Four original Retail evaluations remain outstanding regardless of the non-Retail route's eventual completion.

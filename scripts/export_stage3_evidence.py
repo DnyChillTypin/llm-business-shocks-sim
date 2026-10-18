@@ -76,6 +76,7 @@ def cohort_record(folder, manifest, label):
               "accuracy": score.get("accuracy") if isinstance(score, dict) else None,
               "no_answer": score.get("no_answer") if isinstance(score, dict) else None,
               "attempts": len(starts), "completed_responses": sum(e["status"] == "completed" for e in finishes),
+              "replayed_decisions": len(read(folder / "icbe_recovery.json")["decisions"]) if (folder / "icbe_recovery.json").exists() else 0,
               "attempts_without_observed_gateway_outcome": len(starts) - len(finishes),
               "invalid_responses": sum(e.get("parse_status") != "valid" for e in parses),
               "unknown_usage_responses": sum(e.get("cost_usd") is None for e in finishes),
@@ -155,9 +156,11 @@ def task_metrics(folder, validation, label):
                            "cooperation_rate_a": sum(r["Move A"] == "COOPERATE" for r in records) / len(records),
                            "cooperation_rate_b": sum(r["Move B"] == "COOPERATE" for r in records) / len(records),
                            "points_a": sum(r["Pts A"] for r in records), "points_b": sum(r["Pts B"] for r in records)})
+        reused = len(read(folder / "icbe_recovery.json")["decisions"]) if (folder / "icbe_recovery.json").exists() else 0
         return {"cohort": label, "task": task, "phase_metrics": phases,
+                "replayed_observed_decisions": reused, "fresh_decisions": validation["attempts"],
                 "outcome_units": "Native game payoff points and cooperation proportions",
-                "qualification": "One ordered match per model pair; rounds are dependent observations. Output ceiling is 4096 rather than upstream 150 tokens."}
+                "qualification": "One ordered match per model pair; rounds are dependent observations. Output ceiling is 4096 rather than upstream 150 tokens. Any replay uses actual prior validated responses at identical native requests; histories, phase changes and points are reconstructed by the native simulator, and source charges remain separately counted."}
     return None
 
 

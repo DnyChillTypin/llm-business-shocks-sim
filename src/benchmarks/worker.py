@@ -304,6 +304,7 @@ def main():
     parser.add_argument("--plan", type=Path)
     parser.add_argument("--budget", type=Path, required=True)
     parser.add_argument("--consulting-recovery", type=Path)
+    parser.add_argument("--icbe-replay", type=Path)
     args = parser.parse_args()
     from src.research.design import validate_design
     validate_design(ROOT)
@@ -318,6 +319,10 @@ def main():
         if args.task != "firm:consulting" or plan["purpose"] != "evaluation":
             raise ValueError("Session recovery is restricted to the full frozen Consulting evaluation.")
         config["_consulting_recovery_manifest"] = str(args.consulting_recovery.resolve())
+    if args.icbe_replay:
+        if args.task != "icbe" or plan["purpose"] != "evaluation":
+            raise ValueError("Exact-request replay is restricted to the full frozen ICBE evaluation.")
+        config["_icbe_replay_manifest"] = str(args.icbe_replay.resolve())
     output = args.output.resolve()
     output.mkdir(parents=True, exist_ok=True)
     config["_runtime_output"] = str(output)
@@ -332,6 +337,7 @@ def main():
     if plan["purpose"] == "evaluation" and args.task not in budget.manifest.get("evaluation_tasks", []):
         raise BudgetStop("This task is not listed in the approved evaluation scope.")
     counts = install_gateway_clients(output, config, budget=budget)
+    (output / "api_attempts.jsonl").touch(exist_ok=True)
     import subprocess
     from src.research.design import canonical_hash, text_hash
     identity = {"project_commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
@@ -353,10 +359,29 @@ def main():
         elif args.task.startswith("firm:"):
             result = run_firm(args.task.split(":", 1)[1], output, config)
         else:
+            recipe = None
+            if config.get("_icbe_replay_manifest"):
+                from .icbe_recovery import verify_replay, probe_native_prefix, replay_create
+                recipe = verify_replay(config["_icbe_replay_manifest"])
+                probe = probe_native_prefix(recipe)
+                (output / "icbe_recovery.json").write_text(json.dumps(recipe, indent=2), encoding="utf-8")
+                (output / "icbe_prefix_probe.json").write_text(json.dumps(probe, indent=2), encoding="utf-8")
             module = load_icbe()
             module.MODELS = config["icbe_models"]
             module.NUM_ROUNDS = config["icbe_rounds"]
             module.ICBE_OUTPUT_TOKENS = config["max_output_tokens"]
+            if recipe:
+                seen_replays = set()
+                def record_replay(logical, record):
+                    from src.research.design import canonical_hash
+                    if logical in seen_replays:
+                        raise DecisionFailure("Duplicate logical ICBE replay; inspect native control flow.")
+                    seen_replays.add(logical)
+                    with (output / "icbe_replays.jsonl").open("a", encoding="utf-8") as stream:
+                        stream.write(json.dumps({"logical_choice": logical, "evidence_digest": canonical_hash(record)}) + "\n")
+                        stream.flush()
+                        os.fsync(stream.fileno())
+                module.client.chat.completions.create = replay_create(module.client.chat.completions.create, recipe, config, on_replay=record_replay)
             os.chdir(output)
             asyncio.run(module.main())
         (output / "native_result.json").write_text(json.dumps(result, indent=2, default=str), encoding="utf-8")

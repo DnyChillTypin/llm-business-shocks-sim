@@ -13,6 +13,7 @@ def read(path):
 def validate_run(folder):
     folder = Path(folder)
     checks, qualifications = {}, []
+    replayed_decisions = 0
     manifest = read(folder / "run_manifest.json")
     task = manifest["task"]
     checks["execution_succeeded"] = read(folder / "exit_status.json")["exit_code"] == 0
@@ -98,6 +99,25 @@ def validate_run(folder):
         checks["decision_audit"] = (folder / "decision_events.jsonl").is_file()
     elif task == "icbe":
         import openpyxl
+        replayed = {}
+        if (folder / "icbe_recovery.json").exists():
+            from .icbe_recovery import verify_replay, key as choice_key
+            from src.research.design import canonical_hash
+            try:
+                replayed = verify_replay(folder / "icbe_recovery.json")["decisions"]
+                reuses = [json.loads(line) for line in (folder / "icbe_replays.jsonl").read_text().splitlines()]
+                checks["exact_request_replay_verified"] = (len(reuses) == len(replayed) and
+                    {e["logical_choice"] for e in reuses} == set(replayed) and
+                    all(e["evidence_digest"] == canonical_hash(replayed[e["logical_choice"]]) for e in reuses))
+                probe = read(folder / "icbe_prefix_probe.json")
+                checks["native_prefix_probe_passed"] = (probe["status"] == "passed" and probe["paid_api_calls"] == 0 and probe["verified_native_prefix_decisions"] == len(replayed))
+                replayed_decisions = len(replayed)
+            except (ValueError, KeyError, FileNotFoundError):
+                checks["exact_request_replay_verified"] = False
+                replayed = {}
+            qualifications.append("Previously observed valid ICBE responses were replayed only at identical full native requests. The native simulator reconstructs histories and scores; source attempts and costs remain separately counted, without new charges for replayed responses.")
+            if not starts and checks["exact_request_replay_verified"]:
+                checks["all_attempts_finished"] = True
         paths = list(folder.glob("*.xlsx"))
         checks["native_workbook"] = len(paths) == 1
         if len(paths) == 1:
@@ -116,9 +136,19 @@ def validate_run(folder):
                 moves = {"COOPERATE": 0, "EXPLOIT": 1}
                 checks["native_points_reconcile"] = all((r["Pts A"], r["Pts B"]) ==
                     matrices[min(3, (r["Round"] - 1) // 25)][moves[r["Move A"]] * 2 + moves[r["Move B"]]] for r in records)
+                if replayed:
+                    by_pair_round = {(r["Match ID"], r["Round"]): r for r in records}
+                    checks["replayed_moves_match_native_workbook"] = all(
+                        by_pair_round[(int(e["context"]["case_id"].rsplit("_", 1)[1]) + 1, e["context"]["round"])]["Move " + e["context"]["actor"]] == e["move"] for e in replayed.values())
             finally:
                 book.close()
-        checks["all_decisions_logged"] = len(starts) == 2 * manifest["expected_units"] * manifest["configured_horizon"]
+        checks["all_decisions_logged"] = len(starts) + len(replayed) == 2 * manifest["expected_units"] * manifest["configured_horizon"]
+        if replayed:
+            current_keys = [choice_key(e["context"]) for e in starts.values()]
+            expected_keys = {f"ordered_pair_{p:02d}:{r:04d}:{actor}" for p in range(manifest["expected_units"])
+                             for r in range(1, manifest["configured_horizon"] + 1) for actor in ("A", "B")}
+            checks["all_logical_choices_accounted_once"] = (len(current_keys) == len(set(current_keys)) and
+                not set(current_keys).intersection(replayed) and set(current_keys).union(replayed) == expected_keys)
         if manifest["purpose"] == "pilot":
             qualifications.append("Two-round pilots cover the early native phase only. Workbook filename retains upstream 100Rounds regardless of configured horizon.")
     elif task.startswith("retail:"):
@@ -143,6 +173,7 @@ def validate_run(folder):
             "status": "validated_complete" if all(checks.values()) else "requires_review",
             "checks": checks, "qualifications": qualifications, "native_score": result,
             "attempts": len(starts), "input_tokens": totals["input_tokens"], "output_tokens": totals["output_tokens"],
+            "replayed_decisions": replayed_decisions,
             "estimated_gateway_credit_usd": sum(e.get("cost_usd") or 0 for e in finishes.values()),
             "missing_usage_attempts": sum(e.get("cost_usd") is None for e in finishes.values()),
             "api_latency_seconds": [e["latency_seconds"] for e in finishes.values()], "elapsed_seconds": elapsed,

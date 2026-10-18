@@ -98,6 +98,7 @@ def build_recovery(source_runs):
         if (manifest["task"] != "firm:consulting" or manifest["purpose"] != "evaluation"
                 or manifest["selected_case_ids"] != frozen_ids or any(prior.get(k) != v for k, v in config.items())
                 or identity["study_manifest_sha256"] != text_hash(ROOT / "docs/results/study_design_manifest.json")
+                or identity.get("provider") != "ShopAIKey" or identity.get("base_url") != "https://api.shopaikey.com/v1"
                 or identity["source_pins"] != read(ROOT / "configs/sources.json")):
             raise ValueError("Recovery source differs from frozen models, method, cases or pinned sources.")
         events = [json.loads(line) for line in (folder / "api_attempts.jsonl").read_text().splitlines()]

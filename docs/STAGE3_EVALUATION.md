@@ -38,6 +38,14 @@ The pinned CoT agent's case-start and case-end hooks keep no memory. Completed s
 
 Eight frozen cases passed these checks; only the two missing cases require fresh sessions. Completed cases now receive durable per-session checkpoints. Synthetic tests reject altered or incomplete evidence and verify that aggregating independent saved sessions produces the same native mean scores. The frozen ten-case plan, message limits, models, prompts, source data and native scorer remain unchanged, and all interrupted cohorts remain separately visible.
 
+### ICBE exact-request replay amendment
+
+The initial full ICBE run stopped at round 20 of its first match on HTTP 503 and cancellation of the paired request. Both requests retain their full unknown-charge reservations. The preceding 38 responses cover 19 complete rounds and passed parsing and usage checks.
+
+Before new calls, an offline probe passed those actual observed responses through the pinned native simulator and verified every reconstructed full request. Recovery uses the first observed validated response for each frozen ordered-pair/round/actor identity, only if its entire request digest matches the native request at that point. The native code reconstructs histories, phase transitions, moves and scores. Different requests stop execution before transport; invalid model decisions cannot be resampled through this recovery path.
+
+Each replay is recorded with its evidence digest. Replayed responses make no new API call and incur no new reported charge; every source cohort, failed request and reservation remains visible. Full validation requires all 1,200 logical choices exactly once, native workbook points and pair/round coverage, and agreement between replayed moves and workbook records. Synthetic tests verify zero transport for exact matches, rejection of changed histories, one new call for a missing choice, and prefix reconstruction through the actual native simulator. Frozen models, prompts, 100-round horizons, 25-round phase boundaries, native payoffs, history limits, temperature and the documented 4,096-token ceiling remain unchanged.
+
 ## Evidence and publication
 
 Raw responses, transcripts, request identifiers, account snapshots, allowance approval history and detailed run mappings stay under ignored `results/` or `.cache/`. Publish aggregate task metrics, anonymous cohort labels, coverage, model identifiers, token-derived project costs, limitations and saved-output analysis only. Push code and reviewed aggregate results at useful milestones.

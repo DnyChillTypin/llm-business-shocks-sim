@@ -1,5 +1,6 @@
-"""Validate the aggregate-only Stage 5 preparation plan; no model or episode runs."""
+"""Validate historical preparation and saved primary aggregates; no model or episode runs."""
 import csv
+import hashlib
 import json
 import math
 import re
@@ -13,9 +14,112 @@ from src.experiments.kaggle_protocol import read, primary_matrix, authorization_
 from src.research.design import canonical_hash
 
 
+def check_execution(public, matrix, before):
+    status, qc = read(public / "status.json"), read(public / "qc_summary.json")
+    manifest = read(public / "artifact_manifest.json")
+    assert manifest["hash_rule"] == "SHA-256 UTF-8 text with CRLF normalized to LF"
+    expected_files = {p.name for p in public.iterdir() if p.is_file()} - {"artifact_manifest.json"}
+    assert set(manifest["files"]) == expected_files
+    for name, digest in manifest["files"].items():
+        assert hashlib.sha256((public / name).read_bytes().replace(b"\r\n", b"\n")).hexdigest() == digest
+    rows = lambda name: list(csv.DictReader((public / name).read_text(encoding="utf-8").splitlines()))
+    coverage, daily, matches, failures = (rows(name) for name in ("coverage.csv", "daily_results.csv", "matched_inputs.csv", "retained_failures.csv"))
+    count = status["through_matrix_index"] + 1
+    assert count in (12, 24, 36) and len(coverage) == count and len(daily) == count * 21
+    assert status["completed_episodes"] == qc["validated_episodes"] == count
+    assert status["missing_matrix_indices"] == list(range(count, 36))
+    assert status["completed_policy_days"] == qc["validated_policy_days"] == 21 * count
+    assert status["completed_llm_episodes"] == qc["completed_llm_episodes"] == count // 3
+    assert status["completed_primary_decisions"] == qc["completed_primary_decision_opportunities"] == 21 * count // 3
+    assert status["exit_gate_passed"] is (count == 36)
+    assert status["status"] == ("complete" if count == 36 else "in_progress_checkpoint")
+    assert status["matrix_sha256"] == canonical_hash(matrix)
+    assert status["study_sha256"] == matrix["study_sha256"] and all(qc["checks"].values())
+    assert status["planned_episodes"] == 36 and status["planned_policy_days"] == 756
+    assert status["planned_llm_episodes"] == 12 and status["planned_primary_decisions"] == 252
+    from datetime import date, timedelta
+    start = date.fromisoformat(status["primary_window"]["start"])
+    expected_days = [(start + timedelta(days=i)).isoformat() for i in range(21)]
+    llm = []
+    series_base_paths = {}
+    for index, row in enumerate(coverage):
+        episode = matrix["episodes"][index]
+        assert row["matrix_index"] == str(index) and row["status"] == "validated_complete"
+        assert row["days"] == row["decision_opportunities"] == "21"
+        assert re.fullmatch(r"[0-9a-f]{64}", row["evidence_sha256"])
+        assert row["store_id"] == episode["series"]["store_id"] and row["product_id"] == episode["series"]["product_id"]
+        assert row["scenario"] == episode["scenario"] and row["policy"] == episode["policy"]
+        data = [r for r in daily if r["matrix_index"] == str(index)]
+        assert [r["date"] for r in data] == expected_days
+        for day in data:
+            assert all(day[k] == row[k] for k in ("store_id", "product_id", "scenario", "policy"))
+            assert day["sku_id"] == row["product_id"]
+            assert math.isclose(float(day["contribution"]), float(day["revenue"]) - float(day["cost_of_goods_sold"]) - float(day["holding_cost"]), abs_tol=1e-6)
+            assert float(day["sales"]) + float(day["lost_sales"]) == float(day["demand"])
+        for metric in ("contribution", "revenue"):
+            assert math.isclose(float(row[metric]), sum(float(r[metric]) for r in data), abs_tol=1e-6)
+        assert math.isclose(float(row["net_worth_change"]), float(row["contribution"]), abs_tol=1e-6)
+        demand = sum(float(r["demand"]) for r in data)
+        assert math.isclose(float(row["fill_rate"]), sum(float(r["sales"]) for r in data) / demand if demand else 1, abs_tol=1e-9)
+        assert int(row["stockout_sku_days"]) == sum(float(r["lost_sales"]) > 0 for r in data)
+        assert math.isclose(float(row["mean_closing_inventory"]), sum(float(r["closing_inventory"]) for r in data) / 21, abs_tol=1e-6)
+        repairs = sum(r["repair_attempted"] == "True" for r in data)
+        fallbacks = sum(r["fallback_used"] == "True" for r in data)
+        assert all(r[k] in ("True", "False") for r in data for k in ("repair_attempted", "fallback_used"))
+        assert int(row["repair_days"]) == repairs and int(row["fallback_days"]) == fallbacks
+        assert int(row["invalid_responses"]) == sum(int(r["invalid_responses"]) for r in data)
+        assert int(row["attempted_cohorts"]) == 1 + int(row["retained_incomplete_cohorts"])
+        key = (row["store_id"], row["product_id"])
+        base_path = [(r["date"], r["base_demand"]) for r in data]
+        assert series_base_paths.setdefault(key, base_path) == base_path
+        if episode["policy"] == "llm_with_fallback":
+            assert row["agent_kind"] == "genuine_llm" and int(row["validation_checks"]) == 28
+            assert 0 <= fallbacks <= repairs <= 21
+            assert int(row["first_pass_valid_decisions"]) == 21 - repairs
+            assert int(row["model_decisions_after_repair"]) == 21 - fallbacks
+            assert int(row["invalid_responses"]) == repairs + fallbacks
+            assert int(row["successful_cohort_attempts"]) == 21 + repairs
+            llm.append(row)
+        else:
+            assert row["agent_kind"] == "baseline" and int(row["validation_checks"]) == 22
+            assert repairs == fallbacks == int(row["successful_cohort_attempts"]) == 0
+            assert float(row["all_cohort_exposure_credits"]) == 0
+    assert len(matches) == qc["matched_scenario_cells"] == count // 3
+    assert len({(r["store_id"], r["product_id"], r["scenario"]) for r in matches}) == len(matches)
+    for row in matches:
+        assert row["policies"] == "3" and row["initial_conditions_match"] == row["base_demand_match"] == "True"
+        assert re.fullmatch(r"[0-9a-f]{64}", row["initial_observation_sha256"])
+        assert re.fullmatch(r"[0-9a-f]{64}", row["base_demand_sha256"])
+    for field in ("first_pass_valid_decisions", "model_decisions_after_repair", "repair_days", "fallback_days", "invalid_responses", "successful_cohort_attempts"):
+        assert qc[field] == sum(int(r[field]) for r in llm)
+    assert len(failures) == qc["retained_incomplete_cohorts"] == sum(int(r["retained_incomplete_cohorts"]) for r in coverage)
+    assert all(r["status"] == "retained_incomplete" and re.fullmatch(r"[0-9a-f]{64}", r["evidence_sha256"]) for r in failures)
+    budget = status["budget_snapshot"]
+    assert budget["all_primary_attempts"] == qc["all_primary_attempts"] == qc["successful_cohort_attempts"] + sum(int(r["started_attempts"]) for r in failures)
+    assert qc["all_primary_attempts"] <= qc["maximum_primary_attempts"] == 504
+    assert budget["total_project_attempts"] == before["total_project_attempts"] + qc["all_primary_attempts"]
+    assert budget["total_project_attempts"] <= budget["global_attempt_ceiling"] == 3000
+    assert budget["pending_attempts"] == budget["blocking_unknown_attempts"] == 0
+    assert budget["inclusive_cap_credits"] == 10 and budget["unallocated_reserve_credits"] == 2
+    assert math.isclose(budget["primary_exposure_credits"], sum(float(r["all_cohort_exposure_credits"]) for r in coverage), abs_tol=1e-9)
+    successful_cost = sum(float(r["successful_cohort_cost_credits"]) for r in llm)
+    assert math.isclose(budget["successful_primary_cohort_cost_credits"], successful_cost, abs_tol=1e-9)
+    assert math.isclose(budget["primary_exposure_credits"], successful_cost + sum(float(r["known_cost_credits"]) + float(r["fully_held_unknown_credits"]) for r in failures), abs_tol=1e-9)
+    assert math.isclose(budget["inclusive_project_exposure_credits"], before["inclusive_project_exposure_credits"] + budget["primary_exposure_credits"], abs_tol=1e-9)
+    assert math.isclose(budget["known_project_cost_credits"] + budget["retained_unknown_charge_credits"], budget["inclusive_project_exposure_credits"], abs_tol=1e-9)
+    assert math.isclose(budget["kaggle_scope_exposure_credits"], before["prior_kaggle_exposure_credits"] + budget["primary_exposure_credits"], abs_tol=1e-9)
+    assert math.isclose(budget["remaining_kaggle_scope_credits"] + budget["kaggle_scope_exposure_credits"], budget["kaggle_scope_cap_credits"], abs_tol=1e-9)
+    assert budget["inclusive_project_exposure_credits"] <= budget["inclusive_cap_credits"]
+    print(f"Stage 5 saved execution evidence passed: {count}/36 episodes, {len(daily)} policy-days; financial, reliability, matching and cost totals reconcile.")
+
+
 def main():
     public = ROOT / "docs/results/stage5"
-    assert {p.name for p in public.iterdir() if p.is_file()} == {"preparation.json", "launch_plan.csv"}
+    files = {"preparation.json", "launch_plan.csv"}
+    executed = (public / "status.json").exists()
+    if executed:
+        files |= {"coverage.csv", "daily_results.csv", "matched_inputs.csv", "retained_failures.csv", "status.json", "qc_summary.json", "artifact_manifest.json"}
+    assert {p.name for p in public.iterdir() if p.is_file()} == files
     for path in public.iterdir():
         text = path.read_text(encoding="utf-8")
         assert not re.search(r"\b[0-9a-f]{32}\b|\b20\d{6}T\d{12,}Z\b", text), path.name
@@ -76,7 +180,9 @@ def main():
         checkpoint = "first_llm_review" if i == 2 else ("series_block_review" if i in (11, 23, 35)
                      else ("episode_review" if paid else "baseline_replay"))
         assert row["checkpoint"] == checkpoint
-    print("Stage 5 preparation passed: 36 frozen launch commands, unchanged budget snapshot, no primary execution or authorization.")
+    print("Historical Stage 5 preparation passed: 36 frozen launch commands; original snapshot preserved.")
+    if executed:
+        check_execution(public, matrix, saved["budget_snapshot"])
 
 
 if __name__ == "__main__":

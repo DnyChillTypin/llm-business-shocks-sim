@@ -7,11 +7,12 @@ inventory and pricing policies, and controlled business-shock experiments.**
 ![Python](https://img.shields.io/badge/Python-3.12-blue)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
-**Status:** [Stage 4 offline Kaggle readiness is complete](docs/STAGE4_EXECUTION.md).
+**Status:** [Stage 5 primary execution has a validated first-series checkpoint](docs/STAGE5_EXECUTION.md):
+12/36 matched episodes and 252/756 policy-days are complete.
 Stage 3 retains 14 validated non-Retail tasks and the ICBE validity failure.
 The project includes the Kaggle-driven RetailBench integration, genuine LLM validation
-pilots, guarded native evaluations, automated tests and six executed research notebooks.
-Primary Kaggle comparisons and the four full native Retail episodes remain outstanding.
+pilots, guarded native evaluations, automated tests and seven executed research notebooks.
+Two primary Kaggle series blocks and the four full native Retail episodes remain outstanding.
 See the [native evaluation plan](docs/STAGE3_EVALUATION.md),
 [coverage table](docs/results/native_coverage.csv) and
 [saved evaluation notebook](notebooks/05_native_evaluation.ipynb).
@@ -146,9 +147,11 @@ an amended run, while the four Retail evaluations remain deferred. The
 episodes across three series, with independent replay, matching inputs, strict
 provenance and guarded primary execution. The [readiness notebook](notebooks/06_kaggle_experiment_readiness.ipynb)
 loads saved evidence without paid calls. These are validation fixtures, not primary
-LLM findings. [Stage 5 is prepared](docs/STAGE5_PREPARATION.md): the 36-episode
-launch sequence, review gates and existing budget headroom are checked. No primary
-episode has run; execution awaits a later instruction under the existing allowance.
+LLM findings. [Stage 5 execution](docs/STAGE5_EXECUTION.md) has completed the first
+12 matched primary episodes under the new $10 cumulative ceiling. Its
+[saved primary notebook](notebooks/07_primary_shock_comparisons.ipynb) retains poor
+outcomes, repairs and fallbacks alongside the matched business results. The other
+two series blocks remain in progress.
 
 - Validate the implemented LLM policy with genuine bounded pilots, then measure
   validity, cost and performance against the baselines under an evaluation budget.

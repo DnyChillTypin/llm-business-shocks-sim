@@ -1,5 +1,7 @@
 # Stage 5 preparation: matched primary shock comparisons
 
+Historical preparation checkpoint. Stage 5 execution is now authorized under a cumulative 10-credit ceiling; see the [current execution checkpoint](STAGE5_EXECUTION.md). The unexecuted counts, six-credit allowance and unapproved proposals below describe the preparation date before execution, not the current run state.
+
 Prepared on 18 October 2026. **Ready for a later execution instruction; no primary episodes or model completions have been run.** Stage 4's [offline readiness gate](STAGE4_EXECUTION.md) passed. This checkpoint fixes the launch sequence, checks the existing budget and records unapproved local proposals. It does not complete Stage 5.
 
 ## What Stage 5 will measure

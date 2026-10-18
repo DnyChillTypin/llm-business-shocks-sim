@@ -1,0 +1,52 @@
+{
+  "stage": 6,
+  "status": "complete",
+  "exit_gate_passed": true,
+  "source_snapshot_sha256": "e4dd0072e6b6614639475f0982c6c73a9a61e2a2e4da979dd74b6f37df9262e1",
+  "study_sha256": "075f6d1137cf259a8550f27b78ba2685488b8a8174e30826b71a11833341f790",
+  "analysis_template_sha256": "079fc9b499339afb1bd3bf3f2de9d315006d6fc8f29c67953df396d156bc5d39",
+  "findings": {
+    "raw_shock_positive": 2,
+    "raw_shock_negative": 7,
+    "control_adjusted_shock_positive": 7,
+    "control_adjusted_shock_negative": 2,
+    "first_pass_valid": 108,
+    "successful_repairs": 127,
+    "fallback_days": 17,
+    "invalid_responses": 161,
+    "recovery_observed_by_policy": {
+      "adaptive": 3,
+      "fixed": 9,
+      "llm_with_fallback": 9
+    },
+    "recovery_censored": 6,
+    "pre_shock_llm_divergent_conditions": 9
+  },
+  "budget_snapshot": {
+    "currency": "USD_gateway_credit",
+    "inclusive_cap_credits": 10.0,
+    "native_scope_cap_credits": 4.2,
+    "kaggle_scope_cap_credits": 3.8,
+    "unallocated_reserve_credits": 2.0,
+    "total_project_attempts": 1834,
+    "inclusive_project_exposure_credits": 2.186206858,
+    "known_project_cost_credits": 2.127122649,
+    "retained_unknown_attempts": 8,
+    "retained_unknown_charge_credits": 0.059084209,
+    "all_primary_attempts": 396,
+    "primary_exposure_credits": 0.252123564,
+    "successful_primary_cohort_cost_credits": 0.252123564,
+    "kaggle_scope_exposure_credits": 0.299574828,
+    "remaining_kaggle_scope_credits": 3.500425172,
+    "global_attempt_ceiling": 3000,
+    "pending_attempts": 0,
+    "blocking_unknown_attempts": 0,
+    "qualification": "Token-derived project estimates with full unknown-charge holds, not independently verified provider billing; local limits depend on tariffs and gateway token ceilings."
+  },
+  "new_model_completion_calls": 0,
+  "new_free_baseline_episodes": 48,
+  "reused_primary_baselines": 24,
+  "primary_window_prior_manual_outcome_use": "uncertain; no pristine unseen-data claim",
+  "interpretation": "Three selected matched blocks, dependent daily observations and one LLM realization per condition. Descriptive simulator contrasts; no real-world causality, population significance or model-learning claim.",
+  "sensitivity_scope": "Baseline-only elasticity assumptions; no new LLM experiments."
+}

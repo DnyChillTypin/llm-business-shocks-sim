@@ -48,6 +48,8 @@ jobs:
         run: .venv/bin/python scripts/check_public_stage5.py
       - name: Verify Stage 6 preparation and pinned analysis sources
         run: .venv/bin/python scripts/check_stage6_readiness.py
+      - name: Verify completed Stage 6 aggregate analysis
+        run: .venv/bin/python scripts/check_public_stage6.py
       - name: Execute the integration notebook without API calls
         run: .venv/bin/python scripts/verify_notebook.py
       - name: Execute the setup evidence notebook without API calls
@@ -62,3 +64,5 @@ jobs:
         run: .venv/bin/python scripts/verify_notebook.py --notebook notebooks/06_kaggle_experiment_readiness.ipynb
       - name: Execute saved primary shock comparisons without API calls
         run: .venv/bin/python scripts/verify_notebook.py --notebook notebooks/07_primary_shock_comparisons.ipynb
+      - name: Execute final findings and robustness analysis without API calls
+        run: .venv/bin/python scripts/verify_notebook.py --notebook notebooks/08_findings_and_robustness.ipynb

@@ -5,6 +5,7 @@ import hashlib
 import json
 import math
 import re
+import subprocess
 import sqlite3
 import sys
 from contextlib import closing
@@ -104,9 +105,11 @@ def main():
     args = parser.parse_args()
     files = {"preparation.json", "source_snapshot.json"}
     if (PUBLIC / "status.json").exists():
-        from check_public_stage6 import FILES
-        files = FILES
-    assert {p.name for p in PUBLIC.iterdir() if p.is_file()} == files
+        # The preparation checkpoint remains historical. Once execution artifacts
+        # exist, validate their own strict allowlist and hashes with the execution checker.
+        subprocess.run([sys.executable, str(ROOT / "scripts/check_public_stage6.py")], check=True)
+    else:
+        assert {p.name for p in PUBLIC.iterdir() if p.is_file()} == files
     paths = [*(PUBLIC / name for name in files), ROOT / "configs/analysis/stage6.template.json"]
     for path in paths:
         text = path.read_text(encoding="utf-8")

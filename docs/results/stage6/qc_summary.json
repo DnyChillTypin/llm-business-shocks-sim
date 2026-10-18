@@ -1,0 +1,42 @@
+{
+  "stage": 6,
+  "status": "passed",
+  "exit_gate_passed": true,
+  "checks": {
+    "all_expected_table_rows": true,
+    "pinned_sources_unchanged": true,
+    "full_matrix_and_fallbacks_retained": true,
+    "cash_inventory_pipeline_reconciled": true,
+    "contribution_service_and_phases_reconciled": true,
+    "frozen_recovery_with_censoring": true,
+    "request_costs_and_repairs_accounted_once": true,
+    "native_units_failures_and_missing_values_preserved": true,
+    "all_72_baseline_records_independently_replayed": true,
+    "no_llm_robustness_or_population_inference_claim": true,
+    "all_20_figure_exports_visually_reviewed": true
+  },
+  "automated_tests": 98,
+  "new_metric_and_isolation_tests": 13,
+  "row_counts": {
+    "episode_metrics": 36,
+    "paired_shock_contrasts": 18,
+    "control_comparisons": 6,
+    "policy_shock_minus_control": 27,
+    "per_scenario_summaries": 6,
+    "phase_summaries": 108,
+    "action_traces": 756,
+    "behavioral_response": 27,
+    "recovery": 27,
+    "llm_episode_reliability_costs": 12,
+    "baseline_elasticity_summary": 72,
+    "native_task_coverage": 19,
+    "native_evaluation_usage": 19,
+    "native_reasoning": 11,
+    "diagnostic_traces": 42,
+    "claim_map": 9
+  },
+  "new_free_baseline_episodes": 48,
+  "new_model_completion_calls": 0,
+  "primary_evidence_and_ledger_unchanged": true,
+  "figure_exports": 20
+}

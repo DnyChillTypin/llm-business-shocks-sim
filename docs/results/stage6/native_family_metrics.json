@@ -1,0 +1,157 @@
+[
+  {
+    "cohort": "evaluation_12",
+    "task": "firm:edt",
+    "rollout_summary": {
+      "steps": 96,
+      "seed": 42
+    },
+    "outcome_units": "Native synthetic business monetary units, distinct from gateway credits",
+    "scenario_decision_summary": {
+      "capital_C": 12,
+      "risk_R": 0.3,
+      "available_projects": 10,
+      "selected_projects": 6,
+      "native_projection_applied": false
+    },
+    "synthetic_business_metrics": {
+      "cash": -4836000.0,
+      "cash_flow": -116000.0,
+      "profit_margin": 0.0,
+      "overall_profit_margin": -0.7820181112548512,
+      "avg_utilization": 0.0,
+      "overall_avg_utilization": 0.27807017543859647,
+      "revenue_risk": 0.0,
+      "accumulated_earnings": -4836000.0,
+      "accumulated_revenue": 6184000.0,
+      "accumulated_expenses": 11020000.0,
+      "avg_consulting_fee": 0.0,
+      "overall_avg_consulting_fee": 1083.7714686295128
+    },
+    "qualification": "One configured scenario; synthetic model outcome, not a causal estimate of real business performance."
+  },
+  {
+    "cohort": "evaluation_13",
+    "task": "firm:beergame",
+    "episodes": [
+      {
+        "scenario_id": "default_typical",
+        "weeks_completed": 25,
+        "controlled_role": "retailer",
+        "opponent_policy": "typical",
+        "total_cost_controlled": 44050.0,
+        "total_cost_supply_chain": 7342656800.0,
+        "bullwhip_controlled": 38.92270531400966,
+        "avg_backlog_controlled": 0.0
+      },
+      {
+        "scenario_id": "default_smoothing_4",
+        "weeks_completed": 25,
+        "controlled_role": "retailer",
+        "opponent_policy": "smoothing:4",
+        "total_cost_controlled": 49208.5,
+        "total_cost_supply_chain": 1019970.5,
+        "bullwhip_controlled": 47.38801932367149,
+        "avg_backlog_controlled": 0.0
+      }
+    ],
+    "outcome_units": "Native simulation monetary units, distinct from gateway credits",
+    "offline_saved_action_audit": {
+      "status": "passed",
+      "paid_api_calls": 0,
+      "episodes": [
+        {
+          "scenario_id": "default_smoothing_4",
+          "weeks": 25,
+          "all_saved_observations_match": true,
+          "all_saved_transitions_match": true,
+          "all_native_metrics_match": true,
+          "chain_cost_equals_sum_of_role_costs": true,
+          "role_total_costs": {
+            "retailer": 49208.5,
+            "wholesaler": 41391.5,
+            "distributor": 489360.5,
+            "brewery": 440010.0
+          },
+          "role_maximum_orders": {
+            "retailer": 1880,
+            "wholesaler": 2176,
+            "distributor": 2043,
+            "brewery": 38267
+          },
+          "native_backlog_proxy": 0.0,
+          "derived_time_average_backlog_controlled": 484.84,
+          "qualification": "Native backlog metric repeats the final backlog rather than averaging historical backlogs; the derived time average is separately labeled. Large upstream costs are retained, not clipped."
+        },
+        {
+          "scenario_id": "default_typical",
+          "weeks": 25,
+          "all_saved_observations_match": true,
+          "all_saved_transitions_match": true,
+          "all_native_metrics_match": true,
+          "chain_cost_equals_sum_of_role_costs": true,
+          "role_total_costs": {
+            "retailer": 44050.0,
+            "wholesaler": 28350.0,
+            "distributor": 815220100.0,
+            "brewery": 6527364300.0
+          },
+          "role_maximum_orders": {
+            "retailer": 2300,
+            "wholesaler": 3500,
+            "distributor": 3000,
+            "brewery": 6527377200
+          },
+          "native_backlog_proxy": 0.0,
+          "derived_time_average_backlog_controlled": 232,
+          "qualification": "Native backlog metric repeats the final backlog rather than averaging historical backlogs; the derived time average is separately labeled. Large upstream costs are retained, not clipped."
+        }
+      ],
+      "scope": "Offline deterministic replay of actual saved LLM orders through pinned native environment; not a new policy run."
+    },
+    "native_aggregate_metrics": {
+      "episodes": 2,
+      "avg_total_cost_controlled": 46629.25,
+      "std_total_cost_controlled": 2579.25,
+      "avg_bullwhip_controlled": null,
+      "std_bullwhip_controlled": null,
+      "avg_total_backlog_controlled": null,
+      "std_total_backlog_controlled": null,
+      "avg_total_inventory_controlled": null,
+      "std_total_inventory_controlled": null
+    },
+    "qualification": "Inspect supply-chain amplification separately from controlled-retailer cost. Missing upstream aggregate metrics remain null."
+  },
+  {
+    "cohort": "evaluation_17",
+    "task": "firm:consulting",
+    "sessions": 10,
+    "native_mean_judge_scores": {
+      "structure": 8.8,
+      "quant": 7.4,
+      "business_sense": 8.3,
+      "communication": 8.2,
+      "overall": 8.15
+    },
+    "recovered_completed_sessions": 8,
+    "fresh_sessions": 2,
+    "session_message_counts": [
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12,
+      12
+    ],
+    "overall_judge_score_range": [
+      8.0,
+      8.5
+    ],
+    "outcome_units": "Judge rubric scores from 0 to 10",
+    "qualification": "Scores are judgments by the substituted judge model, not independent human ratings. Where recovery is used, earliest completed independent sessions are re-audited and passed unchanged to the native ten-case aggregator; all source-cohort costs remain separately counted."
+  }
+]

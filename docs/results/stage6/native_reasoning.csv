@@ -1,0 +1,12 @@
+task,saved_reasoning_cases,native_accuracy_unit,native_correct_units,native_scored_units,exact_case_accuracy,accuracy
+firm:FinCode,7,case,7.0,7.0,1.0,1.0
+firm:CodeFinQA,50,case,41.0,50.0,0.82,0.82
+firm:CodeTAT-QA,50,case,49.0,50.0,0.98,0.98
+firm:SEC-NUM,50,case,44.0,50.0,0.88,0.88
+firm:TAT-QA,50,case,48.0,50.0,0.96,0.96
+firm:ConvFinQA,50,case,35.0,50.0,0.7,0.7
+firm:FinKnow,50,case,46.0,50.0,0.92,0.92
+firm:FormulaEval,50,case,47.0,50.0,0.94,0.94
+firm:finer,50,entity_label,146.0,200.0,0.44,0.73
+firm:formula,50,case,37.0,50.0,0.74,0.74
+firm:factset,50,case,25.0,50.0,0.5,0.5

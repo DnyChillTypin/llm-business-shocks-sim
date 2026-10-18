@@ -7,14 +7,12 @@ inventory and pricing policies, and controlled business-shock experiments.**
 ![Python](https://img.shields.io/badge/Python-3.12-blue)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
-**Status:** [Stage 5 primary execution is complete](docs/STAGE5_EXECUTION.md):
+**Status:** [Stage 6 findings and robustness analysis are complete](docs/STAGE6_EXECUTION.md):
 36/36 matched episodes, 756 policy-days and 252 primary LLM decision opportunities.
 Stage 3 retains 14 validated non-Retail tasks and the ICBE validity failure.
 The project includes the Kaggle-driven RetailBench integration, genuine LLM validation
-pilots, guarded native evaluations, automated tests and seven executed research notebooks.
-The four full native Retail episodes remain deferred; analysis and the findings draft are next.
-[Stage 6 analysis is underway](docs/STAGE6_EXECUTION.md): the metrics and isolated
-baseline sensitivity pipeline pass 98 tests; final exports and visual review are in progress.
+pilots, guarded native evaluations, automated tests and eight executed research notebooks.
+The four full native Retail episodes remain deferred; the report draft is next.
 See the [native evaluation plan](docs/STAGE3_EVALUATION.md),
 [coverage table](docs/results/native_coverage.csv) and
 [saved evaluation notebook](notebooks/05_native_evaluation.ipynb).
@@ -154,8 +152,10 @@ LLM findings. [Stage 5 execution](docs/STAGE5_EXECUTION.md) completed all
 was **0.252 credits**, bringing cumulative exposure to **2.186 credits**. Its
 [saved primary notebook](notebooks/07_primary_shock_comparisons.ipynb) retains poor
 outcomes, 144 repairs and 17 fallback days alongside the matched business results.
-The [Stage 6 preparation](docs/STAGE6_PREPARATION.md) pins 38 source inputs and
-defines the free analysis, censored recovery and isolated baseline sensitivity work.
+The [Stage 6 preparation](docs/STAGE6_PREPARATION.md) pins 38 source inputs; the
+[completed analysis](docs/STAGE6_EXECUTION.md) reports matched comparisons, recovery,
+reliability and 48 free baseline-only elasticity episodes. Results are descriptive for
+three selected blocks, with no population or real-world causal claim.
 
 - Validate the implemented LLM policy with genuine bounded pilots, then measure
   validity, cost and performance against the baselines under an evaluation budget.

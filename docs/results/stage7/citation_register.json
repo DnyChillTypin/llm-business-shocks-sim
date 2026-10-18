@@ -1,0 +1,131 @@
+{
+  "checked_on": "2026-10-18",
+  "verification": "Pinned local source files plus primary public records; metadata only, no paper text copied.",
+  "citations": [
+    {
+      "key": "retailbench2026",
+      "kind": "paper",
+      "title": "RetailBench: Evaluating Long-Horizon Autonomous Decision-Making and Strategy Stability of LLM Agents in Realistic Retail Environments",
+      "authors": [
+        "Linghua Zhang",
+        "Jun Wang",
+        "Jingtong Wu",
+        "Zhisong Zhang"
+      ],
+      "year": 2026,
+      "version": "arXiv:2603.16453v3",
+      "doi": "10.48550/arXiv.2603.16453",
+      "url": "https://arxiv.org/abs/2603.16453v3",
+      "local_evidence": [
+        "vendor/RetailBench/CITATION.cff",
+        "vendor/RetailBench/README.md"
+      ],
+      "qualification": "Bibliographic identity verified on the official arXiv record; code version is pinned separately. No published-score reproduction claim."
+    },
+    {
+      "key": "retailbench_code",
+      "kind": "software",
+      "title": "RetailBench source code",
+      "attribution": "RetailBench contributors",
+      "url": "https://github.com/linghuazhang01/RetailBench/tree/f1d37b35abfa60ef5599e56d2cdbdaa4fd9b8bf3",
+      "commit": "f1d37b35abfa60ef5599e56d2cdbdaa4fd9b8bf3",
+      "local_evidence": [
+        "vendor/RetailBench/LICENSE",
+        "vendor/RetailBench/CITATION.cff"
+      ],
+      "license_observation": "MIT in pinned LICENSE",
+      "qualification": "Pinned fork/source URL is distinct from the repository-code URL in CITATION.cff. Cite exact source used."
+    },
+    {
+      "key": "firmbench_code",
+      "kind": "software",
+      "title": "FirmBench / EnterpriseBench source repository",
+      "attribution": "FirmBench repository contributors",
+      "url": "https://github.com/sduyangmin/FirmBench/tree/fe0edb02bfa298c0f407468255e2dbdf73f4b65b",
+      "commit": "fe0edb02bfa298c0f407468255e2dbdf73f4b65b",
+      "local_evidence": [
+        "vendor/FirmBench/README.md",
+        "vendor/FirmBench/LICENSE.txt"
+      ],
+      "license_observation": "Apache-2.0 in pinned LICENSE.txt",
+      "paper_citation_status": "empty_upstream_bibtex_block",
+      "qualification": "README heading is EnterpriseBench. Use repository attribution; no verified personal author list, paper DOI or venue is asserted."
+    },
+    {
+      "key": "icbe_code",
+      "kind": "software",
+      "title": "AI Economic Strategy Simulator (ICBE)",
+      "attribution": "ruxi-stnmr repository",
+      "url": "https://github.com/ruxi-stnmr/icbe-2026-strategic-behavior-llms/tree/ad29de11a0161cf6503516edc7d37f5104d22259",
+      "commit": "ad29de11a0161cf6503516edc7d37f5104d22259",
+      "local_evidence": [
+        "vendor/icbe-2026-strategic-behavior/README.md"
+      ],
+      "license_observation": "No LICENSE file found in the pinned tree",
+      "paper_citation_status": "no_formal_paper_citation_in_pinned_readme",
+      "qualification": "Cite the simulator repository without inventing a publication. No upstream source code is copied into the report."
+    },
+    {
+      "key": "atomicd_v8",
+      "kind": "dataset",
+      "title": "Retail Store Inventory and Demand Forecasting",
+      "attribution": "atomicd (Kaggle publisher handle)",
+      "url": "https://www.kaggle.com/datasets/atomicd/retail-store-inventory-and-demand-forecasting",
+      "version": 8,
+      "csv_sha256": "96f107b42042d5b21fcae88c7dfc98aab036788aaae73fb3605546cfc06135ff",
+      "local_evidence": [
+        "configs/sources.json",
+        "data/raw/kaggle/dataset_metadata.json"
+      ],
+      "metadata_url": "https://www.kaggle.com/api/v1/datasets/view/atomicd/retail-store-inventory-and-demand-forecasting",
+      "api_observation": {
+        "currentVersionNumber": 8,
+        "creatorName": "Wavelet",
+        "licenseName": "Apache 2.0"
+      },
+      "qualification": "Public API observation differs from the empty licenses array in saved download metadata. Preserve frozen metadata; attribute source and version; no raw-data redistribution."
+    },
+    {
+      "key": "wei2022cot",
+      "kind": "method_background",
+      "title": "Chain-of-Thought Prompting Elicits Reasoning in Large Language Models",
+      "authors": [
+        "Jason Wei",
+        "Xuezhi Wang",
+        "Dale Schuurmans",
+        "Maarten Bosma",
+        "Brian Ichter",
+        "Fei Xia",
+        "Ed Chi",
+        "Quoc Le",
+        "Denny Zhou"
+      ],
+      "year": 2022,
+      "version": "arXiv:2201.11903v6",
+      "doi": "10.48550/arXiv.2201.11903",
+      "url": "https://arxiv.org/abs/2201.11903v6",
+      "local_evidence": [],
+      "qualification": "Official arXiv metadata verified; optional method background only. Native CoT implementations come from the pinned benchmark code."
+    },
+    {
+      "key": "yao2022react",
+      "kind": "method_background",
+      "title": "ReAct: Synergizing Reasoning and Acting in Language Models",
+      "authors": [
+        "Shunyu Yao",
+        "Jeffrey Zhao",
+        "Dian Yu",
+        "Nan Du",
+        "Izhak Shafran",
+        "Karthik Narasimhan",
+        "Yuan Cao"
+      ],
+      "year": 2022,
+      "version": "arXiv:2210.03629v3",
+      "doi": "10.48550/arXiv.2210.03629",
+      "url": "https://arxiv.org/abs/2210.03629v3",
+      "local_evidence": [],
+      "qualification": "Official arXiv metadata verified; optional method background only. No reproduction of that paper is claimed."
+    }
+  ]
+}

@@ -1,0 +1,106 @@
+{
+  "stage": 7,
+  "status": "report_template_only",
+  "approved": false,
+  "report_authored": false,
+  "report_compiled": false,
+  "paid_calls_authorized": false,
+  "new_simulations_authorized": false,
+  "source_commit": "4805b0d",
+  "source_snapshot_sha256": "8da459c45a0b6694e446e20b8281f2a64c66bf52fa64e02136ad6849e3b523e3",
+  "output": {
+    "pdf": "report/main.pdf",
+    "source": "report/main.tex",
+    "bibliography": "report/references.bib",
+    "manifest": "report/artifact_manifest.json",
+    "build_readme": "report/README.md",
+    "main_pages_target": [
+      5,
+      8
+    ],
+    "appendix_pages_target": [
+      2,
+      4
+    ],
+    "label": "Preliminary technical report"
+  },
+  "evidence": {
+    "primary_episodes": 36,
+    "policy_days": 756,
+    "matched_blocks": 3,
+    "llm_decisions": 252,
+    "new_stage6_free_baselines": 48,
+    "native_validated": 14,
+    "native_failed": 1,
+    "native_deferred": 4
+  },
+  "copy_assets": 12,
+  "generated_table_inputs": 8,
+  "citation_keys": [
+    "retailbench2026",
+    "retailbench_code",
+    "firmbench_code",
+    "icbe_code",
+    "atomicd_v8",
+    "wei2022cot",
+    "yao2022react"
+  ],
+  "required_qualifications": [
+    "Native families and Kaggle adaptation separate; no pooled score.",
+    "Retain failed ICBE and four deferred native Retail tasks; original native scope is incomplete.",
+    "Three selected blocks, one LLM realization per condition, dependent daily rows; descriptive inference.",
+    "Primary window prior manual outcome use uncertain; no pristine unseen-data claim.",
+    "Raw and control-adjusted contribution contrasts differ; surge control-adjusted mean is negative.",
+    "All fallback days remain in primary outcomes; repaired operation differs from first-response validity.",
+    "Recovery relative to own control; right-censoring explicit; high inventory is not economic optimality.",
+    "Pre-shock LLM action divergence in all nine pairs; no causal history or model-learning attribution.",
+    "Baseline-only sensitivity does not establish LLM robustness.",
+    "Preserve native metric denominators, Consulting recovery, BeerGame proxy/extreme costs and EDT rollout scope.",
+    "Simulator monetary units separate from token-derived gateway credits; old unknown-charge holds retained."
+  ],
+  "build": {
+    "engine": "pdflatex",
+    "bibliography_engine": "bibtex",
+    "sequence": [
+      "pdflatex",
+      "bibtex",
+      "pdflatex",
+      "pdflatex"
+    ],
+    "pdftex_options": [
+      "--disable-installer",
+      "--no-shell-escape",
+      "-interaction=nonstopmode",
+      "-halt-on-error"
+    ],
+    "packages": [
+      "article.cls",
+      "booktabs.sty",
+      "graphicx.sty",
+      "hyperref.sty",
+      "geometry.sty",
+      "longtable.sty",
+      "natbib.sty",
+      "caption.sty",
+      "microtype.sty"
+    ],
+    "renderer": "Poppler pdftoppm",
+    "all_pages_visual_review": true,
+    "isolated_source_bundle_build": true
+  },
+  "files_to_implement": [
+    "scripts/export_report_assets.py",
+    "scripts/build_report.py",
+    "report/main.tex",
+    "report/references.bib",
+    "report/README.md",
+    "report/artifact_manifest.json"
+  ],
+  "execution_gate": "Compiled PDF, resolved citations/references, reconciled values, all pages visually reviewed, self-contained source build and truthful completion boundary.",
+  "estimate_active_hours": [
+    3,
+    5
+  ],
+  "new_model_completion_calls": 0,
+  "gateway_credits": 0
+}

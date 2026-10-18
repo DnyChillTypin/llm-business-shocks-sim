@@ -50,6 +50,8 @@ jobs:
         run: .venv/bin/python scripts/check_stage6_readiness.py
       - name: Verify completed Stage 6 aggregate analysis
         run: .venv/bin/python scripts/check_public_stage6.py
+      - name: Verify Stage 7 preparation and report source assets
+        run: .venv/bin/python scripts/check_stage7_readiness.py
       - name: Execute the integration notebook without API calls
         run: .venv/bin/python scripts/verify_notebook.py
       - name: Execute the setup evidence notebook without API calls

@@ -13,6 +13,9 @@ Stage 3 retains 14 validated non-Retail tasks and the ICBE validity failure.
 The project includes the Kaggle-driven RetailBench integration, genuine LLM validation
 pilots, guarded native evaluations, automated tests and eight executed research notebooks.
 The four full native Retail episodes remain deferred; the report draft is next.
+[Stage 7 preparation](docs/STAGE7_PREPARATION.md) selects hash-verified report assets,
+records checked citation metadata and verifies the local LaTeX/PDF toolchain.
+Report authoring and final PDF compilation have not started.
 See the [native evaluation plan](docs/STAGE3_EVALUATION.md),
 [coverage table](docs/results/native_coverage.csv) and
 [saved evaluation notebook](notebooks/05_native_evaluation.ipynb).

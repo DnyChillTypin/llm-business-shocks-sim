@@ -24,8 +24,11 @@ def main():
     starts = [e for e in events if e["event"] == "started"]
     finishes = [e for e in events if e["event"] == "finished"]
     complete = [e for e in finishes if e["status"] == "completed"]
+    valid_ids = {e["attempt_id"] for e in events if e["event"] == "parse_checked" and e["parse_status"] == "valid"}
+    valid = [e for e in complete if e["attempt_id"] in valid_ids]
     result = {"task": manifest["task"], "status": manifest["status"], "attempts_started": len(starts),
               "completed_responses": len(complete), "failed_responses": len(finishes) - len(complete),
+              "validated_responses": len(valid),
               "attempts_without_observed_outcome": len(starts) - len(finishes),
               "invalid_responses": sum(e["event"] == "parse_checked" and e["parse_status"] != "valid" for e in events),
               "estimated_known_credits": sum(e.get("cost_usd") or 0 for e in finishes)}
@@ -36,7 +39,7 @@ def main():
         for event in replays:
             pair, round_number, actor = event["logical_choice"].split(":")
             rounds[(pair, int(round_number))].add(actor)
-        for event in complete:
+        for event in valid:
             ctx = event["context"]
             rounds[(ctx["case_id"], ctx["round"])].add(ctx["actor"])
         completed = [key for key, actors in rounds.items() if actors == {"A", "B"}]
@@ -44,6 +47,7 @@ def main():
         result["completed_rounds_total"] = len(completed)
         result["replayed_observed_decisions"] = len(replays)
         result["accounted_decisions_total"] = len(complete) + len(replays)
+        result["validated_decisions_total"] = len(valid) + len(replays)
         result["completed_matches"] = sum(sum(pair == key[0] for key in completed) == manifest["configured_horizon"] for pair in pairs)
         if complete:
             latest = complete[-1]["context"]

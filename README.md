@@ -135,6 +135,13 @@ with artifact review between tasks. The four full native Retail episodes remain
 deferred, so completing this route does not complete the original Stage 3 scope.
 Primary Kaggle comparisons have not started.
 
+Stage 3's latest [QC checkpoint](docs/STAGE3_RESULTS.md) has **14 validated
+non-Retail tasks**. ICBE stopped on a genuine invalid DeepSeek response after
+177 valid rounds: its 4,096-token ceiling was exhausted without a decision.
+The outcome was retained without resampling. Inclusive conservative exposure
+is **$1.934 across 1,438 attempts**; completing ICBE requires a methodology
+decision, while the four Retail evaluations remain deferred.
+
 - Validate the implemented LLM policy with genuine bounded pilots, then measure
   validity, cost and performance against the baselines under an evaluation budget.
 - Expand products/stores and repeated runs; check price-response sensitivity.

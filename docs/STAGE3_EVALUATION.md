@@ -48,6 +48,14 @@ Each replay is recorded with its evidence digest. Replayed responses make no new
 
 ## Evidence and publication
 
+### Invalid ICBE response checkpoint
+
+The exact-request continuation reused 38 verified responses and made 318 new calls. At the second ordered match's round 78, DeepSeek reached the frozen 4,096-token ceiling with reasoning only, empty final content, and no decision. Parsing correctly rejected the response. The 317 fresh valid responses plus 38 replays cover 177 complete valid rounds, with one additional valid actor response in the failed round. Neither the invalid response nor its successful peer is retried. No full native workbook or final ICBE score exists.
+
+This is a model-response validity failure, distinct from the preceding transport interruptions. The recovery verifier rejects sources containing an invalid decision, so further exact-request recovery cannot silently replace this outcome. The current evaluation is stopped for methodology review. Retaining the failure under the frozen protocol, or designing a separately labeled amended experiment, requires an explicit research decision before further ICBE spending. The existing six-credit cap is not exhausted.
+
+The checkpoint preserves all cohorts and costs, updates the saved-output notebook and aggregate evidence, and distinguishes the 14 validated tasks from failed ICBE and four deferred Retail tasks. QC checks of evidence and software can pass while experimental coverage remains incomplete.
+
 Raw responses, transcripts, request identifiers, account snapshots, allowance approval history and detailed run mappings stay under ignored `results/` or `.cache/`. Publish aggregate task metrics, anonymous cohort labels, coverage, model identifiers, token-derived project costs, limitations and saved-output analysis only. Push code and reviewed aggregate results at useful milestones.
 
 The final checkpoint must distinguish completed non-Retail coverage from deferred Retail coverage, and must retain every failed or incomplete cohort in the local audit and public aggregate denominators.

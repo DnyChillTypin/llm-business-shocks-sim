@@ -203,10 +203,14 @@ def main():
                   scope_caps=allowance["scope_caps_usd"], total_attempt_ceiling=allowance["max_attempts"],
                   unallocated_reserve=allowance["cap_usd"] - sum(allowance["scope_caps_usd"].values()),
                   qualification="Token-derived uncached tariff upper estimates plus full unknown-charge holds; not independently verified provider billing.")
+    outstanding = [r for r in coverage if not r["task"].startswith("retail:") and r["status"] != "validated_complete"]
+    failed = [r for r in outstanding if r["status"] in {"failed", "requires_review"}]
     status = {"stage": 3, "execution_route": "non-Retail first pass",
-              "route_status": "validated_complete" if all(r["status"] == "validated_complete" for r in coverage if not r["task"].startswith("retail:")) else "in_progress_or_incomplete",
-              "original_full_stage_status": "incomplete_Retail_deferred",
+              "route_status": "validated_complete" if not outstanding else "requires_review" if failed else "in_progress_or_incomplete",
+              "original_full_stage_status": "incomplete_native_failure_and_Retail_deferred" if failed else "incomplete_Retail_deferred",
               "validated_tasks": sum(r["status"] == "validated_complete" for r in coverage),
+              "failed_tasks": len(failed),
+              "outstanding_nonretail_tasks": [r["task"] for r in outstanding],
               "deferred_tasks": sum(r["status"] == "deferred" for r in coverage),
               "research_qualifications": ["Substituted gateway models; not exact published-model reproduction.",
                   "Factset extension is reported separately.", "No cross-family pooled score.",

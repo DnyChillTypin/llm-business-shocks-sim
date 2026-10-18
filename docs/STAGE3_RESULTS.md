@@ -1,6 +1,6 @@
 # Stage 3 evaluation results
 
-The non-Retail execution route is in progress. All 507 reasoning cases, EDT, both BeerGame scenarios and all ten Consulting cases are validated. ICBE remains outstanding. The original Stage 3 scope remains incomplete because four 180-day native Retail episodes are deferred under the approved 6-credit route. Kaggle primary comparisons have not started.
+The non-Retail execution route has stopped for quality-control review: **14 tasks are validated and ICBE failed on an invalid response**. All 507 reasoning cases, EDT, both BeerGame scenarios and all ten Consulting cases are validated. ICBE coverage is incomplete, and four 180-day native Retail episodes remain deferred under the approved 6-credit route. Kaggle primary comparisons have not started.
 
 ## Reasoning
 
@@ -59,9 +59,15 @@ All ten cases are now validated: eight recovered complete sessions and two fresh
 
 Overall scores range from 8 to 8.5. These are judgments by the substituted interviewer/judge model, not independent human ratings. Ten selected case sessions do not provide independent model replications.
 
-## ICBE continuation
+## ICBE validity failure and QC stop
 
 The initial full run stopped at round 20 of its first match on HTTP 503 and cancellation of the paired request. Its 38 valid observed decisions cover 19 complete rounds; both unknown failed-request charges remain fully reserved. Before further calls, the actual pinned simulator reproduced all 38 full requests in an offline probe. Continuation replays these real responses only at identical native requests, reconstructing the same histories and points. New calls begin at unfinished choices. Invalid model decisions cannot be silently resampled through this mechanism, and original source costs are not counted again for replay. See the [execution record](STAGE3_EVALUATION.md).
+
+The continuation stopped at **match 2, round 78, actor B**. DeepSeek returned `finish_reason=length`: all **4,096 output tokens** were consumed, the final content was empty, and there was no explicit decision. This is a charged, observed invalid response, not an unknown transport failure. Its full response and token usage remain in the local audit. No replacement decision, default move, token-limit increase or further paid call was made after this failure.
+
+There are **355 valid logical decisions**, comprising 38 verified replays and 317 fresh valid responses, plus the one invalid response. These cover **177 fully valid rounds**: one complete 100-round match and 77 rounds of the second match. The invalid round is excluded from completed-round counts. The native simulator produced no final workbook, so no full ICBE score or phase-cooperation plot is reported. The remaining choices are unexecuted, not missing answers silently counted as valid.
+
+This continuation used **318 new attempts and 0.292842452 estimated gateway credits**. Across pilots and all evaluations, conservative exposure is **1.934083294 credits**: 1.874999085 known token-derived costs plus 0.059084209 in eight fully retained unknown-charge holds, over 1,438 physical attempts. There are no pending requests. Budget headroom does not authorize changing the frozen response protocol or resampling the invalid choice. Fourteen non-Retail tasks remain validated; ICBE requires a methodology decision, and the four Retail tasks remain deferred.
 
 ## Evidence
 

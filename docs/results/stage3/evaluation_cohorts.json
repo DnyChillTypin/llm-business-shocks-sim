@@ -966,5 +966,49 @@
     "checks": {},
     "project_commit": "f08315a0f2271fe3e241f780916e8065eeee900a",
     "project_tracked_dirty": false
+  },
+  {
+    "cohort": "evaluation_19",
+    "task": "icbe",
+    "status": "failed",
+    "method_classification": "native logic with compatibility adaptation and substituted models",
+    "expected_units": 6,
+    "configured_horizon": 100,
+    "saved_reasoning_cases": 0,
+    "native_accuracy_unit": null,
+    "native_correct_units": null,
+    "native_scored_units": null,
+    "exact_case_accuracy": null,
+    "correct": null,
+    "scored_cases": null,
+    "accuracy": null,
+    "no_answer": null,
+    "attempts": 318,
+    "completed_responses": 318,
+    "replayed_decisions": 38,
+    "attempts_without_observed_gateway_outcome": 0,
+    "invalid_responses": 1,
+    "unknown_usage_responses": 0,
+    "input_tokens": 89512,
+    "output_tokens": 80478,
+    "estimated_gateway_credits": 0.292842452,
+    "unresolved_reserved_credits": 0,
+    "conservative_exposure_credits": 0.292842452,
+    "api_seconds": 1640.3465211004368,
+    "elapsed_seconds": 1250.01781,
+    "failure_category": "DecisionFailure",
+    "requested_models": [
+      "deepseek-v3.2",
+      "gpt-4.1-mini-2025-04-14",
+      "gpt-4o-mini-2024-07-18"
+    ],
+    "returned_models": [
+      "deepseek-v3.2",
+      "gpt-4.1-mini-2025-04-14",
+      "gpt-4o-mini-2024-07-18"
+    ],
+    "checks": {},
+    "project_commit": "318524c72947fdd4ce524c9f40897c1ba1637da9",
+    "project_tracked_dirty": false
   }
 ]

@@ -1,9 +1,9 @@
 {
   "currency": "USD_gateway_credit",
-  "attempts": 1120,
-  "known_cost_usd": 1.582156633,
+  "attempts": 1438,
+  "known_cost_usd": 1.874999085,
   "unresolved_reserved_usd": 0.059084209,
-  "exposure_usd": 1.641240842,
+  "exposure_usd": 1.934083294,
   "pending_attempts": 0,
   "uncertain_attempts": 8,
   "bounded_carried_attempts": 8,

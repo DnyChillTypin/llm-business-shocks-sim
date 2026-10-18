@@ -17,3 +17,4 @@ evaluation_15,firm:consulting,incomplete,native logic with substituted model,10,
 evaluation_16,firm:consulting,failed,native logic with substituted model,10,,0,,,,,,,,,115,114,0,0,0,1,254939,17514,0.105113185,0.00766278,0.11277596499999999,431.6486697001965,436.754464,GatewayFailure
 evaluation_17,firm:consulting,validated_complete,native logic with substituted model,10,,0,,,,,,,,,26,26,0,0,0,0,56371,4061,0.024016088,0,0.024016088,97.14395739987958,99.4612,
 evaluation_18,icbe,failed,native logic with compatibility adaptation and substituted models,6,100,0,,,,,,,,,40,38,0,0,0,2,10330,8449,0.016967456,0.017910496999999997,0.034877952999999996,156.52059480006574,102.807379,GatewayFailure
+evaluation_19,icbe,failed,native logic with compatibility adaptation and substituted models,6,100,0,,,,,,,,,318,318,38,0,1,0,89512,80478,0.292842452,0,0.292842452,1640.3465211004368,1250.01781,DecisionFailure

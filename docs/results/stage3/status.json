@@ -1,9 +1,13 @@
 {
   "stage": 3,
   "execution_route": "non-Retail first pass",
-  "route_status": "in_progress_or_incomplete",
-  "original_full_stage_status": "incomplete_Retail_deferred",
+  "route_status": "requires_review",
+  "original_full_stage_status": "incomplete_native_failure_and_Retail_deferred",
   "validated_tasks": 14,
+  "failed_tasks": 1,
+  "outstanding_nonretail_tasks": [
+    "icbe"
+  ],
   "deferred_tasks": 4,
   "research_qualifications": [
     "Substituted gateway models; not exact published-model reproduction.",

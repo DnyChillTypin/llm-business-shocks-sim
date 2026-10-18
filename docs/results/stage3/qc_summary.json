@@ -1,0 +1,51 @@
+{
+  "stage": 3,
+  "status": "experimental_quality_gate_failed",
+  "stage_complete": false,
+  "validated_nonretail_tasks": 14,
+  "failed_nonretail_tasks": [
+    "icbe"
+  ],
+  "deferred_retail_tasks": 4,
+  "automated_tests": 66,
+  "automated_test_status": "passed",
+  "frozen_design_checks": 31,
+  "frozen_design_status": "passed",
+  "reasoning_cases_validated": 507,
+  "consulting_cases_validated": 10,
+  "beergame_episodes_validated": 2,
+  "edt_steps_validated": 96,
+  "icbe_review": {
+    "status": "qc_stop_invalid_decision",
+    "paid_api_calls_in_audit": 0,
+    "fresh_response_provenance_verified": 318,
+    "replayed_response_provenance_verified": 38,
+    "valid_logical_decisions": 355,
+    "complete_valid_rounds": 177,
+    "complete_valid_matches": 1,
+    "invalid_responses": [
+      {
+        "model": "deepseek-v3.2",
+        "ordered_match": 2,
+        "round": 78,
+        "actor": "B",
+        "failure_category": "truncated_or_filtered_completion",
+        "finish_reason": "length",
+        "output_tokens": 4096,
+        "final_content_empty": true,
+        "explicit_decision_present": false,
+        "charge_known_and_settled": true
+      }
+    ],
+    "invalid_source_replay_rejected": true,
+    "native_workbook_present": false,
+    "replacement_decision_requested": false
+  },
+  "recovery_milestone_ci": {
+    "status": "passed",
+    "notebooks_executed_without_api_calls": 5,
+    "url": "https://github.com/DnyChillTypin/llm-business-shocks-sim/actions/runs/39112214765"
+  },
+  "interpretation": "Software and evidence checks pass; full ICBE coverage fails. No invalid decision was replaced, no token limit changed, and no final ICBE score was fabricated. Budget headroom is not protocol authorization.",
+  "checked_on": "2026-10-18"
+}

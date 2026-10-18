@@ -1,11 +1,12 @@
 {
   "hash_rule": "SHA-256 UTF-8 text with CRLF normalized to LF",
   "files": {
-    "budget_summary.json": "be218d64928f4d7164d5281991ebc6400542fd3766e9374637ec4a977aab4c29",
-    "evaluation_cohorts.json": "770dc1cf81f6f7aa0f6b98c0e4291163786843da18a86f0ea1a21ff72051e257",
-    "evaluation_usage.csv": "2c99d502ad7d1472b50da97b8f5998b4842a838e51b4b1318e913c75876fb3b0",
+    "budget_summary.json": "236003aba99048994c3f0db51e727a72639465f0302884222ca9e6448d20388f",
+    "evaluation_cohorts.json": "70c2a25d745e473997a960f480b715f913d6a476d19c5d610c96b1b97ec4157a",
+    "evaluation_usage.csv": "3a66d6e83ce3fdbecadbfcc4c66105bc1a1f5ae85f2c278060198e91dd7f9c6c",
     "family_metrics.json": "391db2b2008511fd5d9ea7739c714be1d16f8a729344fae49293f34186e8ee26",
-    "native_coverage.csv": "6f2386e2c8947e4deddbcb29dd17d7b670c3815de52dac3bb55f34b1cfda14b8",
-    "status.json": "3607e69251912e217a760eb64d3b05f21d7e73c35de8c6f8efe9645bba1ff2c5"
+    "native_coverage.csv": "7a95b16517c6463eed8aaebb314d85abc0f35d81f13f80a2b25db93beb8b024c",
+    "qc_summary.json": "e9527cf63562a942f08e99713083d7d8595ecd91c031c972a2942299ffae49fe",
+    "status.json": "63387a9a6ced752f81bee4dc51fe5746418e94a98655e9cf08a8460c435b3422"
   }
 }

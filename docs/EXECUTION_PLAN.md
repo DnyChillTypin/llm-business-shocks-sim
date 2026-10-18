@@ -252,7 +252,7 @@ For assumption robustness, first run free baselines at elasticity 0.75 and 2.25 
 & $py scripts/verify_notebook.py --notebook notebooks/08_findings_and_robustness.ipynb
 ```
 
-Save exports under `results/tables/<analysis_id>/` and `results/figures/<analysis_id>/`, with source-run hashes in `analysis_manifest.json`. Publish a small sanitized subset under `docs/results/` and `docs/assets/` for reproducibility without paid reruns. Keep native and adapted result tables distinct.
+Save the versioned private bundle under `results/analysis/<analysis_id>/`, including `tables/`, `figures/`, extracted inputs and `analysis_manifest.json` with source evidence hashes, as specified in the preparation checkpoint. Publish reviewed aggregates under `docs/results/stage6/` and figures under `docs/assets/stage6/` for reproducibility without paid reruns. Keep native and adapted result tables distinct.
 
 **Quality gate / failures.** All reported numbers trace to saved runs; raw and derived totals reconcile; incomplete/censored/fallback outcomes are visible; the analysis includes contribution, service, inventory, prices, recovery and cost. No selective scenario omission, day-level pseudoreplication, cross-benchmark pooled score or claim of real-world causality. Investigate outliers against raw logs rather than dropping them; correct accounting errors before interpretation. If samples are inadequate, narrow the claim instead of fabricating precision.
 

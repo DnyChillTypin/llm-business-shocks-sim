@@ -7,12 +7,12 @@ inventory and pricing policies, and controlled business-shock experiments.**
 ![Python](https://img.shields.io/badge/Python-3.12-blue)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
-**Status:** [Stage 5 primary execution has a validated two-series checkpoint](docs/STAGE5_EXECUTION.md):
-24/36 matched episodes and 504/756 policy-days are complete.
+**Status:** [Stage 5 primary execution is complete](docs/STAGE5_EXECUTION.md):
+36/36 matched episodes, 756 policy-days and 252 primary LLM decision opportunities.
 Stage 3 retains 14 validated non-Retail tasks and the ICBE validity failure.
 The project includes the Kaggle-driven RetailBench integration, genuine LLM validation
 pilots, guarded native evaluations, automated tests and seven executed research notebooks.
-The final primary Kaggle series block and the four full native Retail episodes remain outstanding.
+The four full native Retail episodes remain deferred; analysis and the findings draft are next.
 See the [native evaluation plan](docs/STAGE3_EVALUATION.md),
 [coverage table](docs/results/native_coverage.csv) and
 [saved evaluation notebook](notebooks/05_native_evaluation.ipynb).
@@ -147,11 +147,12 @@ an amended run, while the four Retail evaluations remain deferred. The
 episodes across three series, with independent replay, matching inputs, strict
 provenance and guarded primary execution. The [readiness notebook](notebooks/06_kaggle_experiment_readiness.ipynb)
 loads saved evidence without paid calls. These are validation fixtures, not primary
-LLM findings. [Stage 5 execution](docs/STAGE5_EXECUTION.md) has completed
-24 matched primary episodes under the new $10 cumulative ceiling. Its
+LLM findings. [Stage 5 execution](docs/STAGE5_EXECUTION.md) completed all
+36 matched primary episodes under the new $10 cumulative ceiling. Primary expense
+was **0.252 credits**, bringing cumulative exposure to **2.186 credits**. Its
 [saved primary notebook](notebooks/07_primary_shock_comparisons.ipynb) retains poor
-outcomes, repairs and fallbacks alongside the matched business results. The final
-series block remains outstanding.
+outcomes, 144 repairs and 17 fallback days alongside the matched business results.
+Stage 6 will analyze the completed evidence and its limitations.
 
 - Validate the implemented LLM policy with genuine bounded pilots, then measure
   validity, cost and performance against the baselines under an evaluation budget.

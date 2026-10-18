@@ -54,6 +54,8 @@ jobs:
         run: .venv/bin/python scripts/check_stage7_readiness.py
       - name: Verify completed Stage 7 report and reviewed PDF binding
         run: .venv/bin/python scripts/check_public_stage7.py
+      - name: Verify Stage 8 reproduction and release preparation
+        run: .venv/bin/python scripts/check_stage8_readiness.py
       - name: Execute the integration notebook without API calls
         run: .venv/bin/python scripts/verify_notebook.py
       - name: Execute the setup evidence notebook without API calls

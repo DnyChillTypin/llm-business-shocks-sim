@@ -1,0 +1,10 @@
+gate,name,planned_work,exit_evidence,status
+R1,Evidence and claims,Stage 7 source checks; frozen design; private read-only evidence audit,Pinned report/analysis unchanged; primary 36/756/252 and native 14/1/4 reconciled; ledger unchanged,planned_not_executed
+R2,Fresh installation,New clone and Python 3.12 environment; declared dependencies; small pinned inputs,Setup without credentials/private results/29GB archive succeeds; vendor commits and CSV hash match,planned_not_executed
+R3,Tests and fixtures,Full Windows suite; frozen design; offline validation matrix; Linux CI separately,Current full suite passes; 31 design checks and 36 validation episodes pass; zero paid requests,planned_not_executed
+R4,Notebooks and analysis,All eight notebooks from fresh kernels in the clone; inspect saved analysis,Eight successes; zero notebook errors; aggregate analysis preserved; original notebooks unchanged,planned_not_executed
+R5,Paid-path previews,Full Kaggle and one LLM-cell dry run; all 19 native evaluation dry runs,36 episodes/252 decisions and 21-decision LLM cell; 19 plans; no calls or ledger changes,planned_not_executed
+R6,Report verification,Numeric/source/PDF checks; isolated copied-source compilation; rendering review,12-page reviewed PDF and seven citations match evidence; toolchain-specific reproduction recorded,planned_not_executed
+R7,Citation and attribution,Primary source metadata; pinned licenses; models/compatibility; dataset attribution,All seven records verified; missing ICBE license and native qualifications retained; no raw redistribution,planned_not_executed
+R8,Publication boundary,Tracked tree; notebook outputs; PDF metadata/text/attachments; reachable Git history,No unaddressed secrets/private account details/raw cases or data; sanitized scanner evidence only,planned_not_executed
+R9,Reader and release review,Reproduction/attribution docs; README status; selected diff; push and CI,All checklist gates link evidence; preliminary/incomplete scope visible; exact-head CI passes,planned_not_executed

@@ -15,7 +15,8 @@ pilots, guarded native evaluations, automated tests and eight executed research 
 The four full native Retail episodes remain deferred. The [12-page findings PDF](report/main.pdf)
 and [self-contained LaTeX source bundle](report/README.md) preserve incomplete coverage,
 negative outcomes, fallback days, censored recovery and inference limits.
-Stage 8 broader reproduction and release review remains pending.
+[Stage 8 reproduction and release preparation](docs/STAGE8_PREPARATION.md) is ready;
+its fresh-clone, notebook, attribution, privacy and release checks remain pending.
 See the [native evaluation plan](docs/STAGE3_EVALUATION.md),
 [coverage table](docs/results/native_coverage.csv) and
 [saved evaluation notebook](notebooks/05_native_evaluation.ipynb).

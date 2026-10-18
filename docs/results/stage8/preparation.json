@@ -1,0 +1,34 @@
+{
+  "stage": 8,
+  "status": "prepared_not_executed",
+  "prepared_on": "2026-10-18",
+  "preparation_complete": true,
+  "release_executed": false,
+  "stage8_exit_gate_passed": false,
+  "source_commit": "7abb2d67c21fe7a9a6927afc07d6a456c3061de7",
+  "source_snapshot_sha256": "6e6d24578469853e141a801a6e874709b494b1215056d556eb5ba74be28d82f1",
+  "plan_sha256": "6b56f63c8256afae711c99c5b99863b7beeba302c0f8d218066dce8917e4c206",
+  "gate_plan_sha256": "eb0144aa65a09705ffc498e082903a59328a9a29bc331ef8801e2328f88ee0f8",
+  "pinned_source_files": 96,
+  "saved_notebooks": 8,
+  "planned_release_gates": 9,
+  "report_pages": 12,
+  "report_pdf_sha256": "f06c146513fa0d0db223becd8e4db8d5c1b90373e20502ecc39d64bbea63e11f",
+  "native_coverage": {
+    "validated": 14,
+    "failed": 1,
+    "deferred": 4
+  },
+  "cumulative_project_exposure_credits": 2.186206858,
+  "new_model_completion_calls": 0,
+  "new_simulation_episodes": 0,
+  "prior_stage7_ci": {
+    "id": 39142253763,
+    "head_sha": "7abb2d67c21fe7a9a6927afc07d6a456c3061de7",
+    "status": "completed",
+    "conclusion": "success",
+    "html_url": "https://github.com/DnyChillTypin/llm-business-shocks-sim/actions/runs/39142253763"
+  },
+  "prior_evidence_boundary": "Stage 7 CI and report QA are existing inputs, not newly completed Stage 8 checks.",
+  "completion_boundary": "Preparation complete; fresh-clone reproduction, all release gates and final release remain pending."
+}

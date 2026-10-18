@@ -1,0 +1,71 @@
+{
+  "stage": 8,
+  "status": "prepared_not_executed",
+  "source_commit": "7abb2d67c21fe7a9a6927afc07d6a456c3061de7",
+  "source_snapshot_sha256": "6e6d24578469853e141a801a6e874709b494b1215056d556eb5ba74be28d82f1",
+  "release_executed": false,
+  "paid_calls_authorized": false,
+  "gateway_cost_credits": 0,
+  "new_primary_or_native_experiments": false,
+  "disposable_clone_required": true,
+  "full_tracked_tree_and_history_scan": true,
+  "required_gates": [
+    "R1",
+    "R2",
+    "R3",
+    "R4",
+    "R5",
+    "R6",
+    "R7",
+    "R8",
+    "R9"
+  ],
+  "expected_primary": {
+    "episodes": 36,
+    "policy_days": 756,
+    "llm_decisions": 252
+  },
+  "expected_native_plans": 19,
+  "notebooks": [
+    "notebooks/01_kaggle_retailbench_integration.ipynb",
+    "notebooks/02_benchmark_setup.ipynb",
+    "notebooks/03_kaggle_llm_experiment.ipynb",
+    "notebooks/04_results_analysis.ipynb",
+    "notebooks/05_native_evaluation.ipynb",
+    "notebooks/06_kaggle_experiment_readiness.ipynb",
+    "notebooks/07_primary_shock_comparisons.ipynb",
+    "notebooks/08_findings_and_robustness.ipynb"
+  ],
+  "preserve_frozen_documents": [
+    "docs/BENCHMARKS.md",
+    "docs/THIRD_PARTY.md"
+  ],
+  "existing_entrypoints": [
+    "scripts/setup_project.py",
+    "scripts/setup_benchmarks.py",
+    "scripts/verify_notebook.py",
+    "scripts/check_research_design.py",
+    "scripts/check_kaggle_matrix.py",
+    "scripts/check_public_stage2.py",
+    "scripts/check_public_stage3.py",
+    "scripts/check_public_stage4.py",
+    "scripts/check_public_stage5.py",
+    "scripts/check_public_stage6.py",
+    "scripts/check_public_stage7.py",
+    "scripts/check_stage6_readiness.py",
+    "scripts/run_benchmarks.py",
+    "scripts/run_kaggle_experiment.py",
+    "scripts/build_report.py"
+  ],
+  "planned_outputs": [
+    "docs/REPRODUCIBILITY.md",
+    "docs/RELEASE_ATTRIBUTION.md",
+    "docs/results/release_checklist.md",
+    "docs/results/stage8/status.json",
+    "docs/results/stage8/qc_summary.json",
+    "docs/results/stage8/environment.json",
+    "docs/results/stage8/artifact_manifest.json"
+  ],
+  "scope": "Release QC for the preliminary portfolio deliverable; original native benchmark coverage remains incomplete.",
+  "estimate": "1-2 active hours plus downloads/install/CI; zero gateway credits; free reproduction fixtures allowed only during execution."
+}

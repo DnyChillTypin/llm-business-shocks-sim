@@ -40,6 +40,10 @@ jobs:
         run: .venv/bin/python scripts/check_public_stage2.py
       - name: Verify aggregate-only native evaluation package
         run: .venv/bin/python scripts/check_public_stage3.py
+      - name: Reproduce offline Kaggle validation matrix
+        run: .venv/bin/python scripts/check_kaggle_matrix.py
+      - name: Verify saved Kaggle readiness package
+        run: .venv/bin/python scripts/check_public_stage4.py
       - name: Execute the integration notebook without API calls
         run: .venv/bin/python scripts/verify_notebook.py
       - name: Execute the setup evidence notebook without API calls
@@ -50,3 +54,5 @@ jobs:
         run: .venv/bin/python scripts/verify_notebook.py --notebook notebooks/04_results_analysis.ipynb
       - name: Execute saved native evaluation analysis without API calls
         run: .venv/bin/python scripts/verify_notebook.py --notebook notebooks/05_native_evaluation.ipynb
+      - name: Execute saved Kaggle readiness analysis without API calls
+        run: .venv/bin/python scripts/verify_notebook.py --notebook notebooks/06_kaggle_experiment_readiness.ipynb

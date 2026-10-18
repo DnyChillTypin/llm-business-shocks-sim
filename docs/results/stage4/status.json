@@ -1,0 +1,11 @@
+{
+  "stage": 4,
+  "status": "complete_offline_readiness",
+  "exit_gate_passed": true,
+  "primary_comparisons_executed": false,
+  "paid_primary_authorized": false,
+  "next_stage": 5,
+  "next_stage_work": "Explicitly authorized matched primary baseline and LLM shock comparisons",
+  "native_coverage_qualification": "14 validated non-Retail tasks; frozen ICBE failure retained; four Retail tasks deferred.",
+  "primary_window_prior_manual_outcome_use": "uncertain; no pristine unseen-data claim"
+}

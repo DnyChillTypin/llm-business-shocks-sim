@@ -1,0 +1,10 @@
+{
+  "hash_rule": "SHA-256 UTF-8 text with CRLF normalized to LF",
+  "files": {
+    "preparation.json": "30e3f952a034cb832e8ab37c03ec4e22f57d95a80cc966db20a972860c7b1f7b",
+    "primary_plan.csv": "b5a1045b9b7818bc715e6306bb55f144104865408a53abf7ee2f619b9c9f1a3c",
+    "qc_summary.json": "9096f946719480f0bdcd74d9725c5c363e34c533aebfe5860d8c579338d1c0f2",
+    "status.json": "853079544f9193819df0ea1d528c8978ebd5e8e39e3d0d4f99454af22dc11d70",
+    "validation_coverage.csv": "cf2e9e861f5867b33e54c2f2eb6b8a9c0aa0da43acf35dfb09fd9e7ce4c083b6"
+  }
+}

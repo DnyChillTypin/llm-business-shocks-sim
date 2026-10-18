@@ -1,0 +1,26 @@
+{
+  "approved": false,
+  "purpose": "evaluation",
+  "task_id": "kaggle:primary_matrix",
+  "matrix_sha256": "f999ceb19bcc48b9d3088fbacd3bc1de0115665ce88e6d76d272c02a37674767",
+  "study_sha256": "075f6d1137cf259a8550f27b78ba2685488b8a8174e30826b71a11833341f790",
+  "episode_ids": [
+    "973e829876ae0e6913238ce12d0ea9a3a4a2b0eac64e8f35e1c9fb19fd370ae4",
+    "ab3a289475615408432373dd68b124fa107a463bf909d6c801d8a10dc9221e3f",
+    "207f077748c23b48c8fdfa9231f05e1b2bf2db90a8897f3191edd157b7cc73fd",
+    "8a62c8007a1738fe7376219a8c58c608cf612cfe46228914b836fe32b8ef3e98",
+    "6d14a3f08d4ac54360145854847a8460c1c6a1f2a17e86b94b64c3a75d9ee394",
+    "3c15dc6b481ef77b85f3c19486ff743aae16e6a36bafcec51bf7fd13a1129b64",
+    "5e12bcf109b97f911a1a1dd65c183d803f12a6dd1f44fe32de84a45e5f262c20",
+    "1f33b74d123add886ae40acee67af4564cc57b754cadeb5778d21f8f31a33a74",
+    "11ea4f3918d698da556bfed06d672192e8810a21f05bdc8dd527e968f9e3269d",
+    "5058445c5c8d2e684d33f02ece904c88f5563357e185a49d794278d25be450f5",
+    "d111d37c290fb7e83683d5df4f23b8c3231de8d140e666a5cb79e2ed855d7226",
+    "538765ec40549db441ded9fc1c3a102b5b4b35a41f28292f4dbcafc5a4910d2c"
+  ],
+  "budget_id": null,
+  "max_episodes": 12,
+  "max_primary_decisions": 252,
+  "max_attempts": 504,
+  "qualification": "Template only; no paid authorization. Use the existing cumulative budget ledger and scope."
+}

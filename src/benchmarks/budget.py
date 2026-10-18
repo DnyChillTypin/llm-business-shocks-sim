@@ -38,11 +38,13 @@ class BudgetLedger:
         allowed = {"cap_usd", "scope_caps_usd", "approval_reference", "approved_at_utc",
                    "qualification", "bounded_unknown_failure_categories"}
         if authorize_evaluation:
-            allowed |= {"allowed_purposes", "evaluation_tasks", "max_attempts"}
+            allowed |= {"allowed_purposes", "allowed_tasks", "evaluation_tasks", "max_attempts"}
             if (set(new.get("allowed_purposes", [])) != {"pilot", "evaluation"}
                     or not set(old.get("allowed_purposes", [])) <= set(new["allowed_purposes"])
                     or type(new.get("max_attempts")) is not int
                     or new["max_attempts"] < old["max_attempts"]
+                    or not set(old.get("allowed_tasks", [])) <= set(new.get("allowed_tasks", []))
+                    or not set(old.get("evaluation_tasks", [])) <= set(new.get("evaluation_tasks", []))
                     or not new.get("evaluation_tasks")
                     or not set(new["evaluation_tasks"]) <= set(new.get("allowed_tasks", []))):
                 raise BudgetStop("Evaluation transition requires explicit task coverage and a nondecreasing attempt limit.")

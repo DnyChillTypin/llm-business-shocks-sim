@@ -1,6 +1,6 @@
 # Stage 4 preparation: Kaggle LLM experiment
 
-Preparation is complete; Stage 4 implementation/validation is **not yet marked complete**. This checkpoint makes no model calls and runs no primary-window policy episodes. It retains the frozen ICBE failure and all four deferred Retail evaluations. Native benchmark scores remain separate from the Kaggle adaptation.
+This is the historical preparation plan. **Stage 4 implementation/validation is now complete**; see the [execution checkpoint](STAGE4_EXECUTION.md) for measured coverage, commands and limitations. Preparation and execution made no model calls and ran no primary-window policy episodes. The frozen ICBE failure and all four deferred Retail evaluations remain visible. Native benchmark scores remain separate from the Kaggle adaptation.
 
 ## Purpose and current evidence
 

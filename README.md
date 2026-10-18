@@ -7,10 +7,10 @@ inventory and pricing policies, and controlled business-shock experiments.**
 ![Python](https://img.shields.io/badge/Python-3.12-blue)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
-**Status:** Stage 3 retains 14 validated non-Retail tasks and the ICBE validity failure;
-[Stage 4 preparation is ready](docs/STAGE4_PREPARATION.md).
+**Status:** [Stage 4 offline Kaggle readiness is complete](docs/STAGE4_EXECUTION.md).
+Stage 3 retains 14 validated non-Retail tasks and the ICBE validity failure.
 The project includes the Kaggle-driven RetailBench integration, genuine LLM validation
-pilots, guarded native evaluations, automated tests and five executed research notebooks.
+pilots, guarded native evaluations, automated tests and six executed research notebooks.
 Primary Kaggle comparisons and the four full native Retail episodes remain outstanding.
 See the [native evaluation plan](docs/STAGE3_EVALUATION.md),
 [coverage table](docs/results/native_coverage.csv) and
@@ -142,8 +142,11 @@ non-Retail tasks**. ICBE stopped on a genuine invalid DeepSeek response after
 The outcome was retained without resampling. Inclusive conservative exposure
 is **$1.934 across 1,438 attempts**. The frozen ICBE failure is retained without
 an amended run, while the four Retail evaluations remain deferred. The
-[Stage 4 preparation](docs/STAGE4_PREPARATION.md) reuses the implemented Kaggle
-policy and defines the remaining offline checks before controlled comparisons.
+[Stage 4 checkpoint](docs/STAGE4_EXECUTION.md) validates 24 baseline and 12 scripted
+episodes across three series, with independent replay, matching inputs, strict
+provenance and guarded primary execution. The [readiness notebook](notebooks/06_kaggle_experiment_readiness.ipynb)
+loads saved evidence without paid calls. These are validation fixtures, not primary
+LLM findings. Stage 5 will execute explicitly authorized controlled comparisons.
 
 - Validate the implemented LLM policy with genuine bounded pilots, then measure
   validity, cost and performance against the baselines under an evaluation budget.

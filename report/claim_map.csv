@@ -1,0 +1,10 @@
+claim_code,claim,source_table,source_columns_or_filter,limitation
+C1,Raw LLM contribution exceeded adaptive in 2/9 shocks.,paired_shock_contrasts.csv,comparator=adaptive; contribution_difference,Three selected blocks; absolute rankings do not measure control-adjusted response.
+C2,Control-adjusted contribution was positive in 7/9 adaptive comparisons.,paired_shock_contrasts.csv,control_adjusted_contribution,Surge mean is negative; no population significance or causal model-learning claim.
+C3,Recovery was observed in 9/9 LLM shocks.,recovery.csv,policy=llm_with_fallback; recovered,Relative to its own high-inventory control; not low inventory or cumulative profit recovery. Adaptive continued adjustments can remain outside its control band.
+C4,108/252 decisions were first-pass valid.,action_traces.csv,policy=llm_with_fallback; repair_attempted=False,One model realization per condition; repaired/fallback operation is distinct from unassisted validity.
+C5,17/252 decisions used adaptive fallback and remain in the primary result.,action_traces.csv,fallback_used,Removing these days would select a different policy/outcome subset.
+C6,Primary request expense was 0.252123564 estimated gateway credits.,llm_episode_reliability_costs.csv,cost_credits,Not provider-verified billing or dataset monetary units; earlier unknown holds remain in cumulative exposure.
+C7,"Native task coverage is 14 validated, one failed ICBE and four deferred Retail tasks.",native_task_coverage.csv,status,"No full ICBE score, imputed Retail score or pooled family ranking."
+C8,Baseline sensitivity comprises 24 reused primary baselines and 48 new free episodes.,baseline_elasticity_summary.csv,provenance; elasticity,"Simulator/baseline sensitivity only, not LLM robustness."
+C9,9/9 LLM shock/control pairs already differed in actions before the shock.,behavioral_response.csv,policy=llm_with_fallback; pre_shock_different_action_days,Action divergence can include model variation; no frozen-history ablation isolates the value of history.

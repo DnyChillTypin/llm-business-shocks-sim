@@ -1,0 +1,25 @@
+{
+  "stage": 7,
+  "status": "complete",
+  "exit_gate_passed": true,
+  "completed_on": "2026-10-18",
+  "preparation_commit": "d694aa3",
+  "source_analysis_commit": "4805b0d",
+  "report_pdf": "report/main.pdf",
+  "report_pdf_sha256": "f06c146513fa0d0db223becd8e4db8d5c1b90373e20502ecc39d64bbea63e11f",
+  "report_pages": 12,
+  "main_pages": 8,
+  "appendix_pages": 4,
+  "report_label": "Preliminary technical report",
+  "source_bundle_files": 31,
+  "native_coverage": {
+    "validated": 14,
+    "failed": 1,
+    "deferred": 4
+  },
+  "new_model_completion_calls": 0,
+  "new_simulation_episodes": 0,
+  "cumulative_project_exposure_credits": 2.186206858,
+  "completion_boundary": "Stage 7 report complete; original native scope incomplete and Stage 8 broader release/reproduction QC remains pending.",
+  "presentation_changes": "Two page-sized chart variants use the same reviewed traces. Diagnostics moved to appendix; original 7 selected figure PDFs and 5 LaTeX tables retained unchanged."
+}

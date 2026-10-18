@@ -1,0 +1,175 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=1.85cm,top=1.65cm,bottom=1.85cm]{geometry}
+\usepackage{booktabs,graphicx,longtable,natbib,caption}
+\usepackage[expansion=false]{microtype}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\pdfinfoomitdate=1
+\pdftrailerid{}
+\pdfsuppressptexinfo=15
+\hypersetup{pdftitle={Can LLMs Adapt to Business Shocks?},pdfauthor={Project technical report}}
+\captionsetup{font=small,labelfont=bf,skip=5pt,hypcap=false}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.45em}
+\setlength{\tabcolsep}{4pt}
+\setlength{\emergencystretch}{2em}
+\raggedbottom
+\input{tables/facts.tex}
+\newcommand{\reportfigure}[4]{\begin{center}\includegraphics[width=\linewidth,height=#2\textheight,keepaspectratio]{figures/#1.pdf}\captionof{figure}{#3}\label{#4}\end{center}}
+\newcommand{\repo}{\url{https://github.com/DnyChillTypin/llm-business-shocks-sim}}
+\begin{document}
+\noindent{\small PRELIMINARY TECHNICAL REPORT \hfill 18 October 2026}\par
+\vspace{0.6em}
+{\LARGE\bfseries Can LLMs Adapt to Business Shocks?\par}
+{\large A Simulation-Based Study of AI-Assisted Strategic Decision-Making\\in Dynamic Business Environments\par}
+\vspace{0.5em}
+\begin{abstract}
+We evaluate a configured language-model retail policy under demand and delivery shocks, alongside a separate native benchmark track. The retail study contains \PrimaryEpisodes{} complete matched episodes, \PolicyDays{} policy-days and three selected store--product blocks. Raw LLM-with-fallback contribution exceeds the adaptive rule in \RawWins{}/9 shock comparisons; its control-adjusted contribution contrast is positive in \AdjustedWins{}/9. The mean adjusted effect is negative for demand surge and positive for demand decline and delivery disruption. Only \FirstPass{}/\Decisions{} decisions are valid on the first response; \RepairSuccess{} are repaired successfully and \Fallback{} use adaptive fallback. All fallback outcomes remain included. A baseline-only elasticity check adds 48 free episodes. The native track has 14 validated tasks, a retained ICBE failure and four deferred Retail configurations. These are descriptive results for three purposively selected blocks and one LLM realization per condition. Synthetic mechanisms, uncertain prior manual use of the evaluation window, pre-shock action differences and finite follow-up limit claims about adaptation and generalization.
+\end{abstract}
+
+\section{Questions, scope and evidence}
+The project asks whether an LLM can respond usefully when business conditions change. We distinguish four questions: can the configured agents complete native tasks (RQ1); does the retail policy improve business outcomes under shocks (RQ2); how do actions and operational recovery differ from control (RQ3); and how reliable and costly is operation (RQ4)? A successful study produces traceable comparisons, including failures and unfavorable outcomes.
+
+The two evidence tracks serve different purposes. The native track reuses benchmark prompts, workflows and scorers with substituted gateway models. The retail shock track adapts RetailBench's inventory and ordering environment to a synthetic Kaggle demand path \citep{retailbench2026,retailbench_code,atomicd_v8}. It uses a common daily JSON action interface rather than the full native Retail agent. Its 21-day experiments do not complete the four outstanding 180-day native Retail configurations.
+
+The source contains 76,000 synthetic records, 100 store--product series and 760 dates from 1 January 2022 to 30 January 2024. Training ends on 1 April 2023; validation covers 2 April--31 August 2023; test dates begin on 1 September 2023. The primary window is 22 September--12 October 2023. Prior manual outcome use of that window is uncertain, so it cannot be described as pristine unseen data. The earlier 1--21 September baseline pilot remains exploratory.
+
+\begin{center}\small
+\begin{tabular}{llrr}
+\toprule Block & Training variability quantile & Mean demand & Demand CV\\\midrule
+S001 / P0001 & 25th percentile & 91.66 & 0.383\\
+S004 / P0006 & 50th percentile & 122.74 & 0.402\\
+S003 / P0016 & 75th percentile & 106.95 & 0.435\\\bottomrule
+\end{tabular}
+\captionof{table}{Series selected using training demand only. CV is sample standard deviation divided by mean. The selection creates variation, not a representative retail sample.}\label{tab:series}
+\end{center}
+
+\clearpage
+\section{Frozen retail design and measurement}
+Each block has four scenarios and three policies. Control has no imposed shock. On days 8--14, surge multiplies reference demand by 1.5, decline multiplies it by 0.7, and delivery disruption changes lead time from two to five days for new orders. Days 1--7 are pre-shock and days 15--21 are follow-up. Orders retain scheduled delivery dates, so delivery effects can persist after day 14.
+
+Initial cash, stock, empty pipeline, completed history and external base-demand path are matched within each block. The initial stock is taken once from the source row; subsequent inventory follows the simulation. Price changes affect requested demand, so realized demand need not match across policies. With assumed elasticity 1.5,
+\[ Q_t=\mathrm{round}\{D_t^{0}\,s_t\,(p_t/p_{\mathrm{ref}})^{-1.5}\}, \]
+where $D_t^{0}$ is the dataset's estimated demand and $s_t$ is the scenario multiplier. This response curve is an assumption, not an estimated causal demand model. Purchase cost is 60\% of the training reference price; daily holding cost is 0.1\% of unit cost per closing unit. Initial cash covers 20 training-mean days of purchasing; the order cap is ten training-mean days. Capacity limits, expiry, returns, reviews, rent and substitution are disabled.
+
+\textbf{Policies and information.} Fixed uses the training demand mean, a five-day stock-plus-pipeline target and reference price. Adaptive uses the last 14 completed days of normalized requested demand for the same target; it raises price to 1.1 when stock coverage is below two days and lowers it to 0.9 when coverage exceeds seven days. Both respect affordability and the order cap.
+
+The LLM receives current cash, stock, pipeline, prices/costs, lead time and completed history; it selects a nonnegative integer order and a price multiplier in $\{0.9,1.0,1.1\}$. It receives no future scenario label, shock schedule or demand. Current disrupted lead time is visible on day 8; demand shocks first enter completed history on day 9. The requested model is \texttt{gpt-4.1-mini-2025-04-14}, temperature zero, 1,024 output tokens, a 90-second timeout and no SDK retries or model seed. Each day is a fresh structured request. One explicit repair is allowed; if the repaired action is invalid, adaptive supplies that day's action. Transport or budget failure stops the episode. There is no silent clipping or coercion.
+
+\textbf{Outcomes.} Contribution is revenue minus cost of goods sold and holding cost over 21 days. Report raw LLM-minus-baseline contribution and the control-adjusted interaction
+\[ (Y_{\mathrm{LLM,shock}}-Y_{\mathrm{LLM,control}})-(Y_{\mathrm{base,shock}}-Y_{\mathrm{base,control}}). \]
+Relative gain uses the absolute baseline denominator and is missing when its magnitude is at most $10^{-9}$. Fill rate is total sales divided by total requested demand; zero demand receives rate one with an explicit flag. Service must be interpreted with prices, sales, stock and contribution.
+
+Closing stock is recorded before next-day arrivals. Terminal on-hand stock adds those arrivals; terminal pipeline includes outstanding purchased units. Both are valued at cost, without liquidation gain or write-off. Cash, stock and pipeline changes reconcile to contribution within $10^{-6}$ monetary units. All 36 primary episodes passed independent saved-action replay and accounting checks. There are three matched series-window blocks, not 756 independent replications. We show every block and equal-weight scenario summaries without day-level significance tests or population intervals.
+
+\clearpage
+\section{Contribution and service under shocks}
+The LLM operational policy exceeds adaptive contribution in \RawWins{}/9 shocks and falls below it in seven. In the no-shock controls it is below adaptive for all three series (Appendix~\ref{app:details}). Hence a policy can have lower absolute contribution under a shock but a more favorable change relative to its own control.
+
+\reportfigure{contribution_contrasts}{.40}{Every selected block's raw LLM-minus-adaptive contrast (left) and control-adjusted interaction (right). Values use the dataset's unspecified monetary units. Positive interactions do not imply positive raw differences.}{fig:contrasts}
+
+\begin{center}\small\input{tables/scenario_summary.tex}
+\captionof{table}{Equal-weight mean effects versus adaptive across three selected blocks per scenario. Raw and adjusted columns are contribution differences; positive blocks count adjusted effects. Values are displayed to four decimals.}\label{tab:means}\end{center}
+
+Adjusted contribution is positive in \AdjustedWins{}/9 comparisons: all decline and delivery cases, and one surge case. Scenario means are \SurgeAdjustedMean{} for surge, \DeclineAdjustedMean{} for decline and \DeliveryAdjustedMean{} for delivery disruption. The surge mean remains negative. These are conditional simulator contrasts and carry no population or practical-superiority threshold.
+
+Delivery disruption illustrates a service--contribution tradeoff. Raw LLM fill-rate advantages over adaptive average \DeliveryServicePP{} percentage points, yet mean raw contribution remains lower because S003/P0016 has a large negative difference. The two positive raw contribution cases are S001/P0001 and S004/P0006 delivery disruption. Full service in several conditions accompanies substantially higher inventory: LLM mean closing stock ranges from \InventoryRatioMin{} to \InventoryRatioMax{} times adaptive across the 12 conditions. Terminal stock is valued at purchase cost, so the finite horizon does not impose a terminal liquidation penalty for overstock.
+
+Fixed is secondary. Its mean adjusted contrasts are \SurgeFixedAdjustedMean{}, \DeclineFixedAdjustedMean{} and \DeliveryFixedAdjustedMean{} for surge, decline and delivery disruption respectively. This does not replace the adaptive primary comparison or support a pooled cross-scenario headline score. All condition-level contribution, service, inventory, price, order, repair and fallback metrics are supplied with the repository evidence.
+
+\clearpage
+\section{Behavioral response and recovery}
+All nine LLM shock/control pairs already differ in actions before day 8. The frozen post-shock divergence rule compares orders (at least one unit different) or price multipliers with the same policy's control. Independent realizations can differ even at temperature zero, so divergence cannot isolate the causal value of history or prove beneficial learning.
+
+\reportfigure{recovery}{.40}{Recovery delay relative to the same policy's control. A number is the first qualifying start day minus 14; three observed days confirm it. C denotes not confirmed by day 21, with seven post-shock follow-up days.}{fig:recovery}
+
+Recovery requires three consecutive days with zero lost sales and a stock difference at most 20\% of the larger of own-control stock and one unit, on every day. Candidate starts are days 15--19. Recovery is observed in \LLMRecoveries{}/9 LLM shocks, 9/9 fixed shocks and \AdaptiveRecoveries{}/9 adaptive shocks; \RecoveryCensored{} adaptive cases are right-censored at day 21. Normalization to a high-stock control does not establish inventory optimality or cumulative profit recovery.
+
+Figure~\ref{fig:diagnostics} in Appendix~\ref{app:traces} provides two larger diagnostic illustrations. S001/P0001 delivery disruption sustains service with high stock. S004/P0006 surge has six fallback days, including one before the shock, and a negative raw contribution contrast. These post-outcome illustrations supplement the complete tables and traces; they are not confirmatory samples.
+
+The frozen criterion deliberately compares service and stock with control rather than declaring success from a positive final contribution or a single good day. The three-day confirmation requirement prevents an incomplete terminal window from being counted as recovery. For example, a qualifying start on day 19 must be confirmed on day 21; only two qualifying terminal days remain censored. Confirmation dates, start dates and missing delays are retained in the full recovery table supplied with the source bundle.
+
+\clearpage
+\section{Operating reliability and experiment expense}
+The LLM operating policy includes repair and adaptive fallback. Among \Decisions{} opportunities, \FirstPass{} (\FirstPassPct{}\%) are valid initially, \RepairSuccess{} become valid through repair and \Fallback{} (\FallbackPct{}\%) use fallback. There are \RepairAttempts{} repair attempts and \Invalid{} invalid raw responses, all material cash-affordability violations. After repair, 235/252 decisions are valid model choices. All 252 executed operational actions are valid, and all fallback days remain in primary business outcomes.
+
+\reportfigure{reliability_costs}{.26}{Decision outcomes, descriptive per-request latency quantiles by episode, and primary/repair request expense. Matrix positions identify the 12 frozen LLM conditions. Simulator monetary units and gateway credits remain separate.}{fig:reliability}
+
+There are \PhysicalRequests{} physical requests: 252 primary and 144 repair calls. Logged usage totals \InputTokens{} input tokens and \OutputTokens{} output tokens. Summed serial request latency is \SerialApiMinutes{} minutes; this is measured API time, not end-to-end project runtime or a deployment service guarantee. Appendix~\ref{app:details} retains episode-level token, cost and median/P95 latency values. No Stage 5 transport failure, incomplete cohort or new unknown charge occurred.
+
+The primary matrix costs an estimated \PrimaryCost{} gateway credits: \InitialRequestCost{} for initial requests and \RepairCost{} for repair requests. Cumulative project exposure is \Exposure{} credits over \ProjectAttempts{} attempts, comprising \KnownCost{} known token-derived cost and \HeldCost{} in eight earlier fully held unknown charges. The approved cumulative ceiling is ten credits. These estimates use recorded usage and gateway rates; they are not independently verified provider billing. No additional model calls were made for Stage 6 analysis or this report.
+
+\textbf{Why reliability matters.} Repair makes the configured system operationally usable while adding requests and cost. Its business outcomes evaluate this composite policy. Deleting fallback days would change the evaluated policy and select an easier subset. First-response validity, repaired validity and final executed-action validity have different denominators and meanings; the final validity count should not conceal the weak initial rate.
+
+The same accounting principle applies to interrupted native tasks. Earlier failed Consulting and ICBE attempts and unknown-charge holds remain counted. Saved-response replay reproduces scoring and state; it is not a new completion and incurs no second model charge. Native completion and operational quality remain separate questions, so one family's valid format or high judge score cannot substitute for the retail policy's affordability performance.
+
+\clearpage
+\section{Sensitivity and separate native outcomes}
+The free sensitivity check varies the assumed price elasticity to 0.75 and 2.25, holding raw demand, calibration, initial states, costs, lead times and policy definitions fixed. It adds 48 deterministic baseline episodes (1,008 policy-days) and reuses 24 primary baselines at elasticity 1.5. All 72 records passed independent saved-action replay and accounting checks. Primary inputs, evidence and the gateway ledger were unchanged.
+
+\reportfigure{baseline_sensitivity}{.40}{Baseline-only sensitivity: adaptive minus fixed contribution and demand-weighted fill rate at three elasticity assumptions. The dotted line is the primary value. Each series and scenario is visible; this is not a matched LLM sensitivity experiment.}{fig:sensitivity}
+
+Higher elasticity reduces the adaptive contribution advantage in surge and delivery conditions across these series, while some service differences increase. Reference-price fixed actions are elasticity-invariant, providing a useful parity check. The comparison context depends on an assumed response curve. Because no new LLM decisions were elicited under altered elasticity, this check does not establish LLM robustness or justify replacing the primary assumption with a favorable one.
+
+\textbf{Native evidence.} FirmBench (whose README uses the name EnterpriseBench) and ICBE are cited as pinned repositories; verified paper metadata is unavailable in those source citation sections \citep{firmbench_code,icbe_code}. Native workflows use benchmark-specific CoT/ReAct conventions; the general method terms originate in \citet{wei2022cot} and \citet{yao2022react}. We do not claim exact reproduction of published models or scores.
+
+Reasoning contains 457 cases across ten supported datasets plus a separate 50-case Factset extension. Native dataset accuracies range from 70\% to 100\% among the ten supported tasks, with seven FinCode cases. Finer scores 146/200 entity labels (73\%), but only 22/50 exact cases (44\%). Factset scores 25/50 binary decisions. Consulting's ten judged sessions average \ConsultingOverall{}/10 overall; eight earliest complete sessions were recovered after interruptions and two were fresh. Scores are model judgments, not independent human ratings. Detailed scores and all 19 task statuses appear in Appendix~\ref{app:native}.
+
+\clearpage
+\section{Interpretation, limitations and conclusions}
+\textbf{Economic outcomes.} The configured LLM policy often protects service through large stock positions, yet its raw contribution is below adaptive in ten of 12 conditions. Control-adjusted response is more favorable, particularly for delivery disruption, because the LLM's control performance is already lower. Both statements are necessary. Positive interactions do not establish a better absolute operating policy, while negative raw rankings alone do not fully describe differential response to shocks.
+
+Native serious-game outcomes also warrant caution. EDT has one scenario-level decision followed by 96 ABM steps, with accumulated earnings of \EDTEarnings{} native monetary units. It is not 96 successive LLM interventions. BeerGame's two 25-week scenarios have large, reproducible supply-chain amplification:
+\begin{center}\footnotesize\input{tables/derived_native_family_metrics.tex}
+\captionof{table}{Native BeerGame outcomes, in its own simulation units. Mean backlog is derived from weekly observations; episode bullwhip is shown separately from missing upstream rollups.}\label{tab:beer}\end{center}
+The typical heuristic's brewery order reaches 6,527,377,200 units, explaining an extreme chain-cost outcome that is retained as a realism limitation. The native backlog field is a terminal proxy, zero in both cases; the separately derived time means are 232 and 484.84. Missing aggregate bullwhip, backlog and inventory fields stay missing. Different opponent configurations and unreplicated decisions prevent causal attribution of differences between those two runs.
+
+\textbf{Incomplete coverage and failures.} Four native Retail configurations remain deferred. ICBE stops after 177/600 complete valid rounds when DeepSeek consumes its 4,096-token output ceiling without a final decision. The invalid response is observed and charged. The frozen protocol permits no replacement decision, and no final tournament workbook or full-game score is reported. Budget headroom does not make incomplete coverage complete.
+
+\textbf{Limits on inference.} Three purposively selected blocks share one calendar window; daily observations are dependent and one LLM realization per condition leaves decision variability unmeasured. Prior manual use of the primary window is uncertain. The demand data are synthetic, elasticity and supplier behavior are assumed, and multiple realistic retail mechanisms are disabled. Finite-horizon cost valuation retains stock and pipeline without liquidation or spoilage. Recovery is relative to a policy's own control and is censored after seven follow-up days. Gateway requested/returned model names are logged, but served model weights are not independently attested. Native families have different scoring units and small or selected task samples. There is no pooled capability ranking, population interval, practical-superiority threshold or real-world causal estimate.
+
+\textbf{Conclusion.} The study demonstrates a reproducible, auditable evaluation of the configured composite policy and its failures. It finds mixed contribution response, strong service supported by high stock, and substantial affordability repair/fallback burden. It provides limited descriptive evidence about response in this simulator rather than a general answer about LLM business competence. Priority extensions are independently qualified new windows, additional series and LLM repetitions, a frozen-history ablation, matched LLM assumption sensitivity and completion of the outstanding native scope under separately reviewed protocols. They remain future work.
+
+\clearpage
+{\raggedright\bibliographystyle{plainnat}\bibliography{references}}
+\label{main-end}
+\clearpage
+\appendix
+\section{Native coverage and reasoning denominators}\label{app:native}
+\begin{center}\small\input{tables/derived_native_task_coverage.tex}
+\captionof{table}{All 19 planned task IDs. Validated units are cases, episodes or scenarios as appropriate to each native task. ICBE retains 177 valid rounds but has no accepted complete tournament result; the four Retail entries have no full evaluation.}\end{center}
+\begin{center}\small\input{tables/derived_native_reasoning.tex}
+\captionof{table}{Native task accuracy and exact-case accuracy. Factset is the separately labeled extension. Entity-label correctness is not the same as exact-case correctness; no pooled score is computed.}\end{center}
+The seven-case FinCode sample is particularly small. Structured reasoning, Consulting judge scores, BeerGame costs and EDT earnings are distinct outcomes. Supported case IDs and order are fixed in the repository's native case manifest; no favorable case selection was made after evaluation.
+
+\clearpage
+\section{Complete-block phases and diagnostic traces}\label{app:traces}
+\reportfigure{phase_report}{.40}{Seven-day phase contribution and demand-weighted fill rate for all 36 primary episodes. C/U/D/L denote control/surge/decline/delay; 0/1/2 denote pre/shock/post (days 1--7/8--14/15--21). Layout is reformatted from the same reviewed phase table for readable page-sized labels.}{fig:phases}
+\reportfigure{diagnostic_report}{.40}{Post-outcome illustrations: S001/P0001 delivery disruption and S004/P0006 surge. Black crosses mark fallback; shading marks shock days 8--14. These reformatted traces use the same reviewed values and supplement the complete matrix.}{fig:diagnostics}
+Full inventory, ordering and pricing traces remain in the reviewed Stage 6 evidence package. All primary conditions and fallback days are included; the two diagnostic examples in Figure~\ref{fig:diagnostics} supplement these complete records.
+
+\clearpage
+\section{Detailed retail contrasts and request accounting}\label{app:details}
+\begin{center}\small\input{tables/paired_contribution.tex}
+\captionof{table}{All nine primary adaptive comparisons. Values are displayed to four decimals after full-precision calculation. Product IDs are fixed by Table~\ref{tab:series}.}\end{center}
+\begin{center}\small\input{tables/derived_control_comparisons.tex}
+\captionof{table}{All six LLM-minus-baseline no-shock control comparisons. Service differences are percentage points.}\end{center}
+\begin{center}\footnotesize\input{tables/derived_llm_episode_reliability_costs.tex}
+\captionof{table}{All 12 LLM episode request cohorts. Positions follow the frozen matrix, ordered by selected series then control/surge/decline/delay. Input/output tokens, physical calls, repair calls, total estimated credits, and per-request median/P95 latency in seconds are reported.}\end{center}
+Primary request cost is \InitialRequestCost{} credits and repair cost is \RepairCost{} credits. The 396 calls are counted once; earlier native/pilot failures and eight unknown-charge holds remain in cumulative project exposure. Token-derived expense is not a business outcome in the simulator's monetary units.
+
+\clearpage
+\section{Implementation, provenance and reproduction}
+\textbf{Model and method substitutions.}\par
+The primary and native candidate requests \texttt{gpt-4.1-mini-2025-04-14}. Native interviewer/judge requests \texttt{gpt-4o-mini-2024-07-18}. ICBE also requests \texttt{deepseek-v3.2}. The provider is ShopAIKey. Native CoT agents/scorers and Retail ReAct readiness are separate from the retail shock policy's daily JSON workflow. No independent attestation of served weights is available.
+
+\textbf{Compatibility and failure handling.} The Windows FormulaEval helper uses a separate time-limited process while preserving native assembly/tests/scoring tolerance. Factset's explicitly labeled extension scores binary decisions through the local numeric-span scorer and removes provenance hints. EDT uses the native ABM model through a compatible full-scenario BPTK path. Consulting recovery takes the earliest fully evidenced independent completed session for each frozen case, never the highest score. ICBE only replays exact saved native requests to reconstruct state after transport interruption; it does not replace the later invalid decision. All failed-cohort charges remain retained.
+
+The Kaggle adapter replaces the native demand generator, corrects depletion in the disabled-review branch, values stock at purchase cost and introduces explicit cost/supplier/shock assumptions. The three upstream checkouts remain unchanged. This is an adaptation and substituted-model evaluation, not an official leaderboard submission.
+
+\begin{center}\footnotesize\input{tables/source_pins.tex}
+\captionof{table}{Exact upstream commits and frozen CSV/config/prompt/schema hashes. Line breaks within hashes are typographic only. The report artifact manifest also records every selected table and figure hash.}\end{center}
+
+\textbf{Reproduction.} The self-contained source bundle contains this LaTeX source, bibliography, selected PDF figures, generated tables and manifests. Compile with pdfLaTeX, BibTeX, then pdfLaTeX twice; use the README's explicit MiKTeX path on Windows. Package installation and shell escape are disabled. No API keys or private raw runs are required to build this document. The project scripts separately verify public evidence and rebuild report assets; model outputs from a new paid experiment need not be identical.
+
+Repository and complete public evidence:\par\repo. The report's \texttt{claim\_map.csv} maps key statements to Stage 6 tables and limitations. Raw model conversations, credentials, account metadata, upstream code and complete datasets are excluded. Source citations distinguish the versioned dataset, pinned software and background methods. Stage 8 remains a separate broader reproduction and portfolio-release review.
+\end{document}

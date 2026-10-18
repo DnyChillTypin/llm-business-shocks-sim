@@ -1,5 +1,7 @@
 # Stage 7 preparation: LaTeX findings report
 
+Historical preparation checkpoint. [Stage 7 execution is now complete](STAGE7_EXECUTION.md); the statements below about pending report authoring describe the preparation boundary.
+
 Prepared on 18 October 2026 against completed Stage 6 commit `4805b0d`. **Preparation is complete; report authoring and final PDF compilation have not started.** The evidence supports a preliminary findings report with explicit incomplete native coverage. Stage 8 remains the later reproduction and release checkpoint.
 
 ## Deliverable and argument

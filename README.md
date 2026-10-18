@@ -7,15 +7,15 @@ inventory and pricing policies, and controlled business-shock experiments.**
 ![Python](https://img.shields.io/badge/Python-3.12-blue)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
-**Status:** [Stage 6 findings and robustness analysis are complete](docs/STAGE6_EXECUTION.md):
+**Status:** [Stage 7 preliminary findings report is complete](docs/STAGE7_EXECUTION.md):
 36/36 matched episodes, 756 policy-days and 252 primary LLM decision opportunities.
 Stage 3 retains 14 validated non-Retail tasks and the ICBE validity failure.
 The project includes the Kaggle-driven RetailBench integration, genuine LLM validation
 pilots, guarded native evaluations, automated tests and eight executed research notebooks.
-The four full native Retail episodes remain deferred; the report draft is next.
-[Stage 7 preparation](docs/STAGE7_PREPARATION.md) selects hash-verified report assets,
-records checked citation metadata and verifies the local LaTeX/PDF toolchain.
-Report authoring and final PDF compilation have not started.
+The four full native Retail episodes remain deferred. The [12-page findings PDF](report/main.pdf)
+and [self-contained LaTeX source bundle](report/README.md) preserve incomplete coverage,
+negative outcomes, fallback days, censored recovery and inference limits.
+Stage 8 broader reproduction and release review remains pending.
 See the [native evaluation plan](docs/STAGE3_EVALUATION.md),
 [coverage table](docs/results/native_coverage.csv) and
 [saved evaluation notebook](notebooks/05_native_evaluation.ipynb).

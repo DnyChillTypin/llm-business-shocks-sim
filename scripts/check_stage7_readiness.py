@@ -62,7 +62,12 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--local-tools', action='store_true')
     args = parser.parse_args()
-    assert {p.name for p in PUBLIC.iterdir() if p.is_file()} == FILES
+    execution_present = (PUBLIC / 'status.json').exists()
+    allowed = FILES
+    if execution_present:
+        from check_public_stage7 import EXECUTION_FILES
+        allowed = FILES | EXECUTION_FILES
+    assert {p.name for p in PUBLIC.iterdir() if p.is_file()} == allowed
     for path in [*PUBLIC.iterdir(), ROOT / 'configs/report/stage7.template.json']:
         text = path.read_text(encoding='utf-8')
         assert not re.search(r'\b[0-9a-f]{32}\b|\b20\d{6}T\d{12,}Z\b', text), path.name
@@ -125,7 +130,11 @@ def main():
     subprocess.run([sys.executable, str(ROOT / 'scripts/check_stage6_readiness.py')], check=True)
     if args.local_tools:
         local_tools(plan)
-    print(f"Stage 7 preparation passed: {len(snapshot['files'])} pinned files, 12 copy assets, 8 table inputs and 7 citation records. Report execution remains pending.")
+    if execution_present:
+        subprocess.run([sys.executable, str(ROOT / 'scripts/check_public_stage7.py')], check=True)
+        print(f"Historical Stage 7 preparation passed: {len(snapshot['files'])} pinned files preserved; completed report verified separately.")
+    else:
+        print(f"Stage 7 preparation passed: {len(snapshot['files'])} pinned files, 12 copy assets, 8 table inputs and 7 citation records. Report execution remains pending.")
 
 
 if __name__ == '__main__':

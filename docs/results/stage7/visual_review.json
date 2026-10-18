@@ -1,0 +1,89 @@
+{
+  "stage": 7,
+  "status": "passed",
+  "checked_on": "2026-10-18",
+  "pdf_sha256": "f06c146513fa0d0db223becd8e4db8d5c1b90373e20502ecc39d64bbea63e11f",
+  "page_count": 12,
+  "render_method": "Poppler 26.07.0; pdftoppm -r 140 -png; all final pages visually inspected.",
+  "shared_checks": [
+    "No clipped or overlapping text",
+    "Tables and figures readable at page scale",
+    "Captions, units, signs and denominators checked",
+    "Citations/cross-references resolved",
+    "Header/footer and section transitions checked"
+  ],
+  "pages": [
+    {
+      "page": 1,
+      "status": "passed",
+      "rendered_page_sha256": "629e4fda282af71a29f9d692f2f1cd11207ac19cf5a0f99b0d5fa0c50c5262a9",
+      "notes": "Title, subtitle, abstract, scope and selected-series table aligned and readable."
+    },
+    {
+      "page": 2,
+      "status": "passed",
+      "rendered_page_sha256": "bccf04970bb4cde2a79f2373f2019f4b86412f77e628b75d83f98cbf7a5574d2",
+      "notes": "Frozen methods, equations, policy constraints, observability and accounting labels verified."
+    },
+    {
+      "page": 3,
+      "status": "passed",
+      "rendered_page_sha256": "505d12fbebb04c9bb317266692b2964b4fa9dd5598b9f5677de1d018fd2d3f42",
+      "notes": "All nine raw/adjusted comparisons and displayed means checked; signs, units and caption readable."
+    },
+    {
+      "page": 4,
+      "status": "passed",
+      "rendered_page_sha256": "9a2e3a90ba23f1483334a51279e94dbeef584038e073455770f76819cd196520",
+      "notes": "Enlarged recovery labels, six censored cells, three-day confirmation and diagnostic cross-reference checked."
+    },
+    {
+      "page": 5,
+      "status": "passed",
+      "rendered_page_sha256": "726d97f5bf6195877fc99301eeaa2f4fa86d6c7e82283ed53bbb01e978c25539",
+      "notes": "Validity denominators, 108/127/17 outcomes, cost units and request/timing statements checked."
+    },
+    {
+      "page": 6,
+      "status": "passed",
+      "rendered_page_sha256": "9a3c770ca6dede8e2de0bc176cb0a072f2054043fd0f6bd6505598702916c018",
+      "notes": "Baseline-only sensitivity and separate native evidence/denominators readable; no LLM robustness claim."
+    },
+    {
+      "page": 7,
+      "status": "passed",
+      "rendered_page_sha256": "3082ccdfa6322a19b3aff688de8ca9cb00b24a063f6d21f47ca324fda55cf8d7",
+      "notes": "Native extreme costs, retained ICBE failure, four deferred Retail configurations and limits visible."
+    },
+    {
+      "page": 8,
+      "status": "passed",
+      "rendered_page_sha256": "3898cf7fd8930452915f9ae70bd31479a2798956cb9f57a38d7c916c2f456267",
+      "notes": "Seven bibliography entries and URLs readable; no unresolved citation placeholders."
+    },
+    {
+      "page": 9,
+      "status": "passed",
+      "rendered_page_sha256": "0614d5494aa7300571bc209b5f7aba030d2669cfa574ed9dddf3c4b848f9ebb9",
+      "notes": "All 19 task statuses and native versus exact-case denominators checked, including finer and Factset."
+    },
+    {
+      "page": 10,
+      "status": "passed",
+      "rendered_page_sha256": "9478a6ce9493d6fdc841b39416fc298326e5760fee64902eca8632aac6e342d7",
+      "notes": "Reformatted phase panels and two balanced diagnostic cases readable; legend, phase codes and fallback crosses checked."
+    },
+    {
+      "page": 11,
+      "status": "passed",
+      "rendered_page_sha256": "291b3c0acf7c070a0c983c15699bb5df0adffaa2877ecdd50a8422a486f919dc",
+      "notes": "All nine contrasts, six controls and 12 request cohorts readable with signs, precision and units."
+    },
+    {
+      "page": 12,
+      "status": "passed",
+      "rendered_page_sha256": "ac5d912445cc4524ea69bed1683605766fe1d17e09bbe478f38b75c5660d02ae",
+      "notes": "Model substitutions, source hashes, compatibility notes and self-contained build instructions readable."
+    }
+  ]
+}

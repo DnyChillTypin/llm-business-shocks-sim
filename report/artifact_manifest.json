@@ -1,0 +1,203 @@
+{
+  "stage": 7,
+  "source_preparation_commit": "d694aa3",
+  "source_snapshot_sha256": "8da459c45a0b6694e446e20b8281f2a64c66bf52fa64e02136ad6849e3b523e3",
+  "hash_rule": "SHA-256; text CRLF normalized to LF; PDF/PNG verbatim",
+  "rounding": "Generated compact tables use 2 decimal places unless labeled; copied Stage 6 tables preserve their formatting, including 4-decimal contribution tables. Facts retain 9 cost decimals. Counts and source CSVs remain exact; calculations precede formatting.",
+  "files": {
+    "claim_map.csv": "2325e960cc796d0bcf4fea801652cf4673f1ac8069e182aa9e67f4ad6f50770e",
+    "figures/baseline_sensitivity.pdf": "286560d21c47a5c060dfe0e851f66e4f5c135f0ce820cb4bd349143bbed74bbd",
+    "figures/contribution_contrasts.pdf": "8920066dc5c7375287e78bf61b1ef940e4e964c8927fa6b6251f56caa0847633",
+    "figures/diagnostic_examples.pdf": "9901e26ebdfe90d874b677bda76a09e04c63d23325f5ac01e7d17d806873eba0",
+    "figures/diagnostic_report.pdf": "8ffe3e75bac013e5b8cfc9a3fdcbdc0db3e266f59071766e740593470d8a0816",
+    "figures/native_coverage_reasoning.pdf": "b55a2554b0a532bd4f15502098e9ed043c22fa394eb2d198210f27ab45b091e2",
+    "figures/phase_outcomes.pdf": "d385d1d31c6e385c091950086464c43ef237a27a4dd21ef35cf2f10798e5c199",
+    "figures/phase_report.pdf": "0031ba95666b26406444e93c2eddb27cf85d13c876e0f40fe4e89f887063a2ac",
+    "figures/recovery.pdf": "04211ebc177c40a397d78989fd7a293ff58e8ee37a6c385df98ce70df7276fde",
+    "figures/reliability_costs.pdf": "7838e29e5347e2c2c64126eb4614309c8aa4a0548fcb751456203ffb7f3cdf92",
+    "references.bib": "bb95041231459b0da48f3e522251051b74a11d5c938f2337348d888145bf94b6",
+    "tables/derived_baseline_elasticity_summary.tex": "6a0812d3ffb31c321c7bb62815d799461d9dc359c19884399ba2c9da52cae950",
+    "tables/derived_control_comparisons.tex": "37d25afae5ca7c19e389fb52de1cf49b93693c24c84be9e7981987240395e121",
+    "tables/derived_episode_metrics.tex": "a08ba4ef2ac7131af39ab3921a82f266aac910af5bf4826c3f1e9c768766eaf0",
+    "tables/derived_llm_episode_reliability_costs.tex": "f45b4a40df7a08774d7ce617e622c96900344815bfc7eb9909793763c4718ed4",
+    "tables/derived_native_family_metrics.tex": "fd7c41615ce0db3b5f8a9994589eccc46f65ff79ac74c913d4600d0b77a1966d",
+    "tables/derived_native_reasoning.tex": "264107111a68ea30241a3e9fae53a9af6a65015b85e88030de07ee5202ce1235",
+    "tables/derived_native_task_coverage.tex": "c092edaa277aa9f46bb4dbf09f45959674acedb405b484faa943e6dbc068860b",
+    "tables/derived_per_scenario_summaries.tex": "5176a252cdf125cce05ef129970844e8153b1e8c8f937e1719fc177839c75c48",
+    "tables/facts.tex": "4838284126d2d23addb37dd5339eba3ac8180cce170808c0ee08e08910e8d911",
+    "tables/native_reasoning.tex": "445b50e7915b49f748cbbfaf685ef05247f721d1215fc7d198e9f9d5c8ac89af",
+    "tables/paired_contribution.tex": "3eb824cf6918ed53f6374c106056ae0563d1286ceaa2dd7c0515291efca0a16f",
+    "tables/recovery.tex": "bc4af88de13e0b4d37ea28d7b53c47a0567212ad9a6c0c486c472df9993ed0fc",
+    "tables/reliability.tex": "35a2a3a0b8db2d780ad7059c0792ab863e0d9960fd9d336736dc89ef39b12860",
+    "tables/scenario_summary.tex": "8e3198e30d25f5767b12a6b652793bcbfd8f1897a0e6ee9bb9737e9f7ebada28",
+    "tables/source_pins.tex": "d913581b72e015387a95bc8ab6add827a6d0018695127555367b244e68040203"
+  },
+  "provenance": {
+    "tables/derived_episode_metrics.tex": {
+      "kind": "generated",
+      "source": "reviewed Stage 6 aggregates or Stage 7 citation register"
+    },
+    "tables/derived_control_comparisons.tex": {
+      "kind": "generated",
+      "source": "reviewed Stage 6 aggregates or Stage 7 citation register"
+    },
+    "tables/derived_native_task_coverage.tex": {
+      "kind": "generated",
+      "source": "reviewed Stage 6 aggregates or Stage 7 citation register"
+    },
+    "tables/derived_native_reasoning.tex": {
+      "kind": "generated",
+      "source": "reviewed Stage 6 aggregates or Stage 7 citation register"
+    },
+    "tables/derived_llm_episode_reliability_costs.tex": {
+      "kind": "generated",
+      "source": "reviewed Stage 6 aggregates or Stage 7 citation register"
+    },
+    "tables/derived_baseline_elasticity_summary.tex": {
+      "kind": "generated",
+      "source": "reviewed Stage 6 aggregates or Stage 7 citation register"
+    },
+    "tables/derived_per_scenario_summaries.tex": {
+      "kind": "generated",
+      "source": "reviewed Stage 6 aggregates or Stage 7 citation register"
+    },
+    "tables/derived_native_family_metrics.tex": {
+      "kind": "generated",
+      "source": "reviewed Stage 6 aggregates or Stage 7 citation register"
+    },
+    "tables/facts.tex": {
+      "kind": "generated",
+      "source": "reviewed Stage 6 aggregates or Stage 7 citation register"
+    },
+    "references.bib": {
+      "kind": "generated",
+      "source": "reviewed Stage 6 aggregates or Stage 7 citation register"
+    },
+    "claim_map.csv": {
+      "kind": "generated",
+      "source": "reviewed Stage 6 aggregates or Stage 7 citation register"
+    },
+    "tables/source_pins.tex": {
+      "kind": "generated",
+      "source": "reviewed Stage 6 aggregates or Stage 7 citation register"
+    },
+    "figures/phase_report.pdf": {
+      "kind": "generated",
+      "presentation_variant": true,
+      "source": "docs/results/stage6/phase_summaries.csv",
+      "source_sha256": "fa3a4cfbf500c0f36868cd177960061e78536dac095c858568a9562169316c51",
+      "qualification": "Same reviewed trace values; resized fonts/layout for report page scale. Original Stage 6 figures remain included unchanged."
+    },
+    "figures/diagnostic_report.pdf": {
+      "kind": "generated",
+      "presentation_variant": true,
+      "source": "docs/results/stage6/diagnostic_traces.csv",
+      "source_sha256": "851ddd1f14eea5d080c822f2e7928ba68158fa8a00fbee0870555c49218da709",
+      "qualification": "Same reviewed trace values; resized fonts/layout for report page scale. Original Stage 6 figures remain included unchanged."
+    },
+    "figures/contribution_contrasts.pdf": {
+      "kind": "copied",
+      "source": "docs/assets/stage6/contribution_contrasts.pdf",
+      "source_sha256": "8920066dc5c7375287e78bf61b1ef940e4e964c8927fa6b6251f56caa0847633"
+    },
+    "figures/recovery.pdf": {
+      "kind": "copied",
+      "source": "docs/assets/stage6/recovery.pdf",
+      "source_sha256": "04211ebc177c40a397d78989fd7a293ff58e8ee37a6c385df98ce70df7276fde"
+    },
+    "figures/reliability_costs.pdf": {
+      "kind": "copied",
+      "source": "docs/assets/stage6/reliability_costs.pdf",
+      "source_sha256": "7838e29e5347e2c2c64126eb4614309c8aa4a0548fcb751456203ffb7f3cdf92"
+    },
+    "figures/baseline_sensitivity.pdf": {
+      "kind": "copied",
+      "source": "docs/assets/stage6/baseline_sensitivity.pdf",
+      "source_sha256": "286560d21c47a5c060dfe0e851f66e4f5c135f0ce820cb4bd349143bbed74bbd"
+    },
+    "figures/diagnostic_examples.pdf": {
+      "kind": "copied",
+      "source": "docs/assets/stage6/diagnostic_examples.pdf",
+      "source_sha256": "9901e26ebdfe90d874b677bda76a09e04c63d23325f5ac01e7d17d806873eba0"
+    },
+    "figures/native_coverage_reasoning.pdf": {
+      "kind": "copied",
+      "source": "docs/assets/stage6/native_coverage_reasoning.pdf",
+      "source_sha256": "b55a2554b0a532bd4f15502098e9ed043c22fa394eb2d198210f27ab45b091e2"
+    },
+    "figures/phase_outcomes.pdf": {
+      "kind": "copied",
+      "source": "docs/assets/stage6/phase_outcomes.pdf",
+      "source_sha256": "d385d1d31c6e385c091950086464c43ef237a27a4dd21ef35cf2f10798e5c199"
+    },
+    "tables/scenario_summary.tex": {
+      "kind": "copied",
+      "source": "docs/results/stage6/scenario_summary.tex",
+      "source_sha256": "8e3198e30d25f5767b12a6b652793bcbfd8f1897a0e6ee9bb9737e9f7ebada28"
+    },
+    "tables/paired_contribution.tex": {
+      "kind": "copied",
+      "source": "docs/results/stage6/paired_contribution.tex",
+      "source_sha256": "3eb824cf6918ed53f6374c106056ae0563d1286ceaa2dd7c0515291efca0a16f"
+    },
+    "tables/recovery.tex": {
+      "kind": "copied",
+      "source": "docs/results/stage6/recovery.tex",
+      "source_sha256": "bc4af88de13e0b4d37ea28d7b53c47a0567212ad9a6c0c486c472df9993ed0fc"
+    },
+    "tables/reliability.tex": {
+      "kind": "copied",
+      "source": "docs/results/stage6/reliability.tex",
+      "source_sha256": "35a2a3a0b8db2d780ad7059c0792ab863e0d9960fd9d336736dc89ef39b12860"
+    },
+    "tables/native_reasoning.tex": {
+      "kind": "copied",
+      "source": "docs/results/stage6/native_reasoning.tex",
+      "source_sha256": "445b50e7915b49f748cbbfaf685ef05247f721d1215fc7d198e9f9d5c8ac89af"
+    }
+  },
+  "numeric_facts": {
+    "PrimaryEpisodes": 36,
+    "PolicyDays": 756,
+    "Decisions": 252,
+    "FirstPass": 108,
+    "RepairAttempts": 144,
+    "RepairSuccess": 127,
+    "Fallback": 17,
+    "Invalid": 161,
+    "PhysicalRequests": 396,
+    "RawWins": 2,
+    "AdjustedWins": 7,
+    "FirstPassPct": 42.857142857142854,
+    "FallbackPct": 6.746031746031746,
+    "PrimaryCost": 0.2521235639999996,
+    "InitialRequestCost": 0.1535396269999998,
+    "RepairCost": 0.09858393699999979,
+    "Exposure": 2.186206858,
+    "KnownCost": 2.127122649,
+    "HeldCost": 0.059084209,
+    "ProjectAttempts": 1834,
+    "InputTokens": 359739,
+    "OutputTokens": 8428,
+    "SerialApiMinutes": 11.678245385016393,
+    "InventoryRatioMin": 7.573099415204677,
+    "InventoryRatioMax": 12.252265005662514,
+    "LLMRecoveries": 9,
+    "AdaptiveRecoveries": 3,
+    "RecoveryCensored": 6,
+    "ConsultingOverall": 8.15,
+    "EDTEarnings": -4836000.0,
+    "SurgeAdjustedMean": -310.0351063333292,
+    "SurgeServicePP": 0.2396778081736661,
+    "SurgeFixedAdjustedMean": 915.4050673333415,
+    "SurgeFixedRawMean": -2327.6299286666595,
+    "DeclineAdjustedMean": 453.14195033333937,
+    "DeclineServicePP": -0.3382543382543401,
+    "DeclineFixedAdjustedMean": 477.72221533333504,
+    "DeclineFixedRawMean": -2765.3127806666657,
+    "DeliveryAdjustedMean": 2626.1563283333285,
+    "DeliveryServicePP": 5.742188498156996,
+    "DeliveryFixedAdjustedMean": 4438.394784333334,
+    "DeliveryFixedRawMean": 1195.359788333334
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "stage": 7,
+  "status": "passed",
+  "exit_gate_passed": true,
+  "checks": {
+    "pinned_sources_and_all_12_planned_copies_unchanged": true,
+    "generated_numeric_tables_and_macros_reconciled": true,
+    "bibliography_matches_7_checked_citation_records": true,
+    "all_19_native_task_statuses_and_metric_units_preserved": true,
+    "fallback_and_censored_outcomes_retained": true,
+    "final_latex_log_has_no_overflows_or_undefined_references": true,
+    "all_12_pages_visually_inspected": true,
+    "report_text_and_page_geometry_verified": true,
+    "isolated_source_bundle_build_passed": true,
+    "isolated_pdf_bytes_match": true,
+    "publication_boundary_checked": true
+  },
+  "report_pages": 12,
+  "exported_assets": 26,
+  "copied_original_assets": 12,
+  "citation_records": 7,
+  "displayed_figures": 6,
+  "source_bundle_files": 31,
+  "new_model_completion_calls": 0
+}

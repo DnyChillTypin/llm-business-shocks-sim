@@ -1,0 +1,3 @@
+# Optional Python build/QA wrappers; a standalone LaTeX build needs no Python.
+-r requirements-research.txt
+PyMuPDF==1.28.2

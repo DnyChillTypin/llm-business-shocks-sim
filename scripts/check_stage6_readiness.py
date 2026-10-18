@@ -103,6 +103,9 @@ def main():
     parser.add_argument("--private", action="store_true", help="Additionally audit ignored local logs and the existing ledger read-only.")
     args = parser.parse_args()
     files = {"preparation.json", "source_snapshot.json"}
+    if (PUBLIC / "status.json").exists():
+        from check_public_stage6 import FILES
+        files = FILES
     assert {p.name for p in PUBLIC.iterdir() if p.is_file()} == files
     paths = [*(PUBLIC / name for name in files), ROOT / "configs/analysis/stage6.template.json"]
     for path in paths:
@@ -152,7 +155,7 @@ def main():
         primary_quality_reviews=12, ledger_and_allowance_unchanged=True, no_model_calls_or_simulation_runs=True)
     if args.private:
         assert private_inventory() == prep["private_source_preflight"]
-    print(f"Stage 6 preparation passed: {len(expected)} pinned inputs, 36 complete episodes, frozen metrics and zero new paid/simulation runs.")
+    print(f"Historical Stage 6 preparation passed: {len(expected)} pinned inputs and frozen analysis rules preserved.")
 
 
 if __name__ == "__main__":

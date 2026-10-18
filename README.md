@@ -13,8 +13,8 @@ Stage 3 retains 14 validated non-Retail tasks and the ICBE validity failure.
 The project includes the Kaggle-driven RetailBench integration, genuine LLM validation
 pilots, guarded native evaluations, automated tests and seven executed research notebooks.
 The four full native Retail episodes remain deferred; analysis and the findings draft are next.
-[Stage 6 is prepared](docs/STAGE6_PREPARATION.md): the source snapshot, matched
-effects/recovery rules and free baseline sensitivity plan are checked; analysis has not run.
+[Stage 6 analysis is underway](docs/STAGE6_EXECUTION.md): the metrics and isolated
+baseline sensitivity pipeline pass 98 tests; final exports and visual review are in progress.
 See the [native evaluation plan](docs/STAGE3_EVALUATION.md),
 [coverage table](docs/results/native_coverage.csv) and
 [saved evaluation notebook](notebooks/05_native_evaluation.ipynb).

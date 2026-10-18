@@ -1,5 +1,7 @@
 # Stage 6 preparation: findings and robustness
 
+Historical preparation checkpoint. Stage 6 execution is now underway; see the [execution checkpoint](STAGE6_EXECUTION.md). Statements below about unimplemented analysis and zero new sensitivity episodes describe preparation, not the current execution state.
+
 Prepared on 18 October 2026 against completed Stage 5 commit `0af4710`. **Preparation is complete; Stage 6 analysis has not been executed.** No new contrasts, recovery estimates, sensitivity episodes or model completions were generated. The [analysis template](../configs/analysis/stage6.template.json) remains unapproved planning metadata; the [source snapshot](results/stage6/source_snapshot.json) pins 38 public inputs by normalized text hash.
 
 ## Purpose and available evidence

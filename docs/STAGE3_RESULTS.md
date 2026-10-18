@@ -1,6 +1,6 @@
 # Stage 3 evaluation results
 
-The non-Retail execution route is in progress. All 507 reasoning cases are validated; interactive families follow. The original Stage 3 scope remains incomplete because four 180-day native Retail episodes are deferred under the approved 6-credit route. Kaggle primary comparisons have not started.
+The non-Retail execution route is in progress. All 507 reasoning cases, EDT and both BeerGame scenarios are validated. Consulting and ICBE remain in progress or planned. The original Stage 3 scope remains incomplete because four 180-day native Retail episodes are deferred under the approved 6-credit route. Kaggle primary comparisons have not started.
 
 ## Reasoning
 
@@ -40,6 +40,12 @@ Both frozen scenarios completed 25 weeks. Independent offline replay of the actu
 Costs are native simulation monetary units, not gateway credits. The typical heuristic's upstream brewery order reaches 6,527,377,200; the extreme chain total is reproducible native behavior and is retained as a realism limitation. Different opponent configurations and unreplicated LLM decisions prevent causal attribution of their outcome differences.
 
 The native `avg_backlog_controlled` proxy is zero in both scenarios because it repeats the final backlog rather than averaging historical backlog. Actual time averages derived from the weekly observations are shown separately above. The upstream rollup's missing bullwhip, backlog and inventory aggregates remain null; episode bullwhip values are not silently inserted as replacement native aggregates.
+
+## Consulting interruptions
+
+The initial cohort stopped on a gateway HTTP 503 after three judgments. A replacement cohort was terminated between chat turns after seven judgments and left one gateway outcome unknown. A separate-process cohort then stopped on another HTTP 503 after eight judgments. All three retain their observed judgment aggregates, responses, paid attempts and full unknown-charge reservations; none is called a complete cohort.
+
+After the second 503, execution explicitly switched from the initial first-complete-cohort rule to recovery by independent case: use the earliest fully evidenced completed judgment for each frozen case, never the highest score. Eight cases passed raw-evidence revalidation; only the two missing cases need fresh sessions. The memory-free native CoT agent and unchanged ten-case score aggregator make this case-level recovery possible without resuming partial conversations. The execution change and tests are recorded in the [execution record](STAGE3_EVALUATION.md). No uninterrupted first-pass cohort is claimed.
 
 ## Evidence
 

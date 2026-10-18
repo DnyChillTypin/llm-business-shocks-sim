@@ -4,6 +4,7 @@ import hashlib
 import json
 import sys
 from collections import defaultdict
+from datetime import datetime
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -59,6 +60,9 @@ def cohort_record(folder, manifest, label):
     status = validation["status"] if validation else manifest["status"]
     cases = [read(p) for p in sorted((folder / "case_records").glob("*.json"))]
     metric = reasoning_metric(manifest["task"], score, cases) if validation and isinstance(score, dict) and "accuracy" in score else {}
+    finished_by_id = {e["attempt_id"]: e for e in finishes}
+    held = sum(max(0, e["reserved_cost_usd"] - (finished_by_id.get(e["attempt_id"], {}).get("cost_usd") or 0))
+               for e in starts if finished_by_id.get(e["attempt_id"], {}).get("cost_usd") is None)
     record = {"cohort": label, "task": manifest["task"], "status": status,
               "method_classification": classification(manifest["task"]),
               "expected_units": manifest["expected_units"], "configured_horizon": manifest["configured_horizon"],
@@ -72,13 +76,17 @@ def cohort_record(folder, manifest, label):
               "accuracy": score.get("accuracy") if isinstance(score, dict) else None,
               "no_answer": score.get("no_answer") if isinstance(score, dict) else None,
               "attempts": len(starts), "completed_responses": sum(e["status"] == "completed" for e in finishes),
+              "attempts_without_observed_gateway_outcome": len(starts) - len(finishes),
               "invalid_responses": sum(e.get("parse_status") != "valid" for e in parses),
               "unknown_usage_responses": sum(e.get("cost_usd") is None for e in finishes),
               "input_tokens": sum((e.get("usage") or {}).get("prompt_tokens", 0) for e in finishes),
               "output_tokens": sum((e.get("usage") or {}).get("completion_tokens", 0) for e in finishes),
               "estimated_gateway_credits": sum(e.get("cost_usd") or 0 for e in finishes),
+              "unresolved_reserved_credits": held,
+              "conservative_exposure_credits": sum(e.get("cost_usd") or 0 for e in finishes) + held,
               "api_seconds": sum(e["latency_seconds"] for e in finishes),
-              "elapsed_seconds": validation["elapsed_seconds"] if validation else None,
+              "elapsed_seconds": ((datetime.fromisoformat(manifest["finished_at_utc"]) - datetime.fromisoformat(manifest["started_at_utc"])).total_seconds()
+                                  if manifest.get("finished_at_utc") else None),
               "failure_category": manifest.get("failure_category"),
               "requested_models": sorted({e["requested_model"] for e in starts}),
               "returned_models": sorted({e.get("returned_model") or "not_reported" for e in finishes}),
@@ -91,6 +99,7 @@ def cohort_record(folder, manifest, label):
         record["observed_consulting_judgments"] = len(scores)
         record["observed_mean_judge_scores"] = {k: sum(s[k] for s in scores) / len(scores) for k in
             ("structure", "quant", "business_sense", "communication", "overall")} if scores else None
+        record["recovered_consulting_sessions"] = len(read(folder / "consulting_recovery.json")["cases"]) if (folder / "consulting_recovery.json").exists() else 0
     return record, validation
 
 
@@ -98,11 +107,13 @@ def task_metrics(folder, validation, label):
     task, score = validation["task"], validation["native_score"]
     if task == "firm:consulting":
         states = read(next(folder.rglob("consulting_interview_states.json")))["cases"]
+        reused = len(read(folder / "consulting_recovery.json")["cases"]) if (folder / "consulting_recovery.json").exists() else 0
         return {"cohort": label, "task": task, "sessions": score["num_finished"], "native_mean_judge_scores": score["metrics"],
+                "recovered_completed_sessions": reused, "fresh_sessions": score["num_finished"] - reused,
                 "session_message_counts": [len(s["history"]) for s in states],
                 "overall_judge_score_range": [min(s["judge_scores"]["overall"] for s in states), max(s["judge_scores"]["overall"] for s in states)],
                 "outcome_units": "Judge rubric scores from 0 to 10",
-                "qualification": "Scores are judgments by the substituted judge model, not independent human ratings."}
+                "qualification": "Scores are judgments by the substituted judge model, not independent human ratings. Where recovery is used, earliest completed independent sessions are re-audited and passed unchanged to the native ten-case aggregator; all source-cohort costs remain separately counted."}
     if task == "firm:beergame":
         episodes = [{k: e.get(k) for k in ("scenario_id", "weeks_completed", "controlled_role", "opponent_policy",
                     "total_cost_controlled", "total_cost_supply_chain", "bullwhip_controlled", "avg_backlog_controlled")}
@@ -176,7 +187,10 @@ def main():
             "validated_units": plan["expected_units"] if complete else 0,
             "evaluation_cohorts": len(runs), "failed_or_incomplete_cohorts": sum(c["status"] != "validated_complete" for c in runs),
             "qualifications": "Retail excluded from this execution route; original scope remains outstanding." if task.startswith("retail:") else ""})
-    allowance = read(ROOT / ".cache/approvals/stage3_nonretail_v1.json")
+    allowance_path = ROOT / ".cache/approvals/stage3_nonretail_v2.json"
+    if not allowance_path.exists():
+        allowance_path = ROOT / ".cache/approvals/stage3_nonretail_v1.json"
+    allowance = read(allowance_path)
     ledger = BudgetLedger(allowance, ROOT / "results/budgets" / (allowance["budget_id"] + ".sqlite"), run_id="stage3_export")
     summary = ledger.summary()
     transition = read(ROOT / "results/verification/stage3/allowance_transition.json")
@@ -200,7 +214,7 @@ def main():
     write_json(PUBLIC / "family_metrics.json", metrics)
     write_json(PUBLIC / "budget_summary.json", budget)
     write_csv(PUBLIC / "native_coverage.csv", coverage)
-    usage = [{k: v for k, v in c.items() if k not in {"checks", "requested_models", "returned_models", "project_commit", "project_tracked_dirty", "observed_consulting_judgments", "observed_mean_judge_scores"}} for c in cohorts]
+    usage = [{k: v for k, v in c.items() if k not in {"checks", "requested_models", "returned_models", "project_commit", "project_tracked_dirty", "observed_consulting_judgments", "observed_mean_judge_scores", "recovered_consulting_sessions"}} for c in cohorts]
     write_csv(PUBLIC / "evaluation_usage.csv", usage)
     write_csv(ROOT / "docs/results/native_coverage.csv", coverage)
     write_json(PRIVATE / "index.json", mapping)

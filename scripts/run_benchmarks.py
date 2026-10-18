@@ -24,6 +24,7 @@ def main():
     run.add_argument("--purpose", choices=["pilot", "evaluation"])
     run.add_argument("--case-limit", type=int)
     run.add_argument("--budget", type=Path, help="User-approved allowance manifest; shared spending persists across tasks.")
+    run.add_argument("--consulting-recovery", type=Path, help="Re-audited completed independent Consulting sessions; full frozen ten-case plan remains unchanged.")
     run.add_argument("--dry-run", action="store_true", help="Print the exact bounded plan; no credentials, network, or paid calls.")
     args = parser.parse_args()
     if args.command == "list":
@@ -38,6 +39,8 @@ def main():
     if args.dry_run:
         print(json.dumps(plan, indent=2))
         return 0
+    if args.consulting_recovery and (args.task != "firm:consulting" or plan["purpose"] != "evaluation"):
+        parser.error("Completed-session recovery is restricted to the full frozen Consulting evaluation.")
     if not args.budget:
         parser.error("Paid execution requires --budget with an explicitly approved allowance. Use --dry-run to inspect first.")
     session = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
@@ -46,6 +49,8 @@ def main():
     (output / "launch_plan.json").write_text(json.dumps(plan, indent=2), encoding="utf-8")
     command = [sys.executable, "-m", "src.benchmarks.worker", args.task, "--output", str(output),
                "--plan", str(output / "launch_plan.json"), "--budget", str(args.budget.resolve())]
+    if args.consulting_recovery:
+        command += ["--consulting-recovery", str(args.consulting_recovery.resolve())]
     print(f"Starting {args.task}; native output and usage: {output}", flush=True)
     with (output / "console.log").open("w", encoding="utf-8") as log:
         result = subprocess.run(command, cwd=ROOT, env=dict(os.environ, PYTHONIOENCODING="utf-8", PYTHONUNBUFFERED="1"),

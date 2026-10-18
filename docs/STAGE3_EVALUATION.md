@@ -20,13 +20,23 @@ Require successful execution, complete raw local artifacts, valid decisions, rec
 
 Keep native metric units explicit: finer's native accuracy is over individual entity labels, while its `correct / total` counts exact cases. Publish both measures with their own denominators; do not relabel label accuracy as case accuracy. Offline saved-action replay audits BeerGame's cost totals. Its native backlog proxy repeats the final backlog, so a time average derived from weekly observations is reported separately without changing the native score.
 
-Paid decision adapters are unchanged from preparation commit `8322966`. Subsequent reporting and post-run validation work can make the tracked working tree dirty during a run; the run identity records that flag. Frozen prompts, model settings, case selection, native scoring and horizons remain unchanged.
+Normal model-call adapters are unchanged from preparation commit `8322966`; the completed-session recovery described below adds an execution wrapper around independent Consulting cases. Reporting and post-run validation work can make the tracked working tree dirty during a run; the run identity records that flag. Frozen prompts, model settings, case selection, native scoring and horizons remain unchanged.
 
 ### Consulting transport interruption
 
 The first evaluation cohort stopped on HTTP 503 during its fourth session, after 49 valid responses and three complete judgments. The runner had not written state-complete combined session checkpoints. All original responses and partial judgments are retained; the failed request's full unknown-charge reservation is carried in the same ledger. The three observed overall judgments were 8, 8 and 8.5.
 
 Before observing restart outcomes, the review selected a fresh ten-session cohort with identical frozen settings. Use the **first fully completed, artifact-validated cohort regardless of score** for the complete-cohort table. Keep the interrupted cohort, its partial judgment aggregates, all paid attempts and the full unknown-charge hold visible separately. This is a manual transport-related restart under the documented interactive failure handling, not verified state resume, score-based selection or an SDK retry. Do not call the eventual full cohort an uninterrupted first-pass evaluation.
+
+The replacement launcher was subsequently terminated between chat turns after 93 completed responses and seven judgments, with one request still outstanding. No worker remained. Its provider outcome is unknown: the original reservation is retained in full, not treated as an observed provider failure or a free request. This cohort is explicitly incomplete and its seven judgments remain visible. Following the user's continuation instruction, the next identical cohort runs in a separate hidden background process. The first-complete-cohort rule applies to transport or process interruptions; no cohort is selected by score. Spending and attempt ceilings are unchanged.
+
+### Completed independent-case recovery amendment
+
+The separate-process cohort also encountered HTTP 503, after 114 valid responses and eight judgments. Its full failed-request reservation and partial outcomes remain counted. Before collecting further outcomes, execution switched from full-cohort restarts to **the earliest fully evidenced completed judgment for each frozen case**, with no selection by score. This explicitly supersedes the initial first-complete-cohort execution rule; no uninterrupted ten-session cohort is claimed.
+
+The pinned CoT agent's case-start and case-end hooks keep no memory. Completed sessions are independent; partially completed conversations are restarted rather than resumed. Recovery rechecks frozen models/settings/source pins, each request digest and raw response identity/usage, valid parse events, native dialogue order and termination, exact case text and reconstructed transcript in the actual judge request, and valid rubric scores. The wrapper returns the original observed history and judgment to the unchanged native ten-case aggregator. Existing responses incur no new API call or duplicate cost. Current native-loader case hashes must match, and final saved histories/judgments must exactly equal the re-audited evidence.
+
+Eight frozen cases passed these checks; only the two missing cases require fresh sessions. Completed cases now receive durable per-session checkpoints. Synthetic tests reject altered or incomplete evidence and verify that aggregating independent saved sessions produces the same native mean scores. The frozen ten-case plan, message limits, models, prompts, source data and native scorer remain unchanged, and all interrupted cohorts remain separately visible.
 
 ## Evidence and publication
 

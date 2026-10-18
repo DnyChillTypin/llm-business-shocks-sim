@@ -12,6 +12,7 @@ import sys
 import types
 import inspect
 import math
+import copy
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -111,9 +112,36 @@ def load_firm(config):
     from Agents.cot import ChainOfThoughtAgent
     if config.get("_purpose") in {"pilot", "evaluation"}:
         original_interview = consulting._run_single_interview
+        recovered = {}
+        if config.get("_consulting_recovery_manifest"):
+            from .consulting_recovery import verify_recovery
+            recovery = verify_recovery(config["_consulting_recovery_manifest"])
+            recovered = recovery["cases"]
+            (Path(config["_runtime_output"]) / "consulting_recovery.json").write_text(json.dumps(recovery, indent=2), encoding="utf-8")
         def interview(**kwargs):
             with request_context(case_id=kwargs["case"]["case_id"]):
-                return original_interview(**kwargs)
+                case_id = kwargs["case"]["case_id"]
+                if case_id in recovered:
+                    from src.research.design import canonical_hash
+                    record = recovered[case_id]
+                    if canonical_hash(kwargs["case"]) != record["case_content_sha256"]:
+                        raise DecisionFailure("Recovered session differs from the actual frozen native-loader case.")
+                    with (Path(config["_runtime_output"]) / "consulting_case_reuses.jsonl").open("a", encoding="utf-8") as stream:
+                        stream.write(json.dumps({"case_id": case_id, "evidence_digest": canonical_hash(record)}) + "\n")
+                        stream.flush()
+                        os.fsync(stream.fileno())
+                    result = copy.deepcopy((record["history"], record["judge_scores"]))
+                else:
+                    result = original_interview(**kwargs)
+                checkpoint = Path(config["_runtime_output"]) / "consulting_completed_cases"
+                checkpoint.mkdir(exist_ok=True)
+                destination = checkpoint / (case_id + ".json")
+                with destination.with_suffix(".tmp").open("x", encoding="utf-8") as stream:
+                    json.dump({"case_id": case_id, "history": result[0], "judge_scores": result[1]}, stream)
+                    stream.flush()
+                    os.fsync(stream.fileno())
+                os.replace(destination.with_suffix(".tmp"), destination)
+                return result
         consulting._run_single_interview = interview
         original_judge = consulting._chat_json
         def judge(*args, **kwargs):
@@ -275,6 +303,7 @@ def main():
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--plan", type=Path)
     parser.add_argument("--budget", type=Path, required=True)
+    parser.add_argument("--consulting-recovery", type=Path)
     args = parser.parse_args()
     from src.research.design import validate_design
     validate_design(ROOT)
@@ -285,6 +314,10 @@ def main():
     if plan != expected:
         raise ValueError("Launch plan differs from the validated bounded/frozen selection.")
     config = plan["settings"]
+    if args.consulting_recovery:
+        if args.task != "firm:consulting" or plan["purpose"] != "evaluation":
+            raise ValueError("Session recovery is restricted to the full frozen Consulting evaluation.")
+        config["_consulting_recovery_manifest"] = str(args.consulting_recovery.resolve())
     output = args.output.resolve()
     output.mkdir(parents=True, exist_ok=True)
     config["_runtime_output"] = str(output)

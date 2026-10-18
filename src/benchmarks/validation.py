@@ -51,8 +51,26 @@ def validate_run(folder):
         checks["native_coverage"] = (result["num_cases"] == result["num_finished"] == manifest["expected_units"] and result["num_failed"] == 0)
         checks["judge_observed"] = any(e["context"].get("validation_kind") == "judge" for e in starts.values())
         judges = [e for e in starts.values() if e["context"].get("validation_kind") == "judge"]
-        checks["every_frozen_case_judged_once"] = (len(judges) == manifest["expected_units"] and
-            {e["context"].get("case_id") for e in judges} == set(manifest["selected_case_ids"]))
+        recovered = {}
+        if (folder / "consulting_recovery.json").exists():
+            from .consulting_recovery import verify_recovery
+            from src.research.design import canonical_hash
+            try:
+                recovered = verify_recovery(folder / "consulting_recovery.json")["cases"]
+                reuses = [json.loads(line) for line in (folder / "consulting_case_reuses.jsonl").read_text().splitlines()]
+                checks["completed_session_recovery_verified"] = (len(reuses) == len(recovered) and
+                    {e["case_id"] for e in reuses} == set(recovered) and
+                    all(e["evidence_digest"] == canonical_hash(recovered[e["case_id"]]) for e in reuses))
+            except (ValueError, KeyError, FileNotFoundError):
+                checks["completed_session_recovery_verified"] = False
+                recovered = {}
+            qualifications.append("Completed independent Consulting sessions were recovered from fully re-audited earlier responses; only missing sessions made new calls. All source cohorts and charges remain counted separately. No partial conversation state was resumed.")
+            if not starts and checks["completed_session_recovery_verified"]:
+                checks["all_attempts_finished"] = True
+                checks["judge_observed"] = True
+        current_judged = {e["context"].get("case_id") for e in judges}
+        checks["every_frozen_case_judged_once"] = (len(judges) + len(recovered) == manifest["expected_units"] and
+            not current_judged.intersection(recovered) and current_judged.union(recovered) == set(manifest["selected_case_ids"]))
         messages = [(read(folder / "attempts" / key / "response.json").get("choices") or [{}])[0].get("message", {})
                     for key in starts if (folder / "attempts" / key / "response.json").is_file()]
         checks["all_text_decisions_present"] = (len(messages) == len(starts) and
@@ -61,6 +79,10 @@ def validate_run(folder):
         sessions = read(states[0])["cases"] if len(states) == 1 else []
         checks["saved_session_coverage"] = (len(sessions) == manifest["expected_units"] and
             [s["case_id"] for s in sessions] == manifest["selected_case_ids"])
+        if recovered:
+            by_id = {s["case_id"]: s for s in sessions}
+            checks["recovered_histories_and_judgments_unchanged"] = all(key in by_id and
+                by_id[key]["history"] == value["history"] and by_id[key]["judge_scores"] == value["judge_scores"] for key, value in recovered.items())
     elif task == "firm:beergame" and result:
         checks["native_coverage"] = result["episodes"] == manifest["expected_units"]
         checks["full_25_week_horizon"] = all(e.get("weeks_completed") == 25 for e in result["episode_metrics"])

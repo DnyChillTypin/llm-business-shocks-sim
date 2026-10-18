@@ -1,0 +1,29 @@
+{
+  "stage": 8,
+  "status": "ready_for_ci",
+  "checked_on": "2026-10-18",
+  "local_release_qc_complete": true,
+  "exit_gate_passed": false,
+  "tested_source_commit": "0615016e823df125a045fcf67469c3c3164d66b9",
+  "source_snapshot_sha256": "6e6d24578469853e141a801a6e874709b494b1215056d556eb5ba74be28d82f1",
+  "report_pdf_sha256": "f06c146513fa0d0db223becd8e4db8d5c1b90373e20502ecc39d64bbea63e11f",
+  "report_pages": 12,
+  "native_coverage": {
+    "validated": 14,
+    "failed": 1,
+    "deferred": 4
+  },
+  "original_native_scope_complete": false,
+  "new_model_completion_calls": 0,
+  "new_paid_experiments": 0,
+  "new_primary_evaluation_episodes": 0,
+  "cumulative_project_exposure_credits": 2.186206858,
+  "inclusive_cap_credits": 10,
+  "free_reproduction": {
+    "validation_matrix_episodes": 36,
+    "baseline_pilot_episodes": 8,
+    "saved_action_replay_episodes": 36
+  },
+  "release_scope": "Preliminary portfolio findings, not completion of original native coverage.",
+  "final_head_ci": "Required Research validation workflow is checked again at the final pushed head; live URL recorded in delivery handoff."
+}

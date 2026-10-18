@@ -1,0 +1,57 @@
+{
+  "checked_on": "2026-10-18",
+  "register_sha256": "fcde8d0e6f11876da93b63a5f84030884c64df6471a55101ab27313f17d4c039",
+  "records": [
+    {
+      "key": "retailbench2026",
+      "url": "https://arxiv.org/abs/2603.16453v3",
+      "verified": true,
+      "evidence": "Official versioned paper metadata"
+    },
+    {
+      "key": "retailbench_code",
+      "url": "https://github.com/linghuazhang01/RetailBench/tree/f1d37b35abfa60ef5599e56d2cdbdaa4fd9b8bf3",
+      "verified": true,
+      "evidence": "Pinned source README/license and exact commit"
+    },
+    {
+      "key": "firmbench_code",
+      "url": "https://github.com/sduyangmin/FirmBench/tree/fe0edb02bfa298c0f407468255e2dbdf73f4b65b",
+      "verified": true,
+      "evidence": "Pinned source README/license and exact commit"
+    },
+    {
+      "key": "icbe_code",
+      "url": "https://github.com/ruxi-stnmr/icbe-2026-strategic-behavior-llms/tree/ad29de11a0161cf6503516edc7d37f5104d22259",
+      "verified": true,
+      "evidence": "Pinned source README/license and exact commit"
+    },
+    {
+      "key": "atomicd_v8",
+      "url": "https://www.kaggle.com/datasets/atomicd/retail-store-inventory-and-demand-forecasting",
+      "verified": true,
+      "evidence": "Versioned dataset reference and public metadata endpoint"
+    },
+    {
+      "key": "wei2022cot",
+      "url": "https://arxiv.org/abs/2201.11903v6",
+      "verified": true,
+      "evidence": "Official versioned paper metadata"
+    },
+    {
+      "key": "yao2022react",
+      "url": "https://arxiv.org/abs/2210.03629v3",
+      "verified": true,
+      "evidence": "Official versioned paper metadata"
+    }
+  ],
+  "dataset_api_observation": {
+    "currentVersionNumber": 8,
+    "creatorName": "Wavelet",
+    "licenseName": "Apache 2.0"
+  },
+  "frozen_dataset_metadata_unchanged": true,
+  "no_upstream_code_or_raw_dataset_redistribution": true,
+  "icbe_license_observation": "No license file in pinned tree; separate download and repository citation only.",
+  "firmbench_paper_observation": "Pinned README BibTeX block empty; software attribution retained."
+}

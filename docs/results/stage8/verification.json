@@ -1,0 +1,420 @@
+{
+  "tested_source_commit": "0615016e823df125a045fcf67469c3c3164d66b9",
+  "fresh_install": {
+    "source_commit": "0615016e823df125a045fcf67469c3c3164d66b9",
+    "checks": 48,
+    "all_commands_passed": true,
+    "fresh_venv": true,
+    "credentials_present": false,
+    "notebook_executions": 8,
+    "native_dry_runs": 19,
+    "new_model_completion_calls": 0
+  },
+  "fresh_clone_commands": [
+    {
+      "check": "clone",
+      "exit_code": 0,
+      "seconds": 13.703,
+      "local_log_sha256": "c77fadefdf517db02ce09e6fd7b77a01fb9ca866def5c3914f1bbe28983795dd"
+    },
+    {
+      "check": "checkout",
+      "exit_code": 0,
+      "seconds": 0.078,
+      "local_log_sha256": "0d5df0b24c930c8c07f027e4cc1798cde0f1e1e5b1525dc5a42df711cd8eed72"
+    },
+    {
+      "check": "create_venv",
+      "exit_code": 0,
+      "seconds": 8.578,
+      "local_log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "check": "install_research",
+      "exit_code": 0,
+      "seconds": 137.75,
+      "local_log_sha256": "0b72cb3cfdd281153f588d42f563e4c132630152dfab17748d9cb3c1f1f75396"
+    },
+    {
+      "check": "setup_project",
+      "exit_code": 0,
+      "seconds": 6.781,
+      "local_log_sha256": "3c89e86f71213a9a1b6600a5041e28beee48c8d07b87cd0c7746cf8e8ede1a95"
+    },
+    {
+      "check": "setup_firmbench",
+      "exit_code": 0,
+      "seconds": 18.75,
+      "local_log_sha256": "01bec89899ef7dede148840fb9c4f3d8bc5f212b1da4c15155309a3866d6eb87"
+    },
+    {
+      "check": "setup_icbe",
+      "exit_code": 0,
+      "seconds": 11.36,
+      "local_log_sha256": "3446bd28e4b35a42b2c78a524ce7b580f19b3fb7b448751f53ce2c55bed155da"
+    },
+    {
+      "check": "tests",
+      "exit_code": 0,
+      "seconds": 33.968,
+      "local_log_sha256": "02c3170358881d8ed2925838525f805dc266b2a0facfb804b7201567a65b3513"
+    },
+    {
+      "check": "frozen_design",
+      "exit_code": 0,
+      "seconds": 1.079,
+      "local_log_sha256": "9d318059fe6cb56888eb81015c62dcd22e6464d9a3db1cbd36d10cb6e4b68a20"
+    },
+    {
+      "check": "validation_matrix",
+      "exit_code": 0,
+      "seconds": 61.015,
+      "local_log_sha256": "8033ea650e2fd45bc3f83dce668dfad75fc6d43a972df63b62b7ccefc19383d4"
+    },
+    {
+      "check": "public_stage2",
+      "exit_code": 0,
+      "seconds": 0.281,
+      "local_log_sha256": "c9e56dd3de4df5af9eef8f3dd3ec34b2d54ab7a3671c973c5ce3b16559e4ec44"
+    },
+    {
+      "check": "public_stage3",
+      "exit_code": 0,
+      "seconds": 0.141,
+      "local_log_sha256": "328116ce1d92e53389b5e04a288d2fd69f1c0169147f96203cff340d4da72bb2"
+    },
+    {
+      "check": "public_stage4",
+      "exit_code": 0,
+      "seconds": 0.125,
+      "local_log_sha256": "d5fb1e59fe35bc80d030c4b3a31e7d43827bf0aa0736afc43280d3e0ac416d03"
+    },
+    {
+      "check": "public_stage5",
+      "exit_code": 0,
+      "seconds": 0.594,
+      "local_log_sha256": "c2a803c35843742379d682a2f61e11da4082b8c8653e7c951b3eadb3cb88f510"
+    },
+    {
+      "check": "public_stage6",
+      "exit_code": 0,
+      "seconds": 1.187,
+      "local_log_sha256": "26343a89eaa12db89a6dfebc2eb5ff2a1aff40fdef38699e3af6b5159541f78e"
+    },
+    {
+      "check": "public_stage7",
+      "exit_code": 0,
+      "seconds": 2.516,
+      "local_log_sha256": "8779cf5f422c9638ba149dafe1dfb066b13f023847354de44aaefe6cf6b7449a"
+    },
+    {
+      "check": "stage8_preflight",
+      "exit_code": 0,
+      "seconds": 3.187,
+      "local_log_sha256": "003d2be1131f32673c5f885c50304b7690f8b183a17429e71b1379da23c8665c"
+    },
+    {
+      "check": "notebook_01",
+      "exit_code": 0,
+      "seconds": 37.219,
+      "local_log_sha256": "4a7778d9442ea9697e40bbb76cb1ec6d3dc400b686d4b8a9b0c879ec900fe18d"
+    },
+    {
+      "check": "notebook_02",
+      "exit_code": 0,
+      "seconds": 1.906,
+      "local_log_sha256": "5c0cec230242b1a7b148ad6ba41d39ba2be4f9a7afaf1d84d56c88b3e2ff6cf7"
+    },
+    {
+      "check": "notebook_03",
+      "exit_code": 0,
+      "seconds": 3.516,
+      "local_log_sha256": "b80230f192b682b7c2bac57484a7dd26311751a8729091a5faa4edd376f71d65"
+    },
+    {
+      "check": "notebook_04",
+      "exit_code": 0,
+      "seconds": 3.0,
+      "local_log_sha256": "9009f5a8d3e84a48a4d68fdac23403eefbba6987a34b33edabd08280e4ffbc6b"
+    },
+    {
+      "check": "notebook_05",
+      "exit_code": 0,
+      "seconds": 2.359,
+      "local_log_sha256": "5a82d546811b4857500fc135aa8b74380361ab1374c71eea64f0129e03a3360e"
+    },
+    {
+      "check": "notebook_06",
+      "exit_code": 0,
+      "seconds": 2.313,
+      "local_log_sha256": "a5666865f86f620dc4a2103ecfecd81f3ba55622a1e7e04c26f6df8e3f63c42a"
+    },
+    {
+      "check": "notebook_07",
+      "exit_code": 0,
+      "seconds": 2.359,
+      "local_log_sha256": "c53f90e8df6b4b76036a6ba22fd82657f97337a54e0244dc1b389020e6f3acf1"
+    },
+    {
+      "check": "notebook_08",
+      "exit_code": 0,
+      "seconds": 2.125,
+      "local_log_sha256": "7bbddb8e60f2ab582c336633e650159db5a4c4e490d4eeaf5db9251e58df92d6"
+    },
+    {
+      "check": "post_notebook_report_check",
+      "exit_code": 0,
+      "seconds": 2.36,
+      "local_log_sha256": "8779cf5f422c9638ba149dafe1dfb066b13f023847354de44aaefe6cf6b7449a"
+    },
+    {
+      "check": "kaggle_full_dry_run",
+      "exit_code": 0,
+      "seconds": 1.062,
+      "local_log_sha256": "f0f35ceb593fae76ab963be71844e40890c661f4074ec58be780873fd8a7cbc7"
+    },
+    {
+      "check": "kaggle_cell_dry_run",
+      "exit_code": 0,
+      "seconds": 1.047,
+      "local_log_sha256": "a623c1aba64345fd39f17d57cb6927c294529b5dc9b037499c4ad787300e9fdf"
+    },
+    {
+      "check": "native_plan_00",
+      "exit_code": 0,
+      "seconds": 0.094,
+      "local_log_sha256": "6bb96efda19200a901ce29a60d8038e3da60a625070b340fe99e66335eaee1b9"
+    },
+    {
+      "check": "native_plan_01",
+      "exit_code": 0,
+      "seconds": 0.094,
+      "local_log_sha256": "4e156f1fa1f867bf52320a07834d88b3997fe1008fb27c2df932cf66ada91e02"
+    },
+    {
+      "check": "native_plan_02",
+      "exit_code": 0,
+      "seconds": 0.094,
+      "local_log_sha256": "e6113bd8dd39c98b566510d830e6f02941c4355dd989b2b7852e2afbd0fb8c47"
+    },
+    {
+      "check": "native_plan_03",
+      "exit_code": 0,
+      "seconds": 0.078,
+      "local_log_sha256": "d71745265ddccd57272cd6dbf8142d8fe7c98792376e771090cea2b426203707"
+    },
+    {
+      "check": "native_plan_04",
+      "exit_code": 0,
+      "seconds": 0.094,
+      "local_log_sha256": "4739107d20223ad3b289cb259bc0931eb7a36f48d889bff3a7770094b02c3cde"
+    },
+    {
+      "check": "native_plan_05",
+      "exit_code": 0,
+      "seconds": 0.078,
+      "local_log_sha256": "77f4a119b3c4b2ff905b57390ef91da46846f19da98ab3a281d4bd140314ff18"
+    },
+    {
+      "check": "native_plan_06",
+      "exit_code": 0,
+      "seconds": 0.078,
+      "local_log_sha256": "df186c9dc73c6d54980428251193aad7a59cfab328b6c6cf4701cf8b9f5851c0"
+    },
+    {
+      "check": "native_plan_07",
+      "exit_code": 0,
+      "seconds": 0.094,
+      "local_log_sha256": "4699a72d1b5e4f864e59d586eef8a5329f0441917edc7c2c32cbf1bdb4c851b4"
+    },
+    {
+      "check": "native_plan_08",
+      "exit_code": 0,
+      "seconds": 0.078,
+      "local_log_sha256": "0c41fef681900d851887d1a8bf093c845c3574045e96cb1dfb9aa7d773388565"
+    },
+    {
+      "check": "native_plan_09",
+      "exit_code": 0,
+      "seconds": 0.078,
+      "local_log_sha256": "f4a497512011123a61081bb763775c6cc98733022aed80c37de95ca2042f4f8c"
+    },
+    {
+      "check": "native_plan_10",
+      "exit_code": 0,
+      "seconds": 0.094,
+      "local_log_sha256": "882ad5cca439e72bbba28f4fe119c6bcd3514e3b8b838d7617d4b9aab5583371"
+    },
+    {
+      "check": "native_plan_11",
+      "exit_code": 0,
+      "seconds": 0.109,
+      "local_log_sha256": "4fee378948b797f038c1d2dbaf6c7c124ec0145a1fa202ba179bb70f0b94d25e"
+    },
+    {
+      "check": "native_plan_12",
+      "exit_code": 0,
+      "seconds": 0.078,
+      "local_log_sha256": "7f063068b9f12899452bac5aa2e973a81270104b28335ed0fc8c21baeb62c264"
+    },
+    {
+      "check": "native_plan_13",
+      "exit_code": 0,
+      "seconds": 0.094,
+      "local_log_sha256": "e71484ccc4e4c54c7d7e7cc8a0b586c28e212cbb6517e553b84b526a03149ac6"
+    },
+    {
+      "check": "native_plan_14",
+      "exit_code": 0,
+      "seconds": 0.094,
+      "local_log_sha256": "b8dc8afdb0c0fbb346b7839b5f6e40d986698ad16766cdee85e85c838cb13102"
+    },
+    {
+      "check": "native_plan_15",
+      "exit_code": 0,
+      "seconds": 0.078,
+      "local_log_sha256": "5177861530d159de9ad5603f374c3d50e2389385db34abb30f1a6ecaf8f330f2"
+    },
+    {
+      "check": "native_plan_16",
+      "exit_code": 0,
+      "seconds": 0.093,
+      "local_log_sha256": "04ecded2f04bcec0dec36e4673785d7bc9a9408ff4a84269433d5ba86547a3b3"
+    },
+    {
+      "check": "native_plan_17",
+      "exit_code": 0,
+      "seconds": 0.094,
+      "local_log_sha256": "7a3bfddeb501230e23b21a0e24ea2be413826900fe35c91d302633732088b803"
+    },
+    {
+      "check": "native_plan_18",
+      "exit_code": 0,
+      "seconds": 0.094,
+      "local_log_sha256": "090efcab608a766cf1d1d71c2eadf045a676e73cfdcd33fe66c8d5798f9fd216"
+    },
+    {
+      "check": "environment",
+      "exit_code": 0,
+      "seconds": 1.156,
+      "local_log_sha256": "630fc3036052665b9b7ccb0d90503f34eb8c344b16b0a1e9efa7806651f8d51c"
+    }
+  ],
+  "research_tests": {
+    "tests": 98,
+    "failures": 0,
+    "errors": 0
+  },
+  "privacy_regression_tests": {
+    "tests": 2,
+    "failures": 0,
+    "errors": 0
+  },
+  "privacy_test_evidence": "Observed unittest run with the fresh environment; combined suite repeated by publication CI.",
+  "design_checks": 31,
+  "validation_episodes": 36,
+  "validation_scope": "24 baselines and 12 scripted fixtures; not new primary findings",
+  "notebooks": [
+    {
+      "notebook": "notebooks/01_kaggle_retailbench_integration.ipynb",
+      "code_cells": 9,
+      "executed_code_cells": 9,
+      "error_outputs": 0,
+      "executed_notebook_sha256": "51fbaee2a15d1de50b2e49eadec3dc0a7d3b275c5cd48c2e395a251b73b1fa15"
+    },
+    {
+      "notebook": "notebooks/02_benchmark_setup.ipynb",
+      "code_cells": 5,
+      "executed_code_cells": 5,
+      "error_outputs": 0,
+      "executed_notebook_sha256": "b431b085cc2c979af720d3baf0b8b133f9324a93c27fecca7c06fe5f20a5118a"
+    },
+    {
+      "notebook": "notebooks/03_kaggle_llm_experiment.ipynb",
+      "code_cells": 7,
+      "executed_code_cells": 7,
+      "error_outputs": 0,
+      "executed_notebook_sha256": "85ed56d9c7ed0b11e11b1a768572e86e64b5add30c721867cbdca916002480f5"
+    },
+    {
+      "notebook": "notebooks/04_results_analysis.ipynb",
+      "code_cells": 7,
+      "executed_code_cells": 7,
+      "error_outputs": 0,
+      "executed_notebook_sha256": "c60255ab92b10b994896857c4cf4868d16228c83bbb619a6663da83f0a669d80"
+    },
+    {
+      "notebook": "notebooks/05_native_evaluation.ipynb",
+      "code_cells": 5,
+      "executed_code_cells": 5,
+      "error_outputs": 0,
+      "executed_notebook_sha256": "9e66cb383d65da1728c03f0b7967b2b6312945f08fd0629ae925cf13d303194a"
+    },
+    {
+      "notebook": "notebooks/06_kaggle_experiment_readiness.ipynb",
+      "code_cells": 5,
+      "executed_code_cells": 5,
+      "error_outputs": 0,
+      "executed_notebook_sha256": "5956f9607ea12fcd4fd5ac0d7574b01b5a9f227c00b18c5749313e1966fbe008"
+    },
+    {
+      "notebook": "notebooks/07_primary_shock_comparisons.ipynb",
+      "code_cells": 5,
+      "executed_code_cells": 5,
+      "error_outputs": 0,
+      "executed_notebook_sha256": "452e03c01d20f77a9e0f0a643612968ef7e8e0d2fbe052d20ee95075fe2d3d07"
+    },
+    {
+      "notebook": "notebooks/08_findings_and_robustness.ipynb",
+      "code_cells": 8,
+      "executed_code_cells": 8,
+      "error_outputs": 0,
+      "executed_notebook_sha256": "7142b1408b995ce72c2839fb117329a6c464f4721c09868007f56d8ac4eddaf7"
+    }
+  ],
+  "dry_runs": {
+    "native_plans": 19,
+    "kaggle_matrix_episodes": 36,
+    "kaggle_matrix_llm_decisions": 252,
+    "single_llm_cell_decisions": 21,
+    "paid_calls_authorized": false
+  },
+  "private_audit": {
+    "status": "passed",
+    "inventory": {
+      "episodes": 36,
+      "action_records": 756,
+      "observation_records": 756,
+      "primary_llm_episodes": 12,
+      "request_starts": 396,
+      "known_usage_records": 396,
+      "latency_records": 396,
+      "primary_quality_reviews": 12,
+      "ledger_and_allowance_unchanged": true,
+      "no_model_calls_or_simulation_runs": true
+    },
+    "saved_action_replay_episodes": 36,
+    "replayed_policy_days": 756,
+    "replay_checks": 864,
+    "original_episode_evidence_unchanged": true,
+    "ledger_and_allowance_unchanged": true,
+    "gateway_clients_blocked": true,
+    "new_model_completion_calls": 0,
+    "new_primary_episodes": 0
+  },
+  "report_rebuild": {
+    "status": "passed",
+    "source_files": 29,
+    "report_pages": 12,
+    "original_pdf_sha256": "f06c146513fa0d0db223becd8e4db8d5c1b90373e20502ecc39d64bbea63e11f",
+    "rebuilt_pdf_sha256": "f06c146513fa0d0db223becd8e4db8d5c1b90373e20502ecc39d64bbea63e11f",
+    "byte_identical": true,
+    "original_unchanged": true,
+    "text_and_page_records_equal": true,
+    "final_log_checks_passed": true,
+    "existing_visual_review_still_bound": true,
+    "new_model_completion_calls": 0
+  },
+  "no_new_model_completion_calls": true,
+  "original_scientific_inputs_and_notebooks_preserved": true
+}

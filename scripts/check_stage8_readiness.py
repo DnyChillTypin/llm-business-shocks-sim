@@ -32,9 +32,16 @@ def required_sources():
 
 
 def main():
-    assert {p.name for p in PUBLIC.iterdir()} == PREPARATION, 'Unexpected Stage 8 preparation artifact'
+    execution_present = (PUBLIC / 'status.json').exists()
+    allowed = PREPARATION
+    if execution_present:
+        from check_public_stage8 import EXECUTION_FILES
+        allowed = allowed | EXECUTION_FILES
+        if read(PUBLIC / 'status.json')['status'] == 'complete':
+            allowed = allowed | {'ci_receipt.json'}
+    assert {p.name for p in PUBLIC.iterdir()} == allowed, 'Unexpected Stage 8 artifact'
     plan_path = ROOT / 'configs/release/stage8.template.json'
-    for path in [*PUBLIC.iterdir(), plan_path]:
+    for path in [*(PUBLIC / name for name in PREPARATION), plan_path]:
         text = path.read_text(encoding='utf-8')
         assert not re.search(r'\b[0-9a-f]{32}\b|\b20\d{6}T\d{12,}Z\b', text), path.name
         if path.suffix == '.json':
@@ -94,7 +101,11 @@ def main():
     assert plan['disposable_clone_required'] and plan['full_tracked_tree_and_history_scan']
     assert plan['preserve_frozen_documents'] == ['docs/BENCHMARKS.md', 'docs/THIRD_PARTY.md']
     subprocess.run([sys.executable, str(ROOT / 'scripts/check_public_stage7.py')], check=True)
-    print(f"Stage 8 preparation passed: {len(snapshot['files'])} pinned sources, 8 saved notebooks and 9 planned release gates. Release execution remains pending; no model calls or simulation runs.")
+    if execution_present:
+        subprocess.run([sys.executable, str(ROOT / 'scripts/check_public_stage8.py')], check=True)
+        print('Historical Stage 8 preparation preserved; release execution verified separately.')
+    else:
+        print(f"Stage 8 preparation passed: {len(snapshot['files'])} pinned sources, 8 saved notebooks and 9 planned release gates. Release execution remains pending; no model calls or simulation runs.")
 
 
 if __name__ == '__main__':

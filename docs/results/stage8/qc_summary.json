@@ -1,0 +1,74 @@
+{
+  "stage": 8,
+  "all_local_checks_passed": true,
+  "exit_gate_passed": false,
+  "gates": [
+    {
+      "gate": "R1",
+      "name": "Evidence and claims",
+      "status": "passed",
+      "evidence": "verification.json:private_audit; source_snapshot.json; Stage 7 numeric checks"
+    },
+    {
+      "gate": "R2",
+      "name": "Fresh installation",
+      "status": "passed",
+      "evidence": "verification.json:fresh_install and setup command results; environment.json"
+    },
+    {
+      "gate": "R3",
+      "name": "Tests and fixtures",
+      "status": "passed",
+      "evidence": "verification.json:research_tests/privacy_regression_tests/design_checks/validation_episodes"
+    },
+    {
+      "gate": "R4",
+      "name": "Notebooks and analysis",
+      "status": "passed",
+      "evidence": "verification.json:notebooks and post_notebook_report_check"
+    },
+    {
+      "gate": "R5",
+      "name": "Paid-path previews",
+      "status": "passed",
+      "evidence": "verification.json:dry_runs and 19 native command results"
+    },
+    {
+      "gate": "R6",
+      "name": "Report verification",
+      "status": "passed",
+      "evidence": "verification.json:report_rebuild; unchanged Stage 7 PDF/review binding"
+    },
+    {
+      "gate": "R7",
+      "name": "Citation and attribution",
+      "status": "passed",
+      "evidence": "citation_checks.json; docs/RELEASE_ATTRIBUTION.md"
+    },
+    {
+      "gate": "R8",
+      "name": "Publication boundary",
+      "status": "passed",
+      "evidence": "privacy.json; scanner regression tests; aggregate boundary review"
+    },
+    {
+      "gate": "R9",
+      "name": "Reader and release review",
+      "status": "local_pass_pending_ci",
+      "evidence": "README; docs/REPRODUCIBILITY.md; ci_receipt.json at final signoff"
+    }
+  ],
+  "checks": {
+    "frozen_sources_and_original_notebooks_unchanged": true,
+    "fresh_install_without_credentials_or_private_runs": true,
+    "research_tests_and_new_scanner_regressions_passed": true,
+    "all_8_notebooks_executed_without_errors": true,
+    "validation_and_saved_replay_passed": true,
+    "all_19_native_and_kaggle_dry_runs_passed": true,
+    "copied_report_build_byte_identical": true,
+    "all_7_citations_and_attribution_reviewed": true,
+    "no_unaddressed_privacy_findings": true,
+    "readme_status_and_setup_corrected": true,
+    "zero_new_model_calls_and_unchanged_ledger": true
+  }
+}

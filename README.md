@@ -1,91 +1,63 @@
 # Can LLMs Adapt to Business Shocks?
 
-**A reproducible retail decision-science project: data validation, simulation,
-inventory and pricing policies, and controlled business-shock experiments.**
+**Inventory, pricing and business-shock evaluation with a configured LLM policy,
+transparent baselines and an auditable simulator.**
 
 [![Research validation](https://github.com/DnyChillTypin/llm-business-shocks-sim/actions/workflows/tests.yml/badge.svg)](https://github.com/DnyChillTypin/llm-business-shocks-sim/actions/workflows/tests.yml)
 ![Python](https://img.shields.io/badge/Python-3.12-blue)
 ![License](https://img.shields.io/badge/License-MIT-green)
 
-**Status:** [Stage 7 preliminary findings report is complete](docs/STAGE7_EXECUTION.md):
-36/36 matched episodes, 756 policy-days and 252 primary LLM decision opportunities.
-Stage 3 retains 14 validated non-Retail tasks and the ICBE validity failure.
-The project includes the Kaggle-driven RetailBench integration, genuine LLM validation
-pilots, guarded native evaluations, automated tests and eight executed research notebooks.
-The four full native Retail episodes remain deferred. The [12-page findings PDF](report/main.pdf)
-and [self-contained LaTeX source bundle](report/README.md) preserve incomplete coverage,
-negative outcomes, fallback days, censored recovery and inference limits.
-[Stage 8 reproduction and release preparation](docs/STAGE8_PREPARATION.md) is ready;
-its fresh-clone, notebook, attribution, privacy and release checks remain pending.
-See the [native evaluation plan](docs/STAGE3_EVALUATION.md),
-[coverage table](docs/results/native_coverage.csv) and
-[saved evaluation notebook](notebooks/05_native_evaluation.ipynb).
+**Status: preliminary findings and portfolio release.** The completed retail study
+contains **36 matched episodes, 756 policy-days and 252 LLM decision opportunities**.
+The separate native track has **14 validated tasks, one retained ICBE validity
+failure and four deferred Retail configurations**. Original native coverage is
+incomplete. This is a research findings draft, not an official leaderboard result
+or evidence of real-world causal effects.
 
-The three native repositories now have a local launcher, verified dependencies
-and readiness checks. Gateway JSON responses and native RetailBench streaming
-have been tested. See [benchmark setup](docs/BENCHMARKS.md) and the
-[setup notebook](notebooks/02_benchmark_setup.ipynb) before starting paid runs.
+Start with the [12-page findings report](report/main.pdf),
+[final release checklist](docs/results/release_checklist.md) and
+[reproduction guide](docs/REPRODUCIBILITY.md).
+The [LaTeX source bundle](report/README.md) builds without credentials or private runs.
+[Stage 8 execution](docs/STAGE8_EXECUTION.md) records the release checks and their limits.
 
-The staged execution plan is in [docs/EXECUTION_PLAN.md](docs/EXECUTION_PLAN.md).
-Stage 0 verification and rerun instructions are in [docs/STAGE0_HANDOFF.md](docs/STAGE0_HANDOFF.md).
-Stage 1 freezes the [research design](docs/RESEARCH_DESIGN.md), [study configuration](configs/study.json),
-and [planned coverage](docs/results/planned_coverage.csv). The [design notebook](notebooks/03_kaggle_llm_experiment.ipynb)
-reproduces training-only selection and checks the freeze without running paid experiments.
-Completed stages and meaningful milestones are committed and pushed to GitHub.
+## What the evidence says
 
-## The business question
+- Raw LLM-with-fallback contribution exceeds the adaptive rule in **2/9 shock
+  comparisons**. The control-adjusted contrast is positive in **7/9**; the mean
+  adjusted effect remains negative for demand surge. These are different comparisons.
+- Strong service comes with high inventory. Recovery is measured relative to each
+  policy's own control; six adaptive episodes are right-censored. Faster inventory
+  recovery does not establish better profit or cost efficiency.
+- **108/252** decisions are valid on the first response. One bounded repair succeeds
+  on **127** further days; **17** days use the explicit adaptive fallback. All outcomes
+  and request costs remain included.
+- Three purposively selected store-product blocks share one 21-day window, with one
+  LLM realization per condition. All nine LLM shock/control pairs already diverge
+  before the shock. Results are descriptive simulator evidence; uncertain prior use
+  of the window, synthetic demand and assumed mechanisms restrict generalization.
 
-How should a retailer adjust replenishment and prices when demand rises, demand
-falls, or deliveries slow down? Can an LLM eventually improve on transparent
-rules under the same information and constraints?
+[Complete contrasts](docs/results/stage6/paired_shock_contrasts.csv),
+[claim map](docs/results/stage6/claim_map.csv) and
+[native coverage](docs/results/stage6/native_task_coverage.csv) retain unfavorable
+outcomes and the relevant denominators. The earlier single-series baseline pilot
+is documented separately in [Stage 0](docs/STAGE0_HANDOFF.md); its results are not LLM findings.
 
-## Data science work demonstrated
+## Work demonstrated
 
-- Validate 76,000 synthetic records across 100 store-product series and verify
-  downloaded inputs by SHA-256.
-- Use chronological 60/20/20 splits, training-only series selection, and identical
-  starting conditions and external demand across policies.
-- Integrate real inventory, ordering and delivery machinery while separating
-  observations from explicit price-response and supplier assumptions.
-- Evaluate contribution, fill rate, stockouts and inventory; reconcile contribution
-  against changes in cash and inventory/pipeline assets.
-- Provide pinned source versions, automated setup, SQLite records, action logs,
-  integration tests and GitHub Actions.
+- Validate 76,000 synthetic records across 100 series and verify downloaded inputs by SHA-256.
+- Use chronological 60/20/20 splits, training-only series selection, matched starting
+  observations and common external demand paths across policies.
+- Implement a shared observation/action interface, strict affordability checks,
+  bounded repair and explicit fallback with independent saved-action replay.
+- Reconcile contribution with cash, stock and pipeline assets; analyze service,
+  stockouts, inventory, behavioral response, recovery and request costs.
+- Preserve frozen designs, source pins, failed requests and accounting holds;
+  provide eight executed notebooks, tests, generated figures/tables and a LaTeX report.
 
-## Pilot results
+## Reproduce without API spending
 
-The pilot uses **S004 / P0006**, selected by median training demand variability.
-Each policy runs 21 days, with shocks on days 8–14 and recovery on days 15–21:
-**8 episodes / 168 simulated policy-days**.
-
-| Scenario | Fixed contribution | Adaptive contribution | Difference | Fixed fill rate | Adaptive fill rate |
-|---|---:|---:|---:|---:|---:|
-| Control | 35,458.47 | 35,559.30 | +0.28% | 100.00% | 100.00% |
-| Demand surge | 41,231.56 | 42,480.12 | +3.03% | 98.50% | 100.00% |
-| Demand decline | 31,653.81 | 31,771.25 | +0.37% | 100.00% | 100.00% |
-| Delivery disruption | 32,522.24 | 33,048.50 | +1.62% | 91.66% | 92.85% |
-
-Contribution is revenue minus cost of goods sold and holding costs, in the
-dataset's unspecified monetary units. Differences compare adaptive against fixed
-within each scenario. This single-series pilot does not establish a general or
-statistically significant advantage. Prices change demand, so fill rate and
-contribution must be interpreted together.
-
-![Baseline contribution and fill rates](docs/assets/baselines.png)
-
-The adaptive rule still runs out of stock during delivery disruption, providing
-a concrete failure case for future LLM comparisons.
-
-![Inventory and orders during delivery disruption](docs/assets/delivery-disruption.png)
-
-[Saved results](docs/results/baseline_summary.csv) ·
-[Pilot manifest](docs/results/pilot_manifest.json) ·
-[Source attribution](docs/THIRD_PARTY.md)
-
-## Fresh-clone setup
-
-Requires Git, Python 3.12 and internet access for the initial source/data setup.
-No API keys or paid calls are needed for the current notebook.
+Requires Git, Python 3.12 and internet access for initial public source/data downloads.
+The full offline test/design path needs the three small pinned source checkouts:
 
 ```powershell
 git clone https://github.com/DnyChillTypin/llm-business-shocks-sim.git
@@ -93,84 +65,74 @@ cd llm-business-shocks-sim
 py -3.12 -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r requirements-research.txt
 .\.venv\Scripts\python.exe scripts/setup_project.py
+.\.venv\Scripts\python.exe scripts/setup_benchmarks.py --only FirmBench
+.\.venv\Scripts\python.exe scripts/setup_benchmarks.py --only ICBE
 .\.venv\Scripts\python.exe -m unittest discover -s tests -v
+.\.venv\Scripts\python.exe scripts/check_public_stage8.py
 ```
 
-On macOS/Linux, create the environment with `python3.12 -m venv .venv` and use
-`.venv/bin/python` for the remaining commands. The setup script obtains only the
-pinned RetailBench code and small Kaggle dataset; it skips the 29 GB historical
-LFS artifacts. Existing vendor checkouts are not rewritten.
+On macOS/Linux use `python3.12 -m venv .venv` and `.venv/bin/python`.
+These commands do not need `.env`, private runs or the 29 GB historical RetailBench
+LFS archive. External input checksums and commits are fixed; installed package
+versions from the tested fresh environment are recorded in the
+[release environment snapshot](docs/results/stage8/environment.json).
+Requirements contain ranges rather than a complete lock.
 
-## Explore the notebook
+The [reproduction guide](docs/REPRODUCIBILITY.md) distinguishes public baseline/fixture
+reproduction, saved aggregate analysis, the private evidence audit and the report build.
+Public aggregates cannot independently rescore private model conversations.
+New model requests need separately reviewed execution manifests and may return different outputs.
 
-Open [the executed notebook](notebooks/01_kaggle_retailbench_integration.ipynb)
-in VS Code. Select the project `.venv` interpreter as its kernel and run cells
-in order. Saved outputs can also be viewed on GitHub. To run from a fresh kernel:
+## Explore the notebooks
+
+Open a notebook in VS Code, select the project `.venv` interpreter and run cells in order.
+All eight run without paid API calls. The verifier writes fresh outputs into its input
+notebook, so use a disposable clone to preserve the published versions.
+
+| Notebook | Purpose |
+|---|---|
+| [01: Integration](notebooks/01_kaggle_retailbench_integration.ipynb) | Data, native transitions and the exploratory baseline pilot |
+| [02: Setup](notebooks/02_benchmark_setup.ipynb) | Pinned sources, compatibility and saved readiness evidence |
+| [03: Design](notebooks/03_kaggle_llm_experiment.ipynb) | Training-only selection and the frozen research matrix |
+| [04: Pilots](notebooks/04_results_analysis.ipynb) | Genuine pilot outputs, failures and measured costs |
+| [05: Native](notebooks/05_native_evaluation.ipynb) | Dataset-specific native results, coverage and retained ICBE failure |
+| [06: Validation](notebooks/06_kaggle_experiment_readiness.ipynb) | Shared interfaces, fixtures and guarded execution readiness |
+| [07: Primary](notebooks/07_primary_shock_comparisons.ipynb) | All 36 saved matched episodes, repairs and fallbacks |
+| [08: Findings](notebooks/08_findings_and_robustness.ipynb) | Contrasts, recovery, behavior and baseline-only elasticity sensitivity |
 
 ```powershell
-.\.venv\Scripts\python.exe scripts/verify_notebook.py
+.\.venv\Scripts\python.exe scripts/verify_notebook.py --notebook notebooks/08_findings_and_robustness.ipynb
 ```
 
-Each execution creates a separate results session. The notebook prepares data,
-checks native transitions, runs validity tests, compares policies and exports
-report-ready figures and LaTeX tables.
+## Scope, costs and remaining research
 
-## Experiment flow
+The configured retail policy requests `gpt-4.1-mini-2025-04-14` through ShopAIKey.
+Native interviewer/judge requests use `gpt-4o-mini-2024-07-18`; ICBE also requests
+`deepseek-v3.2`. Requested/returned identifiers are logged, but served model weights
+are not independently attested. Native benchmark units and compatibility changes
+are documented in the [release attribution notes](docs/RELEASE_ATTRIBUTION.md).
 
-```mermaid
-flowchart LR
-    A[Kaggle CSV] --> B[Validation and chronological splits]
-    B --> C[Catalog, starting stock and demand trace]
-    C --> D[RetailBench adaptation]
-    E[Fixed or adaptive policy] -->|Orders and prices| D
-    D -->|Current state and past observations| E
-    D --> F[Native records and daily ledger]
-    F --> G[Notebook analysis and report figures]
-```
+The cumulative ceiling is **10 gateway credits**. Recorded exposure is
+**2.186206858 credits**, including **0.059084209** in retained old unknown-charge
+holds; primary request expense was **0.252123564 credits**. These are token-derived
+estimates with conservative holds, not a current account balance or independently
+verified provider bill. Stage 8 made no new model requests or paid experiments.
 
-## Roadmap
+The [staged execution plan](docs/EXECUTION_PLAN.md) and individual checkpoints retain
+the historical decisions, including earlier caps and preparation-only states.
+The report and final release notes describe what actually finished.
+Completed stages and useful milestones are committed and pushed to GitHub.
 
-Stage 2 is complete: [19 native task pilots and two genuine Kaggle validation
-episodes](docs/STAGE2_PILOTS.md), with **$0.869 conservative exposure across 237
-attempts** under the $2 cap. The [executed analysis notebook](notebooks/04_results_analysis.ipynb)
-records negative outcomes, repairs, fallbacks and retained failed-request charges.
-The [full-scope base estimate](docs/COST_ESTIMATE.md) is $136.58 gateway credit;
-the $6 inclusive first-draft route is now authorized for non-Retail evaluation,
-with an allocation reserved for later Kaggle work. Native tasks run sequentially
-with artifact review between tasks. The four full native Retail episodes remain
-deferred, so completing this route does not complete the original Stage 3 scope.
-Primary Kaggle comparisons have not started.
-
-Stage 3's latest [QC checkpoint](docs/STAGE3_RESULTS.md) has **14 validated
-non-Retail tasks**. ICBE stopped on a genuine invalid DeepSeek response after
-177 valid rounds: its 4,096-token ceiling was exhausted without a decision.
-The outcome was retained without resampling. Inclusive conservative exposure
-is **$1.934 across 1,438 attempts**. The frozen ICBE failure is retained without
-an amended run, while the four Retail evaluations remain deferred. The
-[Stage 4 checkpoint](docs/STAGE4_EXECUTION.md) validates 24 baseline and 12 scripted
-episodes across three series, with independent replay, matching inputs, strict
-provenance and guarded primary execution. The [readiness notebook](notebooks/06_kaggle_experiment_readiness.ipynb)
-loads saved evidence without paid calls. These are validation fixtures, not primary
-LLM findings. [Stage 5 execution](docs/STAGE5_EXECUTION.md) completed all
-36 matched primary episodes under the new $10 cumulative ceiling. Primary expense
-was **0.252 credits**, bringing cumulative exposure to **2.186 credits**. Its
-[saved primary notebook](notebooks/07_primary_shock_comparisons.ipynb) retains poor
-outcomes, 144 repairs and 17 fallback days alongside the matched business results.
-The [Stage 6 preparation](docs/STAGE6_PREPARATION.md) pins 38 source inputs; the
-[completed analysis](docs/STAGE6_EXECUTION.md) reports matched comparisons, recovery,
-reliability and 48 free baseline-only elasticity episodes. Results are descriptive for
-three selected blocks, with no population or real-world causal claim.
-
-- Validate the implemented LLM policy with genuine bounded pilots, then measure
-  validity, cost and performance against the baselines under an evaluation budget.
-- Expand products/stores and repeated runs; check price-response sensitivity.
-- Execute the agreed bounded task coverage for RetailBench, FirmBench and ICBE,
-  documenting native benchmark runs separately from adaptations.
-- Produce a LaTeX findings report with traceable figures and limitations.
+Remaining research includes the four full native Retail evaluations, a separately
+reviewed ICBE protocol if desired, more series/windows and LLM repetitions, and
+matched LLM sensitivity/ablations. The current 48-episode elasticity extension is
+baseline-only. None of these extensions is claimed by this release.
 
 ## License and attribution
 
-Our implementation is MIT licensed. External code and datasets retain their
-own terms. RetailBench is credited for the simulation machinery; its source is
-unmodified. See [third-party attribution](docs/THIRD_PARTY.md) and the
-[detailed integration notes](docs/INTEGRATION.md).
+Our implementation is MIT licensed. External code and datasets retain their own
+terms. The three upstream checkouts are obtained separately and remain unchanged;
+raw datasets and model conversations are excluded from Git.
+See [current attribution and compatibility](docs/RELEASE_ATTRIBUTION.md),
+[the pinned source notes](docs/THIRD_PARTY.md) and
+[integration details](docs/INTEGRATION.md).

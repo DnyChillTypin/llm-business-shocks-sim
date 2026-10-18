@@ -1,0 +1,21 @@
+{
+  "status": "passed",
+  "tracked_files": 345,
+  "reachable_history_blobs": 503,
+  "history_scanned": true,
+  "pdf_inspection": true,
+  "pdf_objects_inspected": 33,
+  "pdf_attachments": 0,
+  "notebook_objects_inspected": 29,
+  "recognizable_secret_patterns": [
+    "openai_style_key",
+    "github_token",
+    "aws_access_key",
+    "private_key",
+    "credential_in_url",
+    "private_user_path"
+  ],
+  "actual_local_value_comparison_performed": true,
+  "findings": [],
+  "limitations": "Recognizable patterns and locally available credential values; not a proof against all possible secrets or image-encoded content."
+}

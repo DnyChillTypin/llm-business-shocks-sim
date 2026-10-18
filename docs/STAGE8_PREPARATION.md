@@ -1,5 +1,8 @@
 # Stage 8 preparation: final reproduction and portfolio release
 
+Historical preparation checkpoint. See [Stage 8 execution](STAGE8_EXECUTION.md) and
+[current release status](results/stage8/status.json) for subsequent verification.
+
 Prepared on 18 October 2026 against completed Stage 7 commit `7abb2d6`. **Preparation is complete; Stage 8 execution and its exit gate remain pending.** Stage 7's 12-page preliminary report has passing [exact-commit CI](https://github.com/DnyChillTypin/llm-business-shocks-sim/actions/runs/39142253763), a reviewed PDF and a successful isolated source-bundle build. These are reused inputs, not newly completed Stage 8 checks.
 
 Stage 8 makes the preliminary findings deliverable usable and honestly reproducible by another reader. It does not complete the original native benchmark scope: 14 tasks were validated, ICBE failed after 177/600 valid rounds and four native Retail evaluations remain deferred. No new paid experiment is needed. Cumulative recorded exposure remains 2.186206858 credits under the existing 10-credit ceiling.

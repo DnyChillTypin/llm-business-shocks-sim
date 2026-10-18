@@ -146,7 +146,9 @@ an amended run, while the four Retail evaluations remain deferred. The
 episodes across three series, with independent replay, matching inputs, strict
 provenance and guarded primary execution. The [readiness notebook](notebooks/06_kaggle_experiment_readiness.ipynb)
 loads saved evidence without paid calls. These are validation fixtures, not primary
-LLM findings. Stage 5 will execute explicitly authorized controlled comparisons.
+LLM findings. [Stage 5 is prepared](docs/STAGE5_PREPARATION.md): the 36-episode
+launch sequence, review gates and existing budget headroom are checked. No primary
+episode has run; execution awaits a later instruction under the existing allowance.
 
 - Validate the implemented LLM policy with genuine bounded pilots, then measure
   validity, cost and performance against the baselines under an evaluation budget.

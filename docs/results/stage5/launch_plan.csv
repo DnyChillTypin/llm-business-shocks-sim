@@ -1,0 +1,37 @@
+matrix_index,store_id,product_id,scenario,policy,planned_days,execution_status,checkpoint,launch_command
+0,S001,P0001,control,fixed,21,not_executed,baseline_replay,& $py scripts/run_kaggle_experiment.py --config configs/study.json --episode-index 0
+1,S001,P0001,control,adaptive,21,not_executed,baseline_replay,& $py scripts/run_kaggle_experiment.py --config configs/study.json --episode-index 1
+2,S001,P0001,control,llm_with_fallback,21,not_executed,first_llm_review,& $py scripts/run_kaggle_experiment.py --config configs/study.json --episode-index 2 --execute-paid --budget .cache/approvals/stage5_allowance.approved.json --execution-manifest .cache/approvals/stage5_primary.approved.json
+3,S001,P0001,demand_surge,fixed,21,not_executed,baseline_replay,& $py scripts/run_kaggle_experiment.py --config configs/study.json --episode-index 3
+4,S001,P0001,demand_surge,adaptive,21,not_executed,baseline_replay,& $py scripts/run_kaggle_experiment.py --config configs/study.json --episode-index 4
+5,S001,P0001,demand_surge,llm_with_fallback,21,not_executed,episode_review,& $py scripts/run_kaggle_experiment.py --config configs/study.json --episode-index 5 --execute-paid --budget .cache/approvals/stage5_allowance.approved.json --execution-manifest .cache/approvals/stage5_primary.approved.json
+6,S001,P0001,demand_decline,fixed,21,not_executed,baseline_replay,& $py scripts/run_kaggle_experiment.py --config configs/study.json --episode-index 6
+7,S001,P0001,demand_decline,adaptive,21,not_executed,baseline_replay,& $py scripts/run_kaggle_experiment.py --config configs/study.json --episode-index 7
+8,S001,P0001,demand_decline,llm_with_fallback,21,not_executed,episode_review,& $py scripts/run_kaggle_experiment.py --config configs/study.json --episode-index 8 --execute-paid --budget .cache/approvals/stage5_allowance.approved.json --execution-manifest .cache/approvals/stage5_primary.approved.json
+9,S001,P0001,delivery_disruption,fixed,21,not_executed,baseline_replay,& $py scripts/run_kaggle_experiment.py --config configs/study.json --episode-index 9
+10,S001,P0001,delivery_disruption,adaptive,21,not_executed,baseline_replay,& $py scripts/run_kaggle_experiment.py --config configs/study.json --episode-index 10
+11,S001,P0001,delivery_disruption,llm_with_fallback,21,not_executed,series_block_review,& $py scripts/run_kaggle_experiment.py --config configs/study.json --episode-index 11 --execute-paid --budget .cache/approvals/stage5_allowance.approved.json --execution-manifest .cache/approvals/stage5_primary.approved.json
+12,S004,P0006,control,fixed,21,not_executed,baseline_replay,& $py scripts/run_kaggle_experiment.py --config configs/study.json --episode-index 12
+13,S004,P0006,control,adaptive,21,not_executed,baseline_replay,& $py scripts/run_kaggle_experiment.py --config configs/study.json --episode-index 13
+14,S004,P0006,control,llm_with_fallback,21,not_executed,episode_review,& $py scripts/run_kaggle_experiment.py --config configs/study.json --episode-index 14 --execute-paid --budget .cache/approvals/stage5_allowance.approved.json --execution-manifest .cache/approvals/stage5_primary.approved.json
+15,S004,P0006,demand_surge,fixed,21,not_executed,baseline_replay,& $py scripts/run_kaggle_experiment.py --config configs/study.json --episode-index 15
+16,S004,P0006,demand_surge,adaptive,21,not_executed,baseline_replay,& $py scripts/run_kaggle_experiment.py --config configs/study.json --episode-index 16
+17,S004,P0006,demand_surge,llm_with_fallback,21,not_executed,episode_review,& $py scripts/run_kaggle_experiment.py --config configs/study.json --episode-index 17 --execute-paid --budget .cache/approvals/stage5_allowance.approved.json --execution-manifest .cache/approvals/stage5_primary.approved.json
+18,S004,P0006,demand_decline,fixed,21,not_executed,baseline_replay,& $py scripts/run_kaggle_experiment.py --config configs/study.json --episode-index 18
+19,S004,P0006,demand_decline,adaptive,21,not_executed,baseline_replay,& $py scripts/run_kaggle_experiment.py --config configs/study.json --episode-index 19
+20,S004,P0006,demand_decline,llm_with_fallback,21,not_executed,episode_review,& $py scripts/run_kaggle_experiment.py --config configs/study.json --episode-index 20 --execute-paid --budget .cache/approvals/stage5_allowance.approved.json --execution-manifest .cache/approvals/stage5_primary.approved.json
+21,S004,P0006,delivery_disruption,fixed,21,not_executed,baseline_replay,& $py scripts/run_kaggle_experiment.py --config configs/study.json --episode-index 21
+22,S004,P0006,delivery_disruption,adaptive,21,not_executed,baseline_replay,& $py scripts/run_kaggle_experiment.py --config configs/study.json --episode-index 22
+23,S004,P0006,delivery_disruption,llm_with_fallback,21,not_executed,series_block_review,& $py scripts/run_kaggle_experiment.py --config configs/study.json --episode-index 23 --execute-paid --budget .cache/approvals/stage5_allowance.approved.json --execution-manifest .cache/approvals/stage5_primary.approved.json
+24,S003,P0016,control,fixed,21,not_executed,baseline_replay,& $py scripts/run_kaggle_experiment.py --config configs/study.json --episode-index 24
+25,S003,P0016,control,adaptive,21,not_executed,baseline_replay,& $py scripts/run_kaggle_experiment.py --config configs/study.json --episode-index 25
+26,S003,P0016,control,llm_with_fallback,21,not_executed,episode_review,& $py scripts/run_kaggle_experiment.py --config configs/study.json --episode-index 26 --execute-paid --budget .cache/approvals/stage5_allowance.approved.json --execution-manifest .cache/approvals/stage5_primary.approved.json
+27,S003,P0016,demand_surge,fixed,21,not_executed,baseline_replay,& $py scripts/run_kaggle_experiment.py --config configs/study.json --episode-index 27
+28,S003,P0016,demand_surge,adaptive,21,not_executed,baseline_replay,& $py scripts/run_kaggle_experiment.py --config configs/study.json --episode-index 28
+29,S003,P0016,demand_surge,llm_with_fallback,21,not_executed,episode_review,& $py scripts/run_kaggle_experiment.py --config configs/study.json --episode-index 29 --execute-paid --budget .cache/approvals/stage5_allowance.approved.json --execution-manifest .cache/approvals/stage5_primary.approved.json
+30,S003,P0016,demand_decline,fixed,21,not_executed,baseline_replay,& $py scripts/run_kaggle_experiment.py --config configs/study.json --episode-index 30
+31,S003,P0016,demand_decline,adaptive,21,not_executed,baseline_replay,& $py scripts/run_kaggle_experiment.py --config configs/study.json --episode-index 31
+32,S003,P0016,demand_decline,llm_with_fallback,21,not_executed,episode_review,& $py scripts/run_kaggle_experiment.py --config configs/study.json --episode-index 32 --execute-paid --budget .cache/approvals/stage5_allowance.approved.json --execution-manifest .cache/approvals/stage5_primary.approved.json
+33,S003,P0016,delivery_disruption,fixed,21,not_executed,baseline_replay,& $py scripts/run_kaggle_experiment.py --config configs/study.json --episode-index 33
+34,S003,P0016,delivery_disruption,adaptive,21,not_executed,baseline_replay,& $py scripts/run_kaggle_experiment.py --config configs/study.json --episode-index 34
+35,S003,P0016,delivery_disruption,llm_with_fallback,21,not_executed,series_block_review,& $py scripts/run_kaggle_experiment.py --config configs/study.json --episode-index 35 --execute-paid --budget .cache/approvals/stage5_allowance.approved.json --execution-manifest .cache/approvals/stage5_primary.approved.json

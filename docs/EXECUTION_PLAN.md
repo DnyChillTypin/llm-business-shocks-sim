@@ -212,16 +212,17 @@ Save prepared split/window manifests and input hashes under `data/processed/kagg
 
 **Purpose / contribution.** Produce the direct evidence for the project question: performance and behavior under controlled simulated shocks.
 
-**Tasks, in order.** Freeze the evaluation manifest after validation pilots; verify all three policies receive identical initial state/history within each series/window; run the complete free baseline matrix; estimate the LLM batch against remaining allocation; execute one series block at a time; inspect its four complete scenarios and accounting before advancing. Keep the input base-demand trace identical across policy/scenario copies; shock transformations differ by treatment and price-dependent realized demand may differ by policy. Fix execution order before results; record timestamps and returned IDs for gateway drift checks.
+**Tasks, in order.** The [Stage 5 preparation checkpoint](STAGE5_PREPARATION.md) supplies the concrete launch plan. Freeze the evaluation manifest after validation pilots; verify all three policies receive identical initial state/history within each series/window; check the LLM batch against remaining allocation; execute canonical matrix indices 0–35, running fixed, adaptive and then LLM within each scenario. Review the first LLM episode, every completed episode and each four-scenario series block before advancing. This scheduling clarification supersedes the earlier all-baselines-first suggestion and implements the Stage 4 handoff without changing the study. Keep the input base-demand trace identical across policy/scenario copies; shock transformations differ by treatment and price-dependent realized demand may differ by policy. Record timestamps and returned IDs for gateway drift checks.
 
-**Files / commands / outputs.** Use Stage 4 runner and notebook 03. **To implement; paid only under the approved cap:**
+**Files / commands / outputs.** Use the implemented Stage 4 runner and notebook 03. Preparation is metadata-only; actual execution additionally needs a task-only amendment under the existing ledger and a private approved primary manifest. Inspect the complete plan without executing:
 
 ```powershell
-& $py scripts/run_kaggle_experiment.py --config configs/study.json --execute-paid
+& $py scripts/run_kaggle_experiment.py --config configs/study.json --dry-run
+& $py scripts/check_public_stage5.py
 & $py scripts/verify_notebook.py --notebook notebooks/03_kaggle_llm_experiment.ipynb
 ```
 
-The paid command runs only missing planned LLM episodes by immutable IDs and refuses accidental duplicate execution; it does not resume a half-run environment. The notebook loads saved results without API calls. Save `matrix_manifest.json`, episode `summary.json`, merged `all_daily_results.csv`, observations, raw responses, attempts, actions and per-day fallback flags in the session root.
+Use the one-episode commands in `docs/results/stage5/launch_plan.csv` after execution authorization; no command above runs the primary matrix. The runner refuses duplicate immutable episode IDs and does not resume a half-run environment. The notebook loads saved results without API calls. Preserve the hashed matrix registry, per-episode manifests, validation reports, summaries, observations, raw responses, attempts, actions and fallback flags under ignored results. At the execution checkpoint, export merged `all_daily_results.csv` and reviewed public aggregate coverage with evidence hashes.
 
 **Quality gate.** 36 distinct complete episodes and 756 daily rows for three single-SKU series; 12 LLM episodes with 252 decision opportunities; actual attempts can be higher due to repairs. Hashes confirm matching initial conditions and private base paths. All actions and model attempts are accounted for, including fallback and failure. Monetary and inventory conservation checks pass. Incomplete episodes remain visible and are not compared as if they lasted 21 days. Complete this gate for a smaller explicitly agreed matrix if scope is reduced.
 

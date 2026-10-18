@@ -2,6 +2,7 @@
 import csv
 import hashlib
 import json
+import math
 import re
 from pathlib import Path
 
@@ -33,6 +34,12 @@ def main():
     for name, digest in manifest.items():
         assert hashlib.sha256((PUBLIC / name).read_bytes().replace(b"\r\n", b"\n")).hexdigest() == digest, name
     assert (ROOT / "docs/results/native_coverage.csv").read_bytes() == (PUBLIC / "native_coverage.csv").read_bytes()
+    cohorts = json.loads((PUBLIC / "evaluation_cohorts.json").read_text())
+    budget = json.loads((PUBLIC / "budget_summary.json").read_text())
+    if not any(c["status"] == "running" for c in cohorts) and not budget["pending_attempts"]:
+        assert budget["attempts"] == budget["prior_pilot_attempts"] + sum(c["attempts"] for c in cohorts)
+        expected = budget["prior_pilot_exposure"] + sum(c["conservative_exposure_credits"] for c in cohorts)
+        assert math.isclose(expected, budget["exposure_usd"], abs_tol=1e-8), "Source spending or recovered-session charges were double-counted or omitted."
     print(f"Stage 3 aggregate publication boundary and artifact hashes passed: {len(paths)} files.")
 
 

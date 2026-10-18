@@ -1,6 +1,6 @@
 # Stage 3 evaluation results
 
-The non-Retail execution route is in progress. All 507 reasoning cases, EDT and both BeerGame scenarios are validated. Consulting and ICBE remain in progress or planned. The original Stage 3 scope remains incomplete because four 180-day native Retail episodes are deferred under the approved 6-credit route. Kaggle primary comparisons have not started.
+The non-Retail execution route is in progress. All 507 reasoning cases, EDT, both BeerGame scenarios and all ten Consulting cases are validated. ICBE remains outstanding. The original Stage 3 scope remains incomplete because four 180-day native Retail episodes are deferred under the approved 6-credit route. Kaggle primary comparisons have not started.
 
 ## Reasoning
 
@@ -47,8 +47,20 @@ The initial cohort stopped on a gateway HTTP 503 after three judgments. A replac
 
 After the second 503, execution explicitly switched from the initial first-complete-cohort rule to recovery by independent case: use the earliest fully evidenced completed judgment for each frozen case, never the highest score. Eight cases passed raw-evidence revalidation; only the two missing cases need fresh sessions. The memory-free native CoT agent and unchanged ten-case score aggregator make this case-level recovery possible without resuming partial conversations. The execution change and tests are recorded in the [execution record](STAGE3_EVALUATION.md). No uninterrupted first-pass cohort is claimed.
 
+All ten cases are now validated: eight recovered complete sessions and two fresh sessions, each with 12 messages. The final two required 26 new API calls; recovered calls are not charged again in the reporting. Saved native histories and judgments exactly match their re-audited sources. The native mean scores are:
+
+| Judge rubric | Mean score (0–10) |
+|---|---:|
+| Structure | 8.8 |
+| Quantitative reasoning | 7.4 |
+| Business sense | 8.3 |
+| Communication | 8.2 |
+| Overall | 8.15 |
+
+Overall scores range from 8 to 8.5. These are judgments by the substituted interviewer/judge model, not independent human ratings. Ten selected case sessions do not provide independent model replications.
+
 ## Evidence
 
 The [coverage table](results/native_coverage.csv), [aggregate evaluation evidence](results/stage3/evaluation_cohorts.json) and [inclusive budget summary](results/stage3/budget_summary.json) retain current completion and expense denominators. The [executed analysis notebook](../notebooks/05_native_evaluation.ipynb) checks aggregate hashes and runs without credentials or paid calls. Request-level artifacts and account metadata remain local.
 
-The [execution plan](STAGE3_EVALUATION.md) records scope, compatibility adapters and quality gates. All 59 automated tests passed at the reasoning checkpoint. Four original Retail evaluations remain outstanding regardless of the non-Retail route's eventual completion.
+The [execution plan](STAGE3_EVALUATION.md) records scope, compatibility adapters and quality gates. All 59 automated tests passed at the reasoning checkpoint, and 63 passed after the evidence-recovery checks were added. Four original Retail evaluations remain outstanding regardless of the non-Retail route's eventual completion.

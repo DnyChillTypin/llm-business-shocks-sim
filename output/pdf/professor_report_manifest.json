@@ -1,0 +1,61 @@
+{
+  "status": "reviewed",
+  "pages": 14,
+  "summary_pages": 2,
+  "original_report_sha256": "f06c146513fa0d0db223becd8e4db8d5c1b90373e20502ecc39d64bbea63e11f",
+  "original_report_text_and_render_unchanged": true,
+  "pdf_sha256": "85a483613b9c33c532ccb8164bb845dd547931001d3ed42d626bb3e9d62504cc",
+  "source_sha256": "c30b577e497564a5bbff351e791504eb0b3053209a736c8f436d373920a9acb7",
+  "builder_sha256": "abf1a076f4e625b0619f73453ae23759bdff8cbdab0ec732613bde6e769b9a06",
+  "new_model_calls": 0,
+  "evidence_sources": {
+    "docs/results/stage6/status.json": "38b2ee3d5f7634a8d20cb127573d975362347deb19b0dec675a64b9c2651ce09",
+    "docs/results/stage6/per_scenario_summaries.csv": "a733a3af7ef07898ab0cb130eff2ebef8c729c4e2f9920278a57f1de9cc1dcd8",
+    "docs/results/stage8/status.json": "8e87d21ec28cd76af102aec5ef4c61761879196361f4753ac855e25eb654fd59",
+    "report/tables/facts.tex": "4838284126d2d23addb37dd5339eba3ac8180cce170808c0ee08e08910e8d911"
+  },
+  "reviewed_on": "2026-10-19",
+  "visual_review": {
+    "all_pages_inspected": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14
+    ],
+    "result": "passed",
+    "checks": [
+      "readable text and charts",
+      "no clipping or overlap",
+      "page numbering and section transitions",
+      "summary consistent with reviewed evidence"
+    ],
+    "rendered_page_sha256": {
+      "page-01": "ca4063be6871ce6493ec1141a98362dd1c9b971875d2c8d9659e2ab66ed13eea",
+      "page-02": "66efd42c213b2050d3bdc23b74b4d55f390cb45856d980c305504905f5a5580b",
+      "page-03": "74044969bb836d46253be01c08dbbeec7a96aa5b6963e1b1d1c1aa9996c8f6de",
+      "page-04": "26ea378c839fea51bd98196c7d854e66c404e42f7e73aba9ac6191a337d2fecd",
+      "page-05": "a1f62f9085fb6a4c1ef8dc10fa5a5881458f33566acbc09131742075143cb707",
+      "page-06": "84bbce803dd372aff8c560ecf7a7cbfbeee99037ef0f231d8d72cea4e316fe5e",
+      "page-07": "64852067b2b7e1dcba9069f4d86092af4af99e881f1c3f5a3cd8e8c0a8a9312e",
+      "page-08": "31b692cfc013a10b2857f652c563fe40f225ad538c970c292caf816286e5841f",
+      "page-09": "d757827fe1444374246072ae6f86c5668e89d1a90bc1e587d259417115057b4f",
+      "page-10": "d6b859ae18ac56b9ea3f3a4c2f3e45bdd47e91ac288a6e983373dc174beaf4f9",
+      "page-11": "6c65073923b7a5a01f08607e17895d26033da5988e27dac49d97333f8ce3d90a",
+      "page-12": "457f392e10bc9b2c3cf345e0e2a4feee227f0610228a8f65c70c98b8af6c40f2",
+      "page-13": "b0bddd4ce8b7eae40fd18614bbd958a0f28936a304ad063cf03169495dda0fd6",
+      "page-14": "ae63c478a2b319017d3d9438e50d19b1b5021ad44b1b7cb244178574d9313384"
+    }
+  },
+  "summary_numeric_checks": "passed",
+  "original_report_links_preserved": 30
+}

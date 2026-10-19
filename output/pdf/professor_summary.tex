@@ -1,0 +1,78 @@
+﻿\documentclass[11pt,a4paper]{article}
+\usepackage[margin=2cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,booktabs,array,xcolor}
+\usepackage[expansion=false]{microtype}
+\usepackage[colorlinks=true,urlcolor=blue]{hyperref}
+\pdfinfoomitdate=1
+\pdftrailerid{}
+\pdfsuppressptexinfo=15
+\definecolor{ink}{HTML}{17324D}
+\definecolor{panel}{HTML}{EEF3F7}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.55em}
+\setlength{\emergencystretch}{2em}
+\pagenumbering{roman}
+\newcommand{\topic}[1]{\par\vspace{0.35em}{\large\bfseries\color{ink}#1}\par}
+\begin{document}
+{\small READER'S SUMMARY \hfill 19 October 2026}\par
+{\LARGE\bfseries\color{ink}Can LLMs Adapt to Business Shocks?\par}
+{\large Main findings and how to interpret them}\par
+\colorbox{panel}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{\textbf{Main finding.} In this small simulation study, the AI-assisted policy did not consistently outperform a simple adaptive rule economically. It achieved higher contribution in only \textbf{2 of 9 shock comparisons}, both involving delivery disruption. Better service and a more favorable change relative to its own no-shock performance did not imply higher earnings.}}
+
+\topic{What we tested}
+A virtual shop chose how much stock to order and what price to charge. We compared a fixed rule, a rule that adapts to recent demand, and a configured LLM policy with repair and rule-based fallback. Three selected store--product series each faced normal conditions, a demand surge, a demand decline and delayed deliveries: \textbf{36 runs of 21 days}. The shock occurred on days 8--14. The primary comparison is AI versus the adaptive rule.
+
+The economic measure is \textbf{contribution}: sales revenue minus the cost of goods sold and inventory holding costs. It is not full company net profit. Values below use the synthetic dataset's unspecified monetary units, not dollars or API credits.
+
+\topic{What actually happened}
+\begin{center}
+\small
+\begin{tabular}{@{}p{4.8cm}rr@{}}
+\toprule
+Shock & AI earns more & Mean AI minus adaptive\\
+\midrule
+Demand surge & 0 of 3 & $-3{,}837.27$\\
+Demand decline & 0 of 3 & $-3{,}074.09$\\
+Delivery disruption & 2 of 3 & $-901.07$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Each mean gives equal weight to the three selected series. During delivery disruption, one large negative result outweighed the two positive results. The AI policy also had lower contribution in all three no-shock controls: it underperformed in \textbf{10 of 12 conditions overall}.
+
+\topic{Why ``7 of 9 favorable adjusted results'' is different}
+The adjusted comparison asks how much each policy changes from its \emph{own} no-shock result. That contrast favors AI in 7 of 9 shock comparisons, including all decline and delivery cases. A smaller loss from a weaker starting point can still leave AI earning less.
+
+\textit{Illustration only, not study data:} suppose adaptive earns 100 normally and 70 under a shock (a loss of 30), while AI earns 80 normally and 65 under the shock (a loss of 15). AI loses less relative to its own control but still earns less under the shock: 65 versus 70. The adjusted advantage is 15; the actual earnings gap is $-5$.
+
+\topic{Where the AI showed promise}
+During delivery disruption, AI served about \textbf{5.74 percentage points more requested demand} on average. It also held much more inventory: mean stock was 7.57--12.25 times adaptive across the 12 conditions. This is evidence of a service--inventory tradeoff in this simulator; the experiment does not isolate inventory as the sole cause of the outcome. Full results and methods follow in the technical report.
+
+\clearpage
+{\small READER'S SUMMARY \hfill EVIDENCE, FAILURES AND LIMITS}\par
+\topic{What went wrong in operation}
+Only \textbf{108 of 252 decisions (42.9\%)} were valid on the first response. The system attempted one repair on each of the other 144 decisions: 127 repairs succeeded and 17 decisions required the adaptive rule to take over. The reviewed invalid responses violated affordability constraints. All fallback days remain included in the results.
+
+The evaluated system is therefore \textbf{an AI policy plus repair and adaptive fallback}. These findings cannot be credited to an unaided AI agent. The pipeline completed the retail experiment, but completion does not establish good business performance or dependable first-response decisions.
+
+\topic{What the other benchmarks do and do not establish}
+The separate native benchmark track has \textbf{14 validated tasks, 1 retained failure and 4 deferred tasks}. Validated means the task produced usable, checked evidence; it does not mean the AI performed well on every task. Reasoning scores and AI-judged consulting scores are separate from evidence of adaptation in retail.
+
+The ICBE strategic-game tournament stopped after \textbf{177 of 600 valid rounds}: DeepSeek exhausted its 4,096-token response allowance without a valid decision. The failure was retained under the frozen protocol, with no replacement response. Four full 180-day native Retail configurations remain unrun. Other simulations also produced unfavorable outcomes, including negative EDT earnings and extreme BeerGame supply-chain costs. These are reported rather than discarded.
+
+\topic{What we cannot conclude}
+\begin{itemize}
+\setlength{\itemsep}{0.15em}
+\item \textbf{No general business superiority.} This is synthetic data, three deliberately selected series, one calendar window and one LLM realization per condition. Daily observations are dependent; 756 policy-days are not 756 independent experiments.
+\item \textbf{No proof that the AI learned to adapt.} AI actions already differed between shock and control runs before the shock in all nine pairs. The design does not isolate beneficial learning or the causal value of history.
+\item \textbf{No pristine unseen-test claim.} Prior manual use of the evaluation window is uncertain. Model identity relies on gateway records, without independent verification of served weights.
+\item \textbf{Recovery is not profit recovery.} The 9/9 AI recovery count measures service and stock returning near the policy's own control. A high-stock control makes this different from efficient inventory or restored cumulative earnings; six adaptive cases remained censored at day 21.
+\item \textbf{Robustness is limited.} The extra elasticity experiments used rule-based baselines only. They do not show AI robustness to changed assumptions or substitute for repeated AI runs.
+\end{itemize}
+
+\topic{What this project contributes}
+The preliminary study provides a reproducible simulation and an auditable, mixed result: \textbf{some delivery-disruption service gains, weak overall contribution performance, and substantial dependence on repair and fallback}. It supports further testing of the configured system, not a recommendation to replace adaptive inventory rules. Broader claims need more independent series and windows, repeated AI runs, and matched AI sensitivity checks.
+
+\vfill
+{\footnotesize\textbf{Reading guide and provenance.} These two summary pages were added on 19 October 2026; the following 12-page report is the unchanged 18 October version. Its printed page 3 covers contribution/service, page 5 reliability, page 7 interpretation, and pages 9--12 detailed evidence and coverage. Figures above derive from the reviewed Stage 6 aggregate tables; no new experiment or model call was made for this summary. The preliminary report/release is complete; original native coverage is incomplete. Reproduction materials: \url{https://github.com/DnyChillTypin/llm-business-shocks-sim}.}
+\end{document}

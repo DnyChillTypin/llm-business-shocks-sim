@@ -135,8 +135,16 @@ The remaining development pilot is prepared through
 preserve the first branch. Explicit manual model execution skips verified
 completed branches and stops on incomplete claims. The proposed continuation
 covers 23 branches and 322 decisions, with at most 644 additional attempts and a
-1-credit incremental allowance inside the overall 20-credit cap. These are
-prepared limits; completion requires the user's model run and a full cohort audit.
+1-credit incremental allowance inside the overall 20-credit cap.
+
+The user manually launched the continuation. An offline interruption review
+verified branches 0–9 (140 decisions, 176 requests) and 11 saved decisions in
+branch 10. Its repair request timed out after 90 seconds. The incomplete branch
+is excluded from completed outcomes; all charges and its unknown-charge reserve
+remain in the cumulative ledger. Stage 3 remains incomplete, with branches
+11–23 unstarted. `scripts/review_report2_interruption.py` audits this stopped
+cohort without changing original evidence or authorizing retries. A separate
+reviewed recovery handoff is required before another manual model command.
 
 New model requests require credentials and an explicit experiment budget. Copy
 .env.example to .env for local configuration and keep secrets out of Git.

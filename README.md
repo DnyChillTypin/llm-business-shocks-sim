@@ -144,7 +144,13 @@ is excluded from completed outcomes; all charges and its unknown-charge reserve
 remain in the cumulative ledger. Stage 3 remains incomplete, with branches
 11–23 unstarted. `scripts/review_report2_interruption.py` audits this stopped
 cohort without changing original evidence or authorizing retries. A separate
-reviewed recovery handoff is required before another manual model command.
+reviewed recovery handoff is prepared with `scripts/recover_report2_development.py`.
+Its explicit user manual activation preserves the original partial trajectory in
+an archive, retains the full timeout reserve, restarts branch 10 and finishes
+branches 11–23. Existing credit and physical-attempt ceilings remain unchanged;
+the recovery wrapper counts archived requests as well as replacement requests.
+On success it automatically audits all completed branches and the archived
+failure, then stops for Stage 3 review. Preparation and checks make no model calls.
 
 New model requests require credentials and an explicit experiment budget. Copy
 .env.example to .env for local configuration and keep secrets out of Git.

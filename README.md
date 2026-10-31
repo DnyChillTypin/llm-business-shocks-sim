@@ -101,7 +101,8 @@ economic state before activating a shock. Opaque native UUIDs and log timestamps
 are excluded from equality checks. Full, frozen and empty history treatments
 apply to both the LLM and its fallback. Saved-action replay checks results and
 intervention denominators. Scripted completion tests are engineering evidence;
-new model results remain pending.
+the manually executed development results are summarized below. Production
+evaluation remains pending.
 
 Each completed
 milestone is committed and pushed for review before work on the next milestone.
@@ -110,54 +111,38 @@ requires a reviewed authorization, current tariff, explicit monetary cap and the
 existing cumulative budget ledger. It defaults to one development branch, blocks
 duplicates and interrupted work, and never enables production evaluation.
 The local milestone handoff records exact commands and outstanding budget inputs.
-The current protocol authorizes no model calls.
+The frozen protocol itself authorizes no model calls; execution uses separate
+reviewed user manual authorizations.
 
-Stage 3 preparation adds `scripts/prepare_report2_pilot.py` for read-only costing,
-manual allowance activation, and post-run auditing. The first proposed branch has
-14 decisions and at most 28 attempts. Its cost worksheet and approval files stay
-under ignored `results/report2/`; the local review note contains the exact manual
-command. Preparation preserves the cumulative ledger. Only an explicit user
-`--activate-and-run --approve-credit-limit 0.50` command activates the narrower
-allowance and launches the model. Measured pilot results remain pending until
-that command has run and its evidence has been audited.
+**Stage 3 complete:** all 24 development branches and 336 decisions were manually
+executed and independently replayed. The completed trajectories used 434 requests:
+238 decisions were valid on the first response, 87 succeeded after repair, and
+11 used adaptive fallback. Recorded token-derived expense for these trajectories
+was 0.242577599 gateway credits, with 943.50 seconds of serial API time.
 
-First development branch checkpoint: the user manually completed branch 0 and
-its saved-state/ledger audit passed. Fourteen decisions used 19 requests: 9 were
-valid on the first response, 5 succeeded after repair, and none used fallback.
-Recorded token-derived expense was 0.011881723 gateway credits, with 45.42 seconds
-of serial API time. This is one control/full-history development branch out of
-24, not evidence of shock adaptation or completed production evaluation.
-Replaying or auditing saved actions makes no model requests. Repeating activation
-after a completed run is blocked; further branches need a separately reviewed allowance.
+Two transport interruptions required explicitly reviewed restarts. Their 15
+additional requests remain archived, giving 449 physical pilot attempts in total.
+Their known charges and full unknown-charge reservations are retained separately.
+Total pilot exposure including archives/reservations was 0.265737394 credits.
+This is a two-case development cohort, not the production sample or evidence of
+population-level adaptation. Both cases, all four conditions and all three history
+treatments are covered; the final audit preserves the original and replacement runs.
 
-The remaining development pilot is prepared through
-`scripts/continue_report2_development.py`. Its offline preparation and audit modes
-preserve the first branch. Explicit manual model execution skips verified
-completed branches and stops on incomplete claims. The proposed continuation
-covers 23 branches and 322 decisions, with at most 644 additional attempts and a
-1-credit incremental allowance inside the overall 20-credit cap.
+Costing, continuation and recovery tools are `scripts/prepare_report2_pilot.py`,
+`scripts/continue_report2_development.py`, `scripts/recover_report2_development.py`
+and `scripts/resume_report2_development.py`. Their offline modes make no model calls.
+The final cohort audit reconciles all canonical and archived attempt IDs to the
+same cumulative ledger without modifying original evidence. Raw responses,
+ledger backups, audit receipts and review notes remain local and ignored.
 
-The user manually launched the continuation. An offline interruption review
-verified branches 0–9 (140 decisions, 176 requests) and 11 saved decisions in
-branch 10. Its repair request timed out after 90 seconds. The incomplete branch
-is excluded from completed outcomes; all charges and its unknown-charge reserve
-remain in the cumulative ledger. Stage 3 remains incomplete, with branches
-11–23 unstarted. `scripts/review_report2_interruption.py` audits this stopped
-cohort without changing original evidence or authorizing retries. A separate
-reviewed recovery handoff is prepared with `scripts/recover_report2_development.py`.
-Its explicit user manual activation preserves the original partial trajectory in
-an archive, retains the full timeout reserve, restarts branch 10 and finishes
-branches 11–23. Existing credit and physical-attempt ceilings remain unchanged;
-the recovery wrapper counts archived requests as well as replacement requests.
-On success it automatically audits all completed branches and the archived
-failure, then stops for Stage 3 review. Preparation and checks make no model calls.
-
-The first recovery completed branches 10–12, bringing the verified cohort to
-13 branches / 182 decisions. Branch 13 then timed out on its first request.
-`scripts/resume_report2_development.py` prepares successive reviewed recoveries
-while preserving every earlier archive and allowance. Its manual execution
-restarts the newly interrupted branch, skips all completed branches, and counts
-all archived requests in the final audit. Stage 3 remains incomplete.
+The frozen production matrix contains 18,144 model decisions. The measured
+development proxy gives 13.10 credits and 14.15 serial API hours before future
+transport overhead; an all-repair/double-mean-request-usage scenario is 40.57
+credits. These are extrapolations, not billing guarantees. Stage 4 should begin
+with the unchanged 6,048-decision main cohort (4.37-credit base proxy), then review
+measured costs before the diagnostic cohorts. Production requires new execution
+support and a separate manual allowance/attempt authorization. No production
+models have been launched.
 
 New model requests require credentials and an explicit experiment budget. Copy
 .env.example to .env for local configuration and keep secrets out of Git.

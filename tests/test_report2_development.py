@@ -61,6 +61,7 @@ class DevelopmentContinuationTests(unittest.TestCase):
             write(self.first / name, value)
         self.batch = self.root / "results/report2/manual_development"
         write(self.batch / "claims" / f"{identity(self.plan, 0)}.json", {"status": "validated_complete",
+              "episode": self.plan["episodes"][0],
               "budget_sha256": fingerprint(self.old), "authorization_sha256": canonical_hash({"fixture": True})})
         self.folder = self.root / "results/report2/continuation"
         self.folder.mkdir(parents=True)
@@ -93,7 +94,7 @@ class DevelopmentContinuationTests(unittest.TestCase):
         budget = read_json(self.folder / "approved_budget.json")
         auth = read_json(self.folder / "approved_authorization.json")
         write(self.batch / "claims" / f"{identity(self.plan, index)}.json",
-              {"status": "validated_complete", "budget_sha256": fingerprint(budget),
+              {"status": "validated_complete", "episode": self.plan["episodes"][index], "budget_sha256": fingerprint(budget),
                "authorization_sha256": canonical_hash(auth)})
 
     def test_preparation_is_readonly_and_targets_only_the_remaining_branches(self):
@@ -233,6 +234,7 @@ class DevelopmentContinuationTests(unittest.TestCase):
                   "first_pass_valid": 9 if index == 0 else 14, "repair_attempts": 5 if index == 0 else 0,
                   "successful_repairs": 5 if index == 0 else 0, "fallback_days": 0,
                   "model_calls_made": len(entries), "post_split_contribution": 1, "fill_rate": 1})
+            write(self.batch / "branches" / key / "run_manifest.json", {**self.plan["episodes"][index], "policy": "llm_with_fallback"})
             write(self.batch / "cases" / self.plan["episodes"][index]["case_id"] / "warmup/prefix.json", {"offline_fixture": True})
         # Single-branch physical replay is independently tested elsewhere; isolate
         # the full-cohort identity, completeness and financial join here.
@@ -261,6 +263,15 @@ class DevelopmentContinuationTests(unittest.TestCase):
         events[-1]["attempt_id"] = events[1]["attempt_id"]
         path.write_text("\n".join(json.dumps(e) for e in events) + "\n")
         with self.assertRaisesRegex(ValueError, "attempt identities"):
+            audit(proposal, self.snapshot, self.folder, self.root)
+
+    def test_branch_labels_cannot_be_swapped_between_frozen_plan_entries(self):
+        proposal = self.mock_cohort(completed=2)
+        path = self.batch / "branches" / identity(self.plan, 1) / "run_manifest.json"
+        value = read_json(path)
+        value["history"] = "none"
+        write(path, value)
+        with self.assertRaisesRegex(ValueError, "scenario/history identity"):
             audit(proposal, self.snapshot, self.folder, self.root)
 
 

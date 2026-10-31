@@ -295,6 +295,10 @@ def audit(proposal, snapshot, folder, root=ROOT):
             key = identity(plan, index)
             run = batch / "branches" / key
             claim = read_json(batch / "claims" / f"{key}.json")
+            branch_manifest = read_json(run / "run_manifest.json")
+            if (claim.get("episode") != episode or branch_manifest.get("policy") != "llm_with_fallback"
+                    or any(branch_manifest.get(k) != episode[k] for k in ("scenario", "history", "realization"))):
+                raise ValueError(f"Branch {index} scenario/history identity differs from its frozen plan entry.")
             budget, auth = approval_sets["first" if index == 0 else "continuation"]
             if claim["budget_sha256"] != fingerprint(budget) or claim["authorization_sha256"] != canonical_hash(auth):
                 raise ValueError("A completed branch differs from its historical approval.")

@@ -152,6 +152,13 @@ the recovery wrapper counts archived requests as well as replacement requests.
 On success it automatically audits all completed branches and the archived
 failure, then stops for Stage 3 review. Preparation and checks make no model calls.
 
+The first recovery completed branches 10–12, bringing the verified cohort to
+13 branches / 182 decisions. Branch 13 then timed out on its first request.
+`scripts/resume_report2_development.py` prepares successive reviewed recoveries
+while preserving every earlier archive and allowance. Its manual execution
+restarts the newly interrupted branch, skips all completed branches, and counts
+all archived requests in the final audit. Stage 3 remains incomplete.
+
 New model requests require credentials and an explicit experiment budget. Copy
 .env.example to .env for local configuration and keep secrets out of Git.
 The current overall project limit is **20 gateway credits including prior usage**,

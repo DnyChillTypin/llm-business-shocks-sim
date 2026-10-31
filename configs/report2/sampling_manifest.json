@@ -1,0 +1,508 @@
+{
+  "schema_version": 1,
+  "study_id": "business_shocks_report2_v1",
+  "status": "sampling_frozen_experiments_not_run",
+  "protocol_sha256": "5b838abb5792af435b3b6358336c9fd704da1b2af84cf129851766eed31a9877",
+  "input_text_sha256": {
+    "configs/report2/protocol.json": "29750f747b8b0d522672329c9f7741d197451ab1e3d69f541ef2ddce342bcf38",
+    "configs/sources.json": "fa410ef420cc1dff630c0f002743decee7b96f8655394f9c81ad3ec99557b719",
+    "configs/study.json": "9c3ce07eb0579e29f630a348f1afb58e3c142af15683fc1542a6dc865858710f",
+    "configs/kaggle_retailbench.json": "4c866ea24a38d407cdd42d709c76b6b8268877a7a8913a18262d2687d1b86c18",
+    "configs/kaggle_action.schema.json": "4349c10c066c7330e148af2f959611aee42b1cf2f3f8088e1c7f9c8df3e66e47",
+    "prompts/kaggle_policy_v1.txt": "9109e2268896967c8223052479ec36a565b8220abe84ce50c868ae03346e8f2c",
+    "prompts/kaggle_repair_v1.txt": "d0ece85310920d11efdc957c4ec730296aba303f0266e392aa1f376cb7e27208",
+    "src/agents/llm.py": "5df75f2029938ba72e373b3316beed5ea67928eada7e73bb872db80310766015",
+    "src/agents/baselines.py": "a65b7c6324246d98aa9cc0a49b4bd14fbc42a4da010ae3da7250df296ff23fca",
+    "src/envs/kaggle_retailbench.py": "e961a23d0cf1e370ff4fb13c254bd98a131ef5ed3f3066849963ed3e106c4337",
+    "src/data/kaggle.py": "2149fdfe6f79020285ec712541e7ad01588bd247e9acd5e759467fd1f8c82554"
+  },
+  "raw_dataset_sha256": "96f107b42042d5b21fcae88c7dfc98aab036788aaae73fb3605546cfc06135ff",
+  "source_rows": 76000,
+  "source_series": 100,
+  "complete_series": 100,
+  "eligible_nonlegacy_series": 97,
+  "selected_series": [
+    {
+      "selected_index_zero_based": 0,
+      "eligible_rank_zero_based": 4,
+      "store_id": "S001",
+      "product_id": "P0003",
+      "training_mean_demand": 125.47149122807,
+      "training_cv": 0.349906026905,
+      "diagnostic_subset": true
+    },
+    {
+      "selected_index_zero_based": 1,
+      "eligible_rank_zero_based": 12,
+      "store_id": "S002",
+      "product_id": "P0003",
+      "training_mean_demand": 118.589912280702,
+      "training_cv": 0.365325633245,
+      "diagnostic_subset": false
+    },
+    {
+      "selected_index_zero_based": 2,
+      "eligible_rank_zero_based": 20,
+      "store_id": "S005",
+      "product_id": "P0009",
+      "training_mean_demand": 119.18201754386,
+      "training_cv": 0.377763608778,
+      "diagnostic_subset": true
+    },
+    {
+      "selected_index_zero_based": 3,
+      "eligible_rank_zero_based": 28,
+      "store_id": "S003",
+      "product_id": "P0019",
+      "training_mean_demand": 119.039473684211,
+      "training_cv": 0.38820826447,
+      "diagnostic_subset": false
+    },
+    {
+      "selected_index_zero_based": 4,
+      "eligible_rank_zero_based": 36,
+      "store_id": "S001",
+      "product_id": "P0005",
+      "training_mean_demand": 121.22149122807,
+      "training_cv": 0.39295936516,
+      "diagnostic_subset": true
+    },
+    {
+      "selected_index_zero_based": 5,
+      "eligible_rank_zero_based": 44,
+      "store_id": "S002",
+      "product_id": "P0010",
+      "training_mean_demand": 119.717105263158,
+      "training_cv": 0.397373627265,
+      "diagnostic_subset": false
+    },
+    {
+      "selected_index_zero_based": 6,
+      "eligible_rank_zero_based": 52,
+      "store_id": "S001",
+      "product_id": "P0008",
+      "training_mean_demand": 92.923245614035,
+      "training_cv": 0.405495739694,
+      "diagnostic_subset": false
+    },
+    {
+      "selected_index_zero_based": 7,
+      "eligible_rank_zero_based": 60,
+      "store_id": "S004",
+      "product_id": "P0002",
+      "training_mean_demand": 123.019736842105,
+      "training_cv": 0.415399777747,
+      "diagnostic_subset": true
+    },
+    {
+      "selected_index_zero_based": 8,
+      "eligible_rank_zero_based": 68,
+      "store_id": "S003",
+      "product_id": "P0003",
+      "training_mean_demand": 112.938596491228,
+      "training_cv": 0.426406978024,
+      "diagnostic_subset": false
+    },
+    {
+      "selected_index_zero_based": 9,
+      "eligible_rank_zero_based": 76,
+      "store_id": "S004",
+      "product_id": "P0016",
+      "training_mean_demand": 73.22149122807,
+      "training_cv": 0.442796717124,
+      "diagnostic_subset": true
+    },
+    {
+      "selected_index_zero_based": 10,
+      "eligible_rank_zero_based": 84,
+      "store_id": "S003",
+      "product_id": "P0001",
+      "training_mean_demand": 93.081140350877,
+      "training_cv": 0.485186229156,
+      "diagnostic_subset": false
+    },
+    {
+      "selected_index_zero_based": 11,
+      "eligible_rank_zero_based": 92,
+      "store_id": "S005",
+      "product_id": "P0017",
+      "training_mean_demand": 92.657894736842,
+      "training_cv": 0.504936130535,
+      "diagnostic_subset": true
+    }
+  ],
+  "evaluation_blocks": [
+    {
+      "block_id": "S001_P0003_eval_1",
+      "store_id": "S001",
+      "product_id": "P0003",
+      "window_id": "eval_1",
+      "start": "2023-11-03",
+      "end": "2023-11-23",
+      "diagnostic_subset": true
+    },
+    {
+      "block_id": "S001_P0003_eval_2",
+      "store_id": "S001",
+      "product_id": "P0003",
+      "window_id": "eval_2",
+      "start": "2023-11-24",
+      "end": "2023-12-14",
+      "diagnostic_subset": true
+    },
+    {
+      "block_id": "S001_P0003_eval_3",
+      "store_id": "S001",
+      "product_id": "P0003",
+      "window_id": "eval_3",
+      "start": "2023-12-15",
+      "end": "2024-01-04",
+      "diagnostic_subset": true
+    },
+    {
+      "block_id": "S002_P0003_eval_1",
+      "store_id": "S002",
+      "product_id": "P0003",
+      "window_id": "eval_1",
+      "start": "2023-11-03",
+      "end": "2023-11-23",
+      "diagnostic_subset": false
+    },
+    {
+      "block_id": "S002_P0003_eval_2",
+      "store_id": "S002",
+      "product_id": "P0003",
+      "window_id": "eval_2",
+      "start": "2023-11-24",
+      "end": "2023-12-14",
+      "diagnostic_subset": false
+    },
+    {
+      "block_id": "S002_P0003_eval_3",
+      "store_id": "S002",
+      "product_id": "P0003",
+      "window_id": "eval_3",
+      "start": "2023-12-15",
+      "end": "2024-01-04",
+      "diagnostic_subset": false
+    },
+    {
+      "block_id": "S005_P0009_eval_1",
+      "store_id": "S005",
+      "product_id": "P0009",
+      "window_id": "eval_1",
+      "start": "2023-11-03",
+      "end": "2023-11-23",
+      "diagnostic_subset": true
+    },
+    {
+      "block_id": "S005_P0009_eval_2",
+      "store_id": "S005",
+      "product_id": "P0009",
+      "window_id": "eval_2",
+      "start": "2023-11-24",
+      "end": "2023-12-14",
+      "diagnostic_subset": true
+    },
+    {
+      "block_id": "S005_P0009_eval_3",
+      "store_id": "S005",
+      "product_id": "P0009",
+      "window_id": "eval_3",
+      "start": "2023-12-15",
+      "end": "2024-01-04",
+      "diagnostic_subset": true
+    },
+    {
+      "block_id": "S003_P0019_eval_1",
+      "store_id": "S003",
+      "product_id": "P0019",
+      "window_id": "eval_1",
+      "start": "2023-11-03",
+      "end": "2023-11-23",
+      "diagnostic_subset": false
+    },
+    {
+      "block_id": "S003_P0019_eval_2",
+      "store_id": "S003",
+      "product_id": "P0019",
+      "window_id": "eval_2",
+      "start": "2023-11-24",
+      "end": "2023-12-14",
+      "diagnostic_subset": false
+    },
+    {
+      "block_id": "S003_P0019_eval_3",
+      "store_id": "S003",
+      "product_id": "P0019",
+      "window_id": "eval_3",
+      "start": "2023-12-15",
+      "end": "2024-01-04",
+      "diagnostic_subset": false
+    },
+    {
+      "block_id": "S001_P0005_eval_1",
+      "store_id": "S001",
+      "product_id": "P0005",
+      "window_id": "eval_1",
+      "start": "2023-11-03",
+      "end": "2023-11-23",
+      "diagnostic_subset": true
+    },
+    {
+      "block_id": "S001_P0005_eval_2",
+      "store_id": "S001",
+      "product_id": "P0005",
+      "window_id": "eval_2",
+      "start": "2023-11-24",
+      "end": "2023-12-14",
+      "diagnostic_subset": true
+    },
+    {
+      "block_id": "S001_P0005_eval_3",
+      "store_id": "S001",
+      "product_id": "P0005",
+      "window_id": "eval_3",
+      "start": "2023-12-15",
+      "end": "2024-01-04",
+      "diagnostic_subset": true
+    },
+    {
+      "block_id": "S002_P0010_eval_1",
+      "store_id": "S002",
+      "product_id": "P0010",
+      "window_id": "eval_1",
+      "start": "2023-11-03",
+      "end": "2023-11-23",
+      "diagnostic_subset": false
+    },
+    {
+      "block_id": "S002_P0010_eval_2",
+      "store_id": "S002",
+      "product_id": "P0010",
+      "window_id": "eval_2",
+      "start": "2023-11-24",
+      "end": "2023-12-14",
+      "diagnostic_subset": false
+    },
+    {
+      "block_id": "S002_P0010_eval_3",
+      "store_id": "S002",
+      "product_id": "P0010",
+      "window_id": "eval_3",
+      "start": "2023-12-15",
+      "end": "2024-01-04",
+      "diagnostic_subset": false
+    },
+    {
+      "block_id": "S001_P0008_eval_1",
+      "store_id": "S001",
+      "product_id": "P0008",
+      "window_id": "eval_1",
+      "start": "2023-11-03",
+      "end": "2023-11-23",
+      "diagnostic_subset": false
+    },
+    {
+      "block_id": "S001_P0008_eval_2",
+      "store_id": "S001",
+      "product_id": "P0008",
+      "window_id": "eval_2",
+      "start": "2023-11-24",
+      "end": "2023-12-14",
+      "diagnostic_subset": false
+    },
+    {
+      "block_id": "S001_P0008_eval_3",
+      "store_id": "S001",
+      "product_id": "P0008",
+      "window_id": "eval_3",
+      "start": "2023-12-15",
+      "end": "2024-01-04",
+      "diagnostic_subset": false
+    },
+    {
+      "block_id": "S004_P0002_eval_1",
+      "store_id": "S004",
+      "product_id": "P0002",
+      "window_id": "eval_1",
+      "start": "2023-11-03",
+      "end": "2023-11-23",
+      "diagnostic_subset": true
+    },
+    {
+      "block_id": "S004_P0002_eval_2",
+      "store_id": "S004",
+      "product_id": "P0002",
+      "window_id": "eval_2",
+      "start": "2023-11-24",
+      "end": "2023-12-14",
+      "diagnostic_subset": true
+    },
+    {
+      "block_id": "S004_P0002_eval_3",
+      "store_id": "S004",
+      "product_id": "P0002",
+      "window_id": "eval_3",
+      "start": "2023-12-15",
+      "end": "2024-01-04",
+      "diagnostic_subset": true
+    },
+    {
+      "block_id": "S003_P0003_eval_1",
+      "store_id": "S003",
+      "product_id": "P0003",
+      "window_id": "eval_1",
+      "start": "2023-11-03",
+      "end": "2023-11-23",
+      "diagnostic_subset": false
+    },
+    {
+      "block_id": "S003_P0003_eval_2",
+      "store_id": "S003",
+      "product_id": "P0003",
+      "window_id": "eval_2",
+      "start": "2023-11-24",
+      "end": "2023-12-14",
+      "diagnostic_subset": false
+    },
+    {
+      "block_id": "S003_P0003_eval_3",
+      "store_id": "S003",
+      "product_id": "P0003",
+      "window_id": "eval_3",
+      "start": "2023-12-15",
+      "end": "2024-01-04",
+      "diagnostic_subset": false
+    },
+    {
+      "block_id": "S004_P0016_eval_1",
+      "store_id": "S004",
+      "product_id": "P0016",
+      "window_id": "eval_1",
+      "start": "2023-11-03",
+      "end": "2023-11-23",
+      "diagnostic_subset": true
+    },
+    {
+      "block_id": "S004_P0016_eval_2",
+      "store_id": "S004",
+      "product_id": "P0016",
+      "window_id": "eval_2",
+      "start": "2023-11-24",
+      "end": "2023-12-14",
+      "diagnostic_subset": true
+    },
+    {
+      "block_id": "S004_P0016_eval_3",
+      "store_id": "S004",
+      "product_id": "P0016",
+      "window_id": "eval_3",
+      "start": "2023-12-15",
+      "end": "2024-01-04",
+      "diagnostic_subset": true
+    },
+    {
+      "block_id": "S003_P0001_eval_1",
+      "store_id": "S003",
+      "product_id": "P0001",
+      "window_id": "eval_1",
+      "start": "2023-11-03",
+      "end": "2023-11-23",
+      "diagnostic_subset": false
+    },
+    {
+      "block_id": "S003_P0001_eval_2",
+      "store_id": "S003",
+      "product_id": "P0001",
+      "window_id": "eval_2",
+      "start": "2023-11-24",
+      "end": "2023-12-14",
+      "diagnostic_subset": false
+    },
+    {
+      "block_id": "S003_P0001_eval_3",
+      "store_id": "S003",
+      "product_id": "P0001",
+      "window_id": "eval_3",
+      "start": "2023-12-15",
+      "end": "2024-01-04",
+      "diagnostic_subset": false
+    },
+    {
+      "block_id": "S005_P0017_eval_1",
+      "store_id": "S005",
+      "product_id": "P0017",
+      "window_id": "eval_1",
+      "start": "2023-11-03",
+      "end": "2023-11-23",
+      "diagnostic_subset": true
+    },
+    {
+      "block_id": "S005_P0017_eval_2",
+      "store_id": "S005",
+      "product_id": "P0017",
+      "window_id": "eval_2",
+      "start": "2023-11-24",
+      "end": "2023-12-14",
+      "diagnostic_subset": true
+    },
+    {
+      "block_id": "S005_P0017_eval_3",
+      "store_id": "S005",
+      "product_id": "P0017",
+      "window_id": "eval_3",
+      "start": "2023-12-15",
+      "end": "2024-01-04",
+      "diagnostic_subset": true
+    }
+  ],
+  "development_cases": [
+    {
+      "id": "dev_1",
+      "store_id": "S001",
+      "product_id": "P0001",
+      "start": "2023-05-01",
+      "end": "2023-05-21"
+    },
+    {
+      "id": "dev_2",
+      "store_id": "S004",
+      "product_id": "P0006",
+      "start": "2023-06-01",
+      "end": "2023-06-21"
+    }
+  ],
+  "dependence_audit": {
+    "selected_stores": 5,
+    "selected_products": 10,
+    "series_per_store": {
+      "S001": 3,
+      "S002": 2,
+      "S003": 3,
+      "S004": 2,
+      "S005": 2
+    },
+    "shared_calendar_windows": 3,
+    "independence_claim_allowed": false,
+    "inference": "Descriptive mean, median, range, sign counts and individual contrasts; no confidence intervals or population significance claims"
+  },
+  "workload": {
+    "main_series_window_blocks": 36,
+    "diagnostic_series_window_blocks": 18,
+    "response_days_per_branch": 14,
+    "main_llm_decisions": 6048,
+    "additional_history_llm_decisions": 6048,
+    "additional_elasticity_llm_decisions": 6048,
+    "production_llm_decisions": 18144,
+    "production_max_completions_before_transport_retries": 36288,
+    "development_llm_decisions": 336,
+    "development_max_completions_before_transport_retries": 672,
+    "production_baseline_branches": 576,
+    "development_baseline_branches": 16,
+    "monetary_estimate": null,
+    "reason": "Current tariffs, measured pilot usage and manual budget handoff required"
+  },
+  "model_calls_made": 0,
+  "manifest_sha256": "05f507106be56e4bfdb3a41eaa2e377b91996025c94d1ae1779760105de6b734"
+}

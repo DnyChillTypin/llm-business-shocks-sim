@@ -1,0 +1,184 @@
+{
+  "schema_version": 1,
+  "study_id": "business_shocks_report2_v1",
+  "status": "frozen_for_milestone_1_review",
+  "frozen_on": "2026-10-31",
+  "timezone": "Asia/Saigon",
+  "execution": {
+    "model_runs": "user_manually_only",
+    "model_calls_authorized": false,
+    "budget_cap_credits": null,
+    "pilot_required_before_evaluation": true,
+    "stop_for_user_review_after_each_milestone": true,
+    "publish_completed_milestones": true,
+    "runner_implemented": false
+  },
+  "scope": {
+    "primary": "Kaggle-driven retail shock simulation; native benchmarks in legacy appendix only",
+    "legacy_cohort": "business_shocks_v1; preserve separately",
+    "reference_implementation_commit": "7de4c6b7e724a3ce23c9f759ea3b161bbde62132",
+    "implementation_claim": "Protocol and sampling only; branch execution remains Milestone 2 work"
+  },
+  "research_questions": [
+    {"id": "RQ1", "question": "Does the composite LLM policy improve contribution relative to adaptive under shocks?"},
+    {"id": "RQ2", "question": "Does explicit updated history improve the composite policy response?"},
+    {"id": "RQ3", "question": "How much repair, fallback, latency and API expense does the policy require?"},
+    {"id": "RQ4", "question": "Do conclusions persist under matched changes in price elasticity?"}
+  ],
+  "dataset": {
+    "path": "data/raw/kaggle/sales_data.csv",
+    "sha256": "96f107b42042d5b21fcae88c7dfc98aab036788aaae73fb3605546cfc06135ff",
+    "source_start": "2022-01-01",
+    "source_end": "2024-01-30",
+    "training_end": "2023-04-01",
+    "validation_end": "2023-08-31",
+    "synthetic": true,
+    "prior_inspection": "Previously used source data; no pristine unseen-data claim"
+  },
+  "sampling": {
+    "evaluation_series": 12,
+    "selection": "Exclude legacy series; sort eligible series by training sample CV then store and product; select floor(N*(i+0.5)/12) for i=0..11",
+    "complete_daily_coverage_required": true,
+    "statistic": "Training Demand sample standard deviation ddof=1 divided by positive mean",
+    "legacy_series_excluded": [
+      {"store_id": "S001", "product_id": "P0001"},
+      {"store_id": "S004", "product_id": "P0006"},
+      {"store_id": "S003", "product_id": "P0016"}
+    ],
+    "evaluation_windows": [
+      {"id": "eval_1", "start": "2023-11-03", "end": "2023-11-23"},
+      {"id": "eval_2", "start": "2023-11-24", "end": "2023-12-14"},
+      {"id": "eval_3", "start": "2023-12-15", "end": "2024-01-04"}
+    ],
+    "development_cases": [
+      {"id": "dev_1", "store_id": "S001", "product_id": "P0001", "start": "2023-05-01", "end": "2023-05-21"},
+      {"id": "dev_2", "store_id": "S004", "product_id": "P0006", "start": "2023-06-01", "end": "2023-06-21"}
+    ],
+    "diagnostic_selected_indices_zero_based": [0, 2, 4, 7, 9, 11],
+    "diagnostic_windows": "All three evaluation windows",
+    "repeated_llm_realizations": 3,
+    "development_llm_realizations": 1,
+    "selection_uses_evaluation_outcomes": false
+  },
+  "branching": {
+    "horizon_days": 21,
+    "warmup_days": 7,
+    "warmup_policy": "adaptive",
+    "snapshot": "Immediately before day 8; restore cash, stock, pipeline, prices, date, history, accounting and random state",
+    "response_start_day": 8,
+    "response_end_day": 21,
+    "shock_start_day": 8,
+    "shock_end_day": 14,
+    "conditions": ["control", "demand_surge", "demand_decline", "delivery_disruption"],
+    "comparison": "Share a prefix across all policies, histories and conditions within each series/window/assumption setting",
+    "randomness": "Match exogenous demand; restore RNG state where present; provider seeds do not guarantee identical model responses",
+    "future_rows_and_shock_labels_visible": false,
+    "estimand": "Policy takeover from a common adaptive warm-up state, rather than deployment from day 1"
+  },
+  "policies": {
+    "primary": "llm_with_one_repair_and_adaptive_fallback",
+    "primary_comparator": "adaptive_full_history",
+    "secondary_comparator": "fixed",
+    "history_variants": {
+      "full": "Rolling last 14 completed days",
+      "frozen": "History available at end of day 7, unchanged after split",
+      "none": "Empty explicit history field; retain current operational state"
+    },
+    "history_treatment_applies_to": "LLM and its adaptive fallback",
+    "history_interpretation": "Composite-policy information dependence; current state still contains consequences of the past",
+    "cross_day_chat_memory": false,
+    "standalone_adaptive_comparator_history": "full",
+    "no_repair_ablation": "Deferred; requires separately frozen policy and complete trajectory execution"
+  },
+  "model": {
+    "requested_id": "gpt-4.1-mini-2025-04-14",
+    "provider": "ShopAIKey",
+    "identity_independently_attested": false,
+    "temperature": 0,
+    "max_output_tokens": 1024,
+    "request_timeout_seconds": 90,
+    "sdk_retries": 0,
+    "model_seed": null,
+    "system_prompt": "prompts/kaggle_policy_v1.txt",
+    "repair_prompt": "prompts/kaggle_repair_v1.txt",
+    "action_schema": "configs/kaggle_action.schema.json",
+    "realization_interpretation": "Repeated requests measure observed provider variability even at temperature zero; not independent businesses"
+  },
+  "failure_policy": {
+    "maximum_repairs_per_decision": 1,
+    "invalid_after_repair": "Adaptive action from the same treated observation; retain fallback in primary outcomes",
+    "transport_or_budget_failure": "Stop incomplete; preserve charges and attempts; no invented fallback",
+    "silent_clipping_or_coercion": false,
+    "missing_pairs": "Report incomplete; do not present unpaired results as a complete matrix",
+    "retry": "Explicit reviewed resume/restart with cumulative ledger; never silently duplicate a paid decision"
+  },
+  "simulator": {
+    "reference_settings": "configs/kaggle_retailbench.json",
+    "reference_elasticity": 1.5,
+    "additional_elasticities": [0.75, 2.25],
+    "purchase_cost_ratio": 0.6,
+    "holding_cost_ratio": 0.001,
+    "price_multipliers": [0.9, 1.0, 1.1],
+    "lead_days": 2,
+    "disrupted_lead_days": 5,
+    "surge_multiplier": 1.5,
+    "decline_multiplier": 0.7,
+    "max_order_days": 10,
+    "initial_cash_days": 20,
+    "sensitivity": "Fresh full-history LLM and both baselines; match branches within each elasticity setting",
+    "holding_and_terminal_value_sensitivity": "Deferred secondary extensions; valuation-only recalculation is not behavioral robustness"
+  },
+  "analysis": {
+    "primary_outcome": "Sum of contribution over days 8 through 21",
+    "contribution_definition": "Revenue minus cost of goods sold and holding cost in unspecified simulator monetary units",
+    "primary_contrast": "LLM shock contribution minus adaptive shock contribution, separately per shock",
+    "adjusted_contrast": "(LLM_shock - LLM_control) - (adaptive_shock - adaptive_control)",
+    "history_contrasts": "Full minus frozen and full minus none under each condition; also compare shock-minus-control differences",
+    "secondary_outcomes": ["demand-weighted fill rate", "lost sales", "average inventory", "terminal inventory", "orders", "prices", "recovery", "validity", "repair", "fallback", "API expense", "latency"],
+    "recovery": {
+      "candidate_days": [15, 19],
+      "consecutive_days": 3,
+      "criterion": "Zero lost sales and inventory within 20% of max(own paired-control closing inventory, 1) on each qualifying day",
+      "delay": "First qualifying day minus 14",
+      "not_observed": "Right censored at day 21"
+    },
+    "aggregation": "Average LLM realizations within series-window-condition; report equal-weight block summaries per scenario and within-block variation separately",
+    "dependence": "Shared stores, products, dates and controls; 36 series-window blocks are not guaranteed independent",
+    "inference": "Descriptive mean, median, range, sign counts and individual contrasts; no confidence intervals or population significance claims",
+    "bootstrap_daily_rows": false,
+    "practical_superiority_threshold": null,
+    "practical_superiority_claim_allowed": false,
+    "reliability_denominators": "Separate scheduled opportunities, completed decisions, first responses, repair attempts, successful repairs, fallback days and missing decisions",
+    "intervention_attribution": "Valid-day versus fallback-day contrasts are descriptive; no causal component attribution"
+  },
+  "cohorts": {
+    "main": "12 series x 3 windows x 4 conditions x 3 LLM realizations; full history; reference elasticity",
+    "history": "6 preselected series x all windows x 4 conditions x 3 realizations; frozen and none; reuse main full-history branches",
+    "elasticity": "Same 6 series x all windows x 4 conditions x 3 realizations; full history at 0.75 and 2.25; both baselines",
+    "development": "Two validation cases x 4 conditions x 3 histories x 1 realization; reference elasticity",
+    "factorial": false,
+    "production_scope": "Planning ceiling; measured pilot and manual budget handoff required; amendments precede outcome inspection"
+  },
+  "reviewer_mapping": [
+    {"issue": "P0 sampling and replication", "rq": "RQ1", "evidence": "Frozen manifest plus complete cohort distributions", "status": "Design prepared; experiments pending"},
+    {"issue": "P0 adaptation identification", "rq": "RQ2", "evidence": "Prefix equality audits and history contrasts", "status": "Protocol prepared; implementation and experiments pending"},
+    {"issue": "P0 composite policy", "rq": "RQ3", "evidence": "Decision provenance and reconciled intervention denominators", "status": "Reporting requirements frozen; telemetry pending"},
+    {"issue": "P0 LLM sensitivity", "rq": "RQ4", "evidence": "Fresh paired LLM elasticity cohorts", "status": "Subset selected; experiments pending"},
+    {"issue": "P1 scope and contribution", "rq": "RQ1-RQ4", "evidence": "Retail-focused report and verified upstream comparison", "status": "Scope fixed; writing and reference audit pending"},
+    {"issue": "P1 statistical interpretation", "rq": "RQ1-RQ4", "evidence": "Block-level descriptive analysis with dependency audit", "status": "Inference scope frozen; results pending"}
+  ],
+  "milestones": [
+    {"id": 1, "deliverable": "Protocol and sampling freeze", "model_execution": "none", "review_gate": "User reviews before Milestone 2"},
+    {"id": 2, "deliverable": "Matched-prefix runner, histories and offline invariant tests", "model_execution": "none", "review_gate": "User reviews code and manual pilot handoff"},
+    {"id": 3, "deliverable": "Development pilot audit and budget proposal", "model_execution": "user manually", "review_gate": "User runs pilot and reviews measured cost and exact matrix"},
+    {"id": 4, "deliverable": "Evaluation cohorts and completeness audit", "model_execution": "user manually", "review_gate": "User reviews accounting before analysis"},
+    {"id": 5, "deliverable": "Economic, history, reliability and sensitivity analysis", "model_execution": "none", "review_gate": "User reviews findings before manuscript"},
+    {"id": 6, "deliverable": "Revised report and reviewer response", "model_execution": "none", "review_gate": "User reviews final report"}
+  ],
+  "amendments": "Retain versions and explain changes before evaluation outcome inspection; no tuning selection, prompts, exclusions or metrics on evaluation outcomes",
+  "storage": {
+    "tracked": "Code, protocol and compact sampling inputs under configs/report2",
+    "local": "Plans and review notes under docs; experiment evidence under ignored results/report2",
+    "secrets": "Local environment only; no account details, conversations or credentials in Git"
+  }
+}

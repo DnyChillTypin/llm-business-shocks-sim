@@ -83,6 +83,20 @@ The professor-report builder requires that archive.
 
 ## Model execution
 
+Report 2 is being delivered in six review milestones. Milestone 1 freezes the
+[research protocol](configs/report2/protocol.json) and
+[sampling manifest](configs/report2/sampling_manifest.json); implementation and
+new results remain pending. The protocol records research questions, history
+treatments, outcome definitions, sampling, inference limits and review gates.
+
+    .\.venv\Scripts\python.exe scripts/prepare_report2.py --check
+
+The checker is offline and never constructs a model client. Each completed
+milestone is committed and pushed for review before work on the next milestone.
+All AI model runs are performed manually by the user. A later handoff will provide
+exact pilot commands, prerequisites, measured cost estimates and stop conditions;
+the current protocol authorizes no model calls.
+
 New model requests require credentials and an explicit experiment budget. Copy
 .env.example to .env for local configuration and keep secrets out of Git.
 The preliminary retail policy requested gpt-4.1-mini-2025-04-14 through ShopAIKey;

@@ -14,6 +14,10 @@ from check_public_stage5 import check_execution
 from src.experiments.kaggle_protocol import read, write, primary_matrix
 
 
+@unittest.skipUnless(
+    (ROOT / "docs/results/stage5/artifact_manifest.json").is_file(),
+    "Requires the local Stage 5 evidence archive, excluded from Git.",
+)
 class PrimaryReportingTests(unittest.TestCase):
     def setUp(self):
         self.temporary = tempfile.TemporaryDirectory(dir=ROOT / ".cache")

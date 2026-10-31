@@ -39,7 +39,7 @@ def run_plan(task, *, config_path=None, purpose=None, case_limit=None):
         raise ValueError("Start with one native worker; budget/logging validation precedes parallel expansion.")
     if purpose == "pilot" and (config["retail_days"] > 1 or config["icbe_rounds"] > 2):
         raise ValueError("Initial pilots are bounded to one Retail day and two ICBE rounds.")
-    with (ROOT / "docs/results/native_case_manifest.csv").open(encoding="utf-8") as stream:
+    with (ROOT / "configs/design/native_case_manifest.csv").open(encoding="utf-8") as stream:
         cases = list(csv.DictReader(stream))
     selected = [r for r in cases if r["task"] == task]
     if case_limit is not None:

@@ -12,6 +12,9 @@ data/raw/**/*.csv
 data/raw/**/*.zip
 data/processed/
 /results/
+# Local research notes, saved evidence, and temporary render/build files.
+/docs/
+/tmp/
 logs/
 *.db
 *.db-wal

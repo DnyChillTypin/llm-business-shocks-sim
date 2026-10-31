@@ -28,7 +28,7 @@ def write(path, value):
 def episode_id(episode):
     # Preserve exactly the identity introduced with the genuine Stage 2 pilots.
     descriptor = {k: episode[k] for k in ("series", "scenario", "policy", "window", "purpose")}
-    return canonical_hash({**descriptor, "frozen_design_sha256": canonical_hash(read(ROOT / "docs/results/study_design_manifest.json"))})
+    return canonical_hash({**descriptor, "frozen_design_sha256": canonical_hash(read(ROOT / "configs/design/study_design_manifest.json"))})
 
 
 def primary_matrix(study):

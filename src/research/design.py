@@ -181,7 +181,10 @@ def validate_design(root: Path) -> dict:
         checks.append({"check": name, "status": "passed"})
 
     study = json.loads((root / "configs/study.json").read_text(encoding="utf-8"))
-    frozen = json.loads((root / "docs/results/study_design_manifest.json").read_text(encoding="utf-8"))
+    frozen_path = root / "docs/results/study_design_manifest.json"
+    if not frozen_path.is_file():
+        raise ValueError("Historical design validation requires the local docs/ evidence archive, excluded from Git.")
+    frozen = json.loads(frozen_path.read_text(encoding="utf-8"))
     expect("frozen_text_artifacts", all(text_hash(root / path) == digest
                                          for path, digest in frozen["artifact_text_sha256"].items()))
     expect("frozen_native_loader_text", all(text_hash(root / path) == digest

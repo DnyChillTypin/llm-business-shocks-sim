@@ -35,44 +35,63 @@ jobs:
       - name: Run research validity checks
         run: .venv/bin/python -m unittest discover -s tests -v
       - name: Verify frozen research design without API calls
+        if: ${{ hashFiles('docs/results/stage8/status.json') != '' }}
         run: .venv/bin/python scripts/check_research_design.py
       - name: Verify aggregate-only public pilot package
+        if: ${{ hashFiles('docs/results/stage8/status.json') != '' }}
         run: .venv/bin/python scripts/check_public_stage2.py
       - name: Verify aggregate-only native evaluation package
+        if: ${{ hashFiles('docs/results/stage8/status.json') != '' }}
         run: .venv/bin/python scripts/check_public_stage3.py
       - name: Reproduce offline Kaggle validation matrix
+        if: ${{ hashFiles('docs/results/stage8/status.json') != '' }}
         run: .venv/bin/python scripts/check_kaggle_matrix.py
       - name: Verify saved Kaggle readiness package
+        if: ${{ hashFiles('docs/results/stage8/status.json') != '' }}
         run: .venv/bin/python scripts/check_public_stage4.py
       - name: Verify Stage 5 plan and saved primary evidence
+        if: ${{ hashFiles('docs/results/stage8/status.json') != '' }}
         run: .venv/bin/python scripts/check_public_stage5.py
       - name: Verify Stage 6 preparation and pinned analysis sources
+        if: ${{ hashFiles('docs/results/stage8/status.json') != '' }}
         run: .venv/bin/python scripts/check_stage6_readiness.py
       - name: Verify completed Stage 6 aggregate analysis
+        if: ${{ hashFiles('docs/results/stage8/status.json') != '' }}
         run: .venv/bin/python scripts/check_public_stage6.py
       - name: Verify Stage 7 preparation and report source assets
+        if: ${{ hashFiles('docs/results/stage8/status.json') != '' }}
         run: .venv/bin/python scripts/check_stage7_readiness.py
       - name: Verify completed Stage 7 report and reviewed PDF binding
+        if: ${{ hashFiles('docs/results/stage8/status.json') != '' }}
         run: .venv/bin/python scripts/check_public_stage7.py
       - name: Verify Stage 8 reproduction and release preparation
+        if: ${{ hashFiles('docs/results/stage8/status.json') != '' }}
         run: .venv/bin/python scripts/check_stage8_readiness.py
       - name: Verify Stage 8 release evidence and report consistency
+        if: ${{ hashFiles('docs/results/stage8/status.json') != '' }}
         run: .venv/bin/python scripts/check_public_stage8.py
       - name: Scan current tracked content for recognizable secrets and private artifacts
         run: .venv/bin/python scripts/check_release_privacy.py
       - name: Execute the integration notebook without API calls
         run: .venv/bin/python scripts/verify_notebook.py
       - name: Execute the setup evidence notebook without API calls
+        if: ${{ hashFiles('docs/results/stage8/status.json') != '' }}
         run: .venv/bin/python scripts/verify_notebook.py --notebook notebooks/02_benchmark_setup.ipynb
       - name: Execute the frozen design notebook without API calls
+        if: ${{ hashFiles('docs/results/stage8/status.json') != '' }}
         run: .venv/bin/python scripts/verify_notebook.py --notebook notebooks/03_kaggle_llm_experiment.ipynb
       - name: Execute saved pilot-cost analysis without API calls
+        if: ${{ hashFiles('docs/results/stage8/status.json') != '' }}
         run: .venv/bin/python scripts/verify_notebook.py --notebook notebooks/04_results_analysis.ipynb
       - name: Execute saved native evaluation analysis without API calls
+        if: ${{ hashFiles('docs/results/stage8/status.json') != '' }}
         run: .venv/bin/python scripts/verify_notebook.py --notebook notebooks/05_native_evaluation.ipynb
       - name: Execute saved Kaggle readiness analysis without API calls
+        if: ${{ hashFiles('docs/results/stage8/status.json') != '' }}
         run: .venv/bin/python scripts/verify_notebook.py --notebook notebooks/06_kaggle_experiment_readiness.ipynb
       - name: Execute saved primary shock comparisons without API calls
+        if: ${{ hashFiles('docs/results/stage8/status.json') != '' }}
         run: .venv/bin/python scripts/verify_notebook.py --notebook notebooks/07_primary_shock_comparisons.ipynb
       - name: Execute final findings and robustness analysis without API calls
+        if: ${{ hashFiles('docs/results/stage8/status.json') != '' }}
         run: .venv/bin/python scripts/verify_notebook.py --notebook notebooks/08_findings_and_robustness.ipynb

@@ -18,7 +18,7 @@ On TeX Live, use `pdflatex -no-shell-escape -interaction=nonstopmode -halt-on-er
 
 ## Reproduce from the project root
 
-The Python wrappers use the project research environment plus the optional `requirements-report.txt` dependencies (PyMuPDF for PDF checks). The standalone LaTeX build above does not require Python.
+The Python wrappers require the local `docs/` evidence archive, which is excluded from Git, plus the project research environment and optional `requirements-report.txt` dependencies (PyMuPDF for PDF checks). Use the standalone LaTeX build above from a fresh public checkout; it does not require Python or the local archive.
 
 ```powershell
 .\.venv\Scripts\python.exe scripts/export_report_assets.py
@@ -34,4 +34,4 @@ The build wrapper uses the verified per-user Windows MiKTeX binaries, disables p
 
 `artifact_manifest.json` binds copied/generated assets to reviewed inputs and records display rounding and full-precision headline facts. `build_manifest.json` binds the compiled PDF to all source inputs, tool versions, page/text checks and the isolated build. `claim_map.csv` supplies the source table and limitation for each headline claim. The project's Stage 7 public checkpoint separately records the final page-by-page review and PDF hash.
 
-The bundle includes some full supplementary tables that are not printed in the short PDF. Complete condition-level CSVs, all action traces and sensitivity summaries remain in `docs/results/stage6/` in the repository. No daily observations are treated as independent replications. All fallback days, failed native coverage and censored recovery cases remain visible. Private raw model transcripts, account information and upstream datasets/code are excluded.
+The bundle includes some full supplementary tables that are not printed in the short PDF. Complete condition-level CSVs, action traces and sensitivity summaries are retained in the local `docs/results/stage6/` archive, excluded from Git. A fresh public checkout therefore supports rebuilding this report bundle but cannot independently reproduce the complete saved-result analysis. No daily observations are treated as independent replications. All fallback days, failed native coverage and censored recovery cases remain included in the reported results. Private raw model transcripts, account information and upstream datasets/code are excluded.

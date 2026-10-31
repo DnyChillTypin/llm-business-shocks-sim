@@ -123,6 +123,11 @@ that command has run and its evidence has been audited.
 
 New model requests require credentials and an explicit experiment budget. Copy
 .env.example to .env for local configuration and keep secrets out of Git.
+The current overall project limit is **20 gateway credits including prior usage**,
+approved on 31 October 2026. Allocations are 4.2 credits for native benchmarks,
+11.8 for retail experiments, and 4.0 held as an unallocated reserve. Individual
+pilot limits and manual-execution review gates still apply. Historical report
+caps describe their earlier releases.
 The preliminary retail policy requested gpt-4.1-mini-2025-04-14 through ShopAIKey;
 requested identifiers do not independently attest served model weights.
 

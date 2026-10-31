@@ -36,6 +36,10 @@ jobs:
         run: .venv/bin/python -m unittest discover -s tests -v
       - name: Verify report 2 protocol and sampling without model calls
         run: .venv/bin/python scripts/prepare_report2.py --check
+      - name: Verify report 2 matched-prefix implementation
+        run: .venv/bin/python scripts/check_report2_runner.py --check
+      - name: Audit report 2 development branches with scripted completions
+        run: .venv/bin/python scripts/check_report2_runner.py --offline-check --output results/report2/ci/offline
       - name: Verify frozen research design without API calls
         if: ${{ hashFiles('docs/results/stage8/status.json') != '' }}
         run: .venv/bin/python scripts/check_research_design.py

@@ -85,17 +85,32 @@ The professor-report builder requires that archive.
 
 Report 2 is being delivered in six review milestones. Milestone 1 freezes the
 [research protocol](configs/report2/protocol.json) and
-[sampling manifest](configs/report2/sampling_manifest.json); implementation and
-new results remain pending. The protocol records research questions, history
+[sampling manifest](configs/report2/sampling_manifest.json). Milestone 2 adds
+the [matched-prefix runner](src/experiments/report2.py) and a separately bound
+[implementation manifest](configs/report2/implementation_manifest.json).
+The protocol records research questions, history
 treatments, outcome definitions, sampling, inference limits and review gates.
 
     .\.venv\Scripts\python.exe scripts/prepare_report2.py --check
+    .\.venv\Scripts\python.exe scripts/check_report2_runner.py --check
+    .\.venv\Scripts\python.exe scripts/run_report2_pilot.py --plan
 
-The checker is offline and never constructs a model client. Each completed
+These checks and planning commands are offline and never construct a model client.
+Warm-up restoration uses seven saved adaptive decisions and verifies the full
+economic state before activating a shock. Opaque native UUIDs and log timestamps
+are excluded from equality checks. Full, frozen and empty history treatments
+apply to both the LLM and its fallback. Saved-action replay checks results and
+intervention denominators. Scripted completion tests are engineering evidence;
+new model results remain pending.
+
+Each completed
 milestone is committed and pushed for review before work on the next milestone.
-All AI model runs are performed manually by the user. A later handoff will provide
-exact pilot commands, prerequisites, measured cost estimates and stop conditions;
-the current protocol authorizes no model calls.
+All AI model runs are performed manually by the user. The manual pilot entry point
+requires a reviewed authorization, current tariff, explicit monetary cap and the
+existing cumulative budget ledger. It defaults to one development branch, blocks
+duplicates and interrupted work, and never enables production evaluation.
+The local milestone handoff records exact commands and outstanding budget inputs.
+The current protocol authorizes no model calls.
 
 New model requests require credentials and an explicit experiment budget. Copy
 .env.example to .env for local configuration and keep secrets out of Git.

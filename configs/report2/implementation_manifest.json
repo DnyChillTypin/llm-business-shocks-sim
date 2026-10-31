@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "milestone": 2,
+  "sampling_sha256": "05f507106be56e4bfdb3a41eaa2e377b91996025c94d1ae1779760105de6b734",
+  "restoration": "Audited seven-day deterministic replay",
+  "opaque_fields_excluded": [
+    "native UUIDs",
+    "log timestamps"
+  ],
+  "model_execution": "user_manually_only",
+  "model_calls_authorized": false,
+  "production_runner_enabled": false,
+  "input_text_sha256": {
+    "src/experiments/report2.py": "f04784aaec77bef640da74ecb1f64663837d02ab13f332ecf41cf3ab32315995",
+    "src/experiments/report2_fixtures.py": "a056fdbf3a64b82726986c49cb74bd5d447faec7cd260e05be16fa3d0beec17b",
+    "src/research/report2_runtime.py": "c9a3d60ed1b00d441cf62e096eb1399c8e9ab451b656232a24042fa5f756e9da",
+    "scripts/run_report2_pilot.py": "509645dd558f8e256680c853a49b0ea6fac4d3d8d85c09ade9e47d85f75fe784",
+    "scripts/check_report2_runner.py": "2affb605bd3e680dc9dc79e2cc5ab8b1648b7d20c19b56c8fbeb9d153047829a",
+    "tests/test_report2_runner.py": "15b2296fb144d5c7d33cacd728c1ef5bfc93737fbe9186fb431dec8537394ec5",
+    "src/experiments/kaggle.py": "e94028770b58ad58e69304508ac4624bfac3e6cda069e7275626d0473cecedb7",
+    "src/experiments/kaggle_protocol.py": "e2ec4bb4fadcac6be36b073526a466d08fad599774ef50f4e08adce173b75237",
+    "src/benchmarks/common.py": "e699167967b437fb6c78a41db3017c548aa5546976c3444fb5127b2f0fe28168",
+    "src/benchmarks/budget.py": "6904188ba859827a9dbe1604f5a324934099d2fc9a0da999ff1c0ffd9d2d3dc9",
+    "src/benchmarks/gateway.py": "d1519eb3ea58f3f57048e6c3ef0002961fc28c49ab5c3412dad8bf726cd31b7e",
+    "src/benchmarks/errors.py": "7c9f426d395ea49d4853a82a1e5304cab67ffa2fa29dca36397b7861027ac2c6",
+    "configs/benchmarks.json": "6f61688741c8a1ad9667787711ff6459bc4ee81cad052287a671574e37bc456a",
+    "requirements-research.txt": "e5d4cee79f61325bf26f34c6d2181569a37ebb7fc1b1a44d246bad2b3bc3d1f1"
+  },
+  "implementation_sha256": "f805378e416647c19e4b09dd9a91b6515dd1294bf79c1fcb467b1cb8fbaccea6"
+}

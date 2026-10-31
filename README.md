@@ -130,6 +130,14 @@ of serial API time. This is one control/full-history development branch out of
 Replaying or auditing saved actions makes no model requests. Repeating activation
 after a completed run is blocked; further branches need a separately reviewed allowance.
 
+The remaining development pilot is prepared through
+`scripts/continue_report2_development.py`. Its offline preparation and audit modes
+preserve the first branch. Explicit manual model execution skips verified
+completed branches and stops on incomplete claims. The proposed continuation
+covers 23 branches and 322 decisions, with at most 644 additional attempts and a
+1-credit incremental allowance inside the overall 20-credit cap. These are
+prepared limits; completion requires the user's model run and a full cohort audit.
+
 New model requests require credentials and an explicit experiment budget. Copy
 .env.example to .env for local configuration and keep secrets out of Git.
 The current overall project limit is **20 gateway credits including prior usage**,

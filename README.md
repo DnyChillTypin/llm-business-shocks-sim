@@ -121,6 +121,15 @@ command. Preparation preserves the cumulative ledger. Only an explicit user
 allowance and launches the model. Measured pilot results remain pending until
 that command has run and its evidence has been audited.
 
+First development branch checkpoint: the user manually completed branch 0 and
+its saved-state/ledger audit passed. Fourteen decisions used 19 requests: 9 were
+valid on the first response, 5 succeeded after repair, and none used fallback.
+Recorded token-derived expense was 0.011881723 gateway credits, with 45.42 seconds
+of serial API time. This is one control/full-history development branch out of
+24, not evidence of shock adaptation or completed production evaluation.
+Replaying or auditing saved actions makes no model requests. Repeating activation
+after a completed run is blocked; further branches need a separately reviewed allowance.
+
 New model requests require credentials and an explicit experiment budget. Copy
 .env.example to .env for local configuration and keep secrets out of Git.
 The current overall project limit is **20 gateway credits including prior usage**,

@@ -606,7 +606,8 @@ def audit_production(batch_dir: Path, ledger_path: Path, cohort: str = "main",
 
 
 def prepare_production_recovery(batch_dir: Path, handoff_dir: Path, snapshot: dict,
-                                *, cohort: str = "main", root: Path = ROOT) -> dict:
+                                *, cohort: str = "main", ledger_path: str | Path | None = None,
+                                root: Path = ROOT) -> dict:
     """Inspect interrupted production branch and prepare a reviewed recovery proposal."""
     batch_dir, handoff_dir = Path(batch_dir), Path(handoff_dir)
     handoff_dir.mkdir(parents=True, exist_ok=False)
@@ -629,12 +630,16 @@ def prepare_production_recovery(batch_dir: Path, handoff_dir: Path, snapshot: di
     if interrupted_key is None:
         raise ValueError("No interrupted or incomplete claim found in batch.")
 
-    budget_file = handoff_dir.parent / "approved_budget.json"
-    if not budget_file.exists():
-        budget_file = root / "results/report2/milestone3/recovery2_final/approved_budget.json"
-    budget = read_json(budget_file) if budget_file.exists() else current_allowance(root / "results/budgets/stage2_pilot_v1.sqlite")[0]
+    if ledger_path is None:
+        budget_file = handoff_dir.parent / "approved_budget.json"
+        if not budget_file.exists():
+            budget_file = root / "results/report2/milestone3/recovery2_final/approved_budget.json"
+        budget = read_json(budget_file) if budget_file.exists() else current_allowance(root / "results/budgets/stage2_pilot_v1.sqlite")[0]
+        ledger_path = root / "results/budgets" / f"{budget['budget_id']}.sqlite"
+    else:
+        ledger_path = Path(ledger_path)
+        budget = current_allowance(ledger_path)[0]
 
-    ledger_path = root / "results/budgets" / f"{budget['budget_id']}.sqlite"
     fp, state, rows, holds = read_ledger(ledger_path)
 
     req_dir = batch_dir / "requests" / interrupted_key
@@ -663,7 +668,7 @@ def prepare_production_recovery(batch_dir: Path, handoff_dir: Path, snapshot: di
         "source_sha256": code_hashes(root),
         "before": state,
         "old_budget": budget,
-        "ledger_relative_path": ledger_path.relative_to(root).as_posix(),
+        "ledger_relative_path": ledger_path.relative_to(root.resolve()).as_posix() if ledger_path.is_relative_to(root.resolve()) else str(ledger_path),
         "recovery_branch_indices": list(range(interrupted_index, len(plan["episodes"]))),
     }
     proposal["proposal_sha256"] = canonical_hash(proposal)

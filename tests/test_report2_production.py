@@ -6,6 +6,7 @@ import shutil
 import sqlite3
 import tempfile
 import unittest
+from datetime import datetime, timezone
 from pathlib import Path
 from unittest.mock import patch, MagicMock
 
@@ -122,12 +123,72 @@ class TestProductionPreparationAndBaselines(unittest.TestCase):
         self.assertTrue(res2["skipped_existing"])
 
 
+def make_fixture_manifest():
+    return {
+        "budget_id": "stage2_pilot_v1",
+        "approved": True,
+        "approval_reference": "Fixture initial allowance",
+        "approved_at_utc": "2026-10-31T05:58:31.134514+00:00",
+        "provider": "ShopAIKey",
+        "base_url": "https://api.shopaikey.com/v1",
+        "currency": "USD_gateway_credit",
+        "cap_usd": 20.0,
+        "scope_caps_usd": {"native": 4.2, "kaggle": 0.565312222},
+        "max_attempts": 2497,
+        "allowed_purposes": ["pilot", "evaluation"],
+        "allowed_tasks": ["report2:development"],
+        "max_input_tokens_bound": 262144,
+        "max_output_tokens": 4096,
+        "protocol_token_allowance": 4096,
+        "rates_verified": True,
+        "rates_source": "https://api.shopaikey.com/pricing",
+        "rates_verified_at_utc": "2026-10-31T05:33:32.821739+00:00",
+        "pricing_version": "a42d372ccf0b5dd13ecf71203521f9d2",
+        "rates": {
+            "gpt-4.1-mini-2025-04-14": {"input_per_million": 0.6408, "output_per_million": 2.5632, "per_request": 0},
+            "gpt-4o-mini-2024-07-18": {"input_per_million": 0.18, "output_per_million": 0.72, "per_request": 0},
+            "deepseek-v3.2": {"input_per_million": 2.4, "output_per_million": 3.6, "per_request": 0}
+        },
+        "qualification": "Fixture allowance",
+        "initial_sequence": "Fixture sequence",
+        "bounded_unknown_failure_categories": ["api_InternalServerError_http_503"]
+    }
+
+
+def make_fixture_ledger(path: Path) -> dict:
+    manifest = make_fixture_manifest()
+    path.parent.mkdir(parents=True, exist_ok=True)
+    conn = sqlite3.connect(path)
+    with conn:
+        conn.execute("CREATE TABLE config (fingerprint TEXT)")
+        conn.execute("INSERT INTO config VALUES (?)", (fingerprint(manifest),))
+        conn.execute("CREATE TABLE allowance_amendments (at TEXT, previous_manifest TEXT, new_manifest TEXT)")
+        conn.execute("INSERT INTO allowance_amendments VALUES (?,?,?)", ("2026-10-31T05:58:31.134514+00:00", json.dumps(manifest), json.dumps(manifest)))
+        conn.execute("CREATE TABLE attempts (id TEXT, run_id TEXT, scope TEXT, model TEXT, reserved_nanos INTEGER, actual_nanos INTEGER, status TEXT, input_bound INTEGER, output_bound INTEGER, started_at TEXT, finished_at TEXT, uncertainty_reason TEXT)")
+        conn.execute("CREATE TABLE bounded_holds (attempt_id TEXT, approval_reference TEXT, at TEXT, explanation TEXT)")
+    conn.close()
+    return manifest
+
+
+def make_fixture_snapshot(manifest: dict) -> dict:
+    return {
+        "checked_at_utc": datetime.now(timezone.utc).isoformat(),
+        "provider": manifest["provider"],
+        "base_url": manifest["base_url"],
+        "rates_verified": True,
+        "pricing_version": manifest["pricing_version"],
+        "paid_api_calls": 0,
+        "missing_models": [],
+        "rates": copy.deepcopy(manifest["rates"]),
+    }
+
+
 class TestProductionBudgetAndAuthorization(unittest.TestCase):
     def setUp(self):
         self.temp_dir = Path(tempfile.mkdtemp())
         self.ledger_path = self.temp_dir / "stage2_pilot_v1.sqlite"
-        shutil.copy(ROOT / "results/budgets/stage2_pilot_v1.sqlite", self.ledger_path)
-        self.snapshot = read_json(ROOT / "results/report2/milestone3/recovery2_gateway_snapshot.json")
+        self.budget = make_fixture_ledger(self.ledger_path)
+        self.snapshot = make_fixture_snapshot(self.budget)
 
     def tearDown(self):
         shutil.rmtree(self.temp_dir, ignore_errors=True)
@@ -135,7 +196,7 @@ class TestProductionBudgetAndAuthorization(unittest.TestCase):
     def test_authorization_validation(self):
         plan = production_plan("main")
         auth = authorization_template(plan)
-        budget = copy.deepcopy(read_json(ROOT / "results/report2/milestone3/recovery2_final/approved_budget.json"))
+        budget = copy.deepcopy(self.budget)
 
         # Unapproved auth should fail
         with self.assertRaises(ValueError):
@@ -172,8 +233,7 @@ class TestProductionBudgetAndAuthorization(unittest.TestCase):
 
             # Verify ledger amendment was committed
             _, state = current_allowance(self.ledger_path)
-            self.assertEqual(receipt["budget_sha256"], state["attempts_sha256"]) if False else None
-            self.assertEqual(state["retained_holds"], 10)
+            self.assertEqual(state["retained_holds"], 0)
 
 
 class TestProductionRecovery(unittest.TestCase):
@@ -181,8 +241,9 @@ class TestProductionRecovery(unittest.TestCase):
         self.temp_dir = Path(tempfile.mkdtemp())
         self.batch_dir = self.temp_dir / "batch"
         self.batch_dir.mkdir(parents=True, exist_ok=True)
-        self.ledger_path = ROOT / "results/budgets/stage2_pilot_v1.sqlite"
-        self.snapshot = read_json(ROOT / "results/report2/milestone3/recovery2_gateway_snapshot.json")
+        self.ledger_path = self.temp_dir / "stage2_pilot_v1.sqlite"
+        self.budget = make_fixture_ledger(self.ledger_path)
+        self.snapshot = make_fixture_snapshot(self.budget)
 
     def tearDown(self):
         shutil.rmtree(self.temp_dir, ignore_errors=True)
@@ -207,6 +268,7 @@ class TestProductionRecovery(unittest.TestCase):
             handoff_dir,
             self.snapshot,
             cohort="main",
+            ledger_path=self.ledger_path,
             root=ROOT,
         )
         self.assertEqual(proposal["status"], "ready_for_user_manual_recovery")

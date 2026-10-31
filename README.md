@@ -112,6 +112,15 @@ duplicates and interrupted work, and never enables production evaluation.
 The local milestone handoff records exact commands and outstanding budget inputs.
 The current protocol authorizes no model calls.
 
+Stage 3 preparation adds `scripts/prepare_report2_pilot.py` for read-only costing,
+manual allowance activation, and post-run auditing. The first proposed branch has
+14 decisions and at most 28 attempts. Its cost worksheet and approval files stay
+under ignored `results/report2/`; the local review note contains the exact manual
+command. Preparation preserves the cumulative ledger. Only an explicit user
+`--activate-and-run --approve-credit-limit 0.50` command activates the narrower
+allowance and launches the model. Measured pilot results remain pending until
+that command has run and its evidence has been audited.
+
 New model requests require credentials and an explicit experiment budget. Copy
 .env.example to .env for local configuration and keep secrets out of Git.
 The preliminary retail policy requested gpt-4.1-mini-2025-04-14 through ShopAIKey;

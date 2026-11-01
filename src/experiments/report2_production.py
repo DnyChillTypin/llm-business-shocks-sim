@@ -315,21 +315,26 @@ def active_production_state(plan: dict, batch_dir: Path, ledger_path: Path, root
 
 
 def run_pending_production(plan: dict, batch_dir: Path, auth_path: Path, budget_path: Path,
-                           runner, *, manual: bool = False, root: Path = ROOT) -> tuple[dict, int]:
+                           runner, *, manual: bool = False, limit: int | None = None, root: Path = ROOT) -> tuple[dict, int]:
     """Serial execution of pending production branches with one fresh subprocess per branch."""
     if not manual:
         raise ValueError("Models require explicit user manual execution.")
     budget = read_json(Path(budget_path))
     ledger_path = root / "results/budgets" / f"{budget['budget_id']}.sqlite"
     launched = 0
+    start_all = time.perf_counter()
+    new_completed = []
 
     for index in range(len(plan["episodes"])):
+        if limit is not None and launched >= limit:
+            break
         completed, state, total_attempts = active_production_state(plan, batch_dir, ledger_path, root=root)
         if index in completed:
             continue
         if state["attempts"] + 28 > budget["max_attempts"]:
             raise ValueError(f"Too few attempt slots remain in budget ceiling ({state['attempts']} / {budget['max_attempts']}).")
 
+        t0 = time.perf_counter()
         print(json.dumps({
             "branch_index": index,
             "completed_before_launch": len(completed),
@@ -338,7 +343,9 @@ def run_pending_production(plan: dict, batch_dir: Path, auth_path: Path, budget_
         }), flush=True)
 
         code = runner(index, Path(auth_path), Path(budget_path))
+        elapsed = time.perf_counter() - t0
         launched += 1
+        print(f"Match {index} finished in {elapsed:.2f}s (launched: {launched})", flush=True)
         if code:
             return {
                 "status": "stopped_requires_review",
@@ -351,9 +358,15 @@ def run_pending_production(plan: dict, batch_dir: Path, auth_path: Path, budget_
         if index not in new_completed:
             raise ValueError(f"Branch {index} finished without a verified completed claim.")
 
+    total_time = time.perf_counter() - start_all
+    avg_time = (total_time / launched) if launched else 0
+    final_count = len(new_completed) if launched else len(completed)
+    is_all_complete = final_count == len(plan["episodes"])
     return {
-        "status": "production_execution_complete_requires_audit",
-        "completed_branches": len(plan["episodes"]),
+        "status": "production_execution_complete_requires_audit" if is_all_complete else "chunk_complete",
+        "completed_branches": final_count,
         "new_branches_launched": launched,
+        "batch_elapsed_seconds": round(total_time, 2),
+        "average_seconds_per_match": round(avg_time, 2),
     }, 0
 

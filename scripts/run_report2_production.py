@@ -53,6 +53,7 @@ def main():
     parser.add_argument("--branch-index", type=int)
     parser.add_argument("--authorization", type=Path)
     parser.add_argument("--budget", type=Path)
+    parser.add_argument("--limit", type=int, default=None, help="Maximum branches to execute in this run")
 
     args = parser.parse_args()
 
@@ -168,10 +169,12 @@ def main():
             ]
             return subprocess.run(cmd, cwd=ROOT).returncode
 
-        res, code = run_pending_production(plan, batch_dir, auth_path, budget_path, runner, manual=True, root=ROOT)
+        res, code = run_pending_production(plan, batch_dir, auth_path, budget_path, runner, manual=True, limit=args.limit, root=ROOT)
         print(json.dumps(res, indent=2), flush=True)
         if code:
             return code
+        if res.get("status") == "chunk_complete":
+            return 0
 
         # Batch finished cleanly; run automatic audit
         ledger_path = ROOT / proposal["ledger_relative_path"]
@@ -248,10 +251,12 @@ def main():
             ]
             return subprocess.run(cmd, cwd=ROOT).returncode
 
-        res, code = run_pending_production(plan, batch_dir, auth_path, budget_path, runner, manual=True, root=ROOT)
+        res, code = run_pending_production(plan, batch_dir, auth_path, budget_path, runner, manual=True, limit=args.limit, root=ROOT)
         print(json.dumps(res, indent=2), flush=True)
         if code:
             return code
+        if res.get("status") == "chunk_complete":
+            return 0
         ledger_path = ROOT / proposal["ledger_relative_path"]
         audit_res = audit_production(batch_dir, ledger_path, cohort=proposal["cohort"], root=ROOT)
         print(json.dumps({k: v for k, v in audit_res.items() if k != "branches"}, indent=2))

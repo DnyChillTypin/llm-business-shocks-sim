@@ -324,12 +324,13 @@ def run_pending_production(plan: dict, batch_dir: Path, auth_path: Path, budget_
     launched = 0
     start_all = time.perf_counter()
     new_completed = []
+    completed, state, total_attempts = active_production_state(plan, batch_dir, ledger_path, root=root)
+    completed_set = set(completed)
 
     for index in range(len(plan["episodes"])):
         if limit is not None and launched >= limit:
             break
-        completed, state, total_attempts = active_production_state(plan, batch_dir, ledger_path, root=root)
-        if index in completed:
+        if index in completed_set:
             continue
         if state["attempts"] + 28 > budget["max_attempts"]:
             raise ValueError(f"Too few attempt slots remain in budget ceiling ({state['attempts']} / {budget['max_attempts']}).")
@@ -337,9 +338,9 @@ def run_pending_production(plan: dict, batch_dir: Path, auth_path: Path, budget_
         t0 = time.perf_counter()
         print(json.dumps({
             "branch_index": index,
-            "completed_before_launch": len(completed),
+            "completed_before_launch": len(completed_set),
             "total_planned_branches": len(plan["episodes"]),
-            "physical_attempts_so_far": total_attempts,
+            "physical_attempts_so_far": state["attempts"],
         }), flush=True)
 
         code = runner(index, Path(auth_path), Path(budget_path))
@@ -354,7 +355,8 @@ def run_pending_production(plan: dict, batch_dir: Path, auth_path: Path, budget_
                 "next_gate": "Preserve new evidence; do not automatically retry",
             }, code
 
-        new_completed, _, _ = active_production_state(plan, batch_dir, ledger_path, root=root)
+        new_completed, state, total_attempts = active_production_state(plan, batch_dir, ledger_path, root=root)
+        completed_set.add(index)
         if index not in new_completed:
             raise ValueError(f"Branch {index} finished without a verified completed claim.")
 

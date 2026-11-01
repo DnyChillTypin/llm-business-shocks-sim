@@ -569,7 +569,8 @@ def audit_production(batch_dir: Path, ledger_path: Path, cohort: str = "main",
     output = Path(output_dir) if output_dir is not None else batch_dir / ("audit_" + datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ"))
     output.mkdir(parents=True, exist_ok=True)
 
-    _, state, rows, _ = read_ledger(ledger_path)
+    _, state, rows, holds = read_ledger(ledger_path)
+    held_ids = {h[0] for h in holds}
     known = {episode_identity(plan, ep): (i, ep) for i, ep in enumerate(plan["episodes"])}
     claims_dir = batch_dir / "claims"
     claims = {}
@@ -595,7 +596,7 @@ def audit_production(batch_dir: Path, ledger_path: Path, cohort: str = "main",
 
         summary = read_json(run_dir / "summary.json")
         paid = [r for r in rows if r["run_id"] == key]
-        accounting = reconcile_production_requests(batch_dir / "requests" / key, paid, key, complete=True, held_attempt_ids={h[0] for h in holds})
+        accounting = reconcile_production_requests(batch_dir / "requests" / key, paid, key, complete=True, held_attempt_ids=held_ids)
         records.append({
             "branch_index": index,
             "identity": key,

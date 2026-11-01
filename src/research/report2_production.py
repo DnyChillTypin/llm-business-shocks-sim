@@ -491,13 +491,27 @@ def json_lines(path: str | Path) -> list[dict]:
     return [json.loads(line) for line in Path(path).read_text(encoding="utf-8").splitlines()]
 
 
-def reconcile_production_requests(directory: Path, rows: list[dict], run_id: str, *, complete: bool = True) -> dict:
+def reconcile_production_requests(directory: Path, rows: list[dict], run_id: str, *,
+                                  complete: bool = True, held_attempt_ids: set[str] | None = None) -> dict:
     """Reconcile unique physical attempt events against SQLite ledger rows."""
-    attempt_path = Path(directory) / "api_attempts.jsonl"
-    if not attempt_path.exists():
+    dirs = [Path(directory)]
+    batch_dir = Path(directory).parent.parent
+    if (batch_dir / "claims").exists():
+        for rec in sorted(batch_dir.glob("recovery*")):
+            arch = rec / "archive/requests" / Path(directory).name
+            if arch.exists() and arch not in dirs:
+                dirs.append(arch)
+
+    events = []
+    for d in dirs:
+        attempt_path = d / "api_attempts.jsonl"
+        if attempt_path.exists():
+            events.extend(json_lines(attempt_path))
+
+    if not events:
         return {"model_attempts": 0, "known_credits": 0.0, "unknown_charge_reserved_credits": 0.0,
                 "serial_api_seconds": 0.0, "failed_requests": []}
-    events = json_lines(attempt_path)
+
     starts = [e for e in events if e["event"] == "started"]
     finishes = [e for e in events if e["event"] == "finished"]
     by_id = {r["id"]: r for r in rows}
@@ -506,6 +520,7 @@ def reconcile_production_requests(directory: Path, rows: list[dict], run_id: str
             or {e["attempt_id"] for e in finishes} != set(by_id)):
         raise ValueError("Request events and unique cumulative ledger attempts differ.")
     started = {e["attempt_id"]: e for e in starts}
+    held_set = held_attempt_ids or set()
     for event in finishes:
         row = by_id[event["attempt_id"]]
         begin = started[event["attempt_id"]]
@@ -523,10 +538,13 @@ def reconcile_production_requests(directory: Path, rows: list[dict], run_id: str
                     or not math.isclose(event["cost_usd"], row["actual_nanos"] / SCALE,
                                         abs_tol=1e-12, rel_tol=0)):
                 raise ValueError("Completed request charge differs from the ledger.")
-        elif (complete or event["status"] != "failed" or row["status"] != "uncertain"
-              or row["actual_nanos"] is not None or event.get("cost_usd") is not None
-              or event.get("usage") is not None
-              or event.get("failure_category") != row["uncertainty_reason"]):
+        elif (event["status"] == "failed" and row["status"] == "uncertain"
+              and row["actual_nanos"] is None and event.get("cost_usd") is None
+              and event.get("usage") is None
+              and event.get("failure_category") == row["uncertainty_reason"]):
+            if complete and row["id"] not in held_set:
+                raise ValueError("Completed branch has unheld uncertain attempt.")
+        else:
             raise ValueError("Failed request uncertainty was lost or presented as complete.")
     return {
         "model_attempts": len(rows),
@@ -577,7 +595,7 @@ def audit_production(batch_dir: Path, ledger_path: Path, cohort: str = "main",
 
         summary = read_json(run_dir / "summary.json")
         paid = [r for r in rows if r["run_id"] == key]
-        accounting = reconcile_production_requests(batch_dir / "requests" / key, paid, key, complete=True)
+        accounting = reconcile_production_requests(batch_dir / "requests" / key, paid, key, complete=True, held_attempt_ids={h[0] for h in holds})
         records.append({
             "branch_index": index,
             "identity": key,
@@ -643,18 +661,14 @@ def prepare_production_recovery(batch_dir: Path, handoff_dir: Path, snapshot: di
         budget = current_allowance(ledger_path)[0]
 
     fp, state, rows, holds = read_ledger(ledger_path)
+    held_ids = {h[0] for h in holds}
 
     req_dir = batch_dir / "requests" / interrupted_key
     paid = [r for r in rows if r["run_id"] == interrupted_key]
-    accounting = reconcile_production_requests(req_dir, paid, interrupted_key, complete=False) if (req_dir / "api_attempts.jsonl").exists() else {"failed_requests": [], "unknown_charge_reserved_credits": 0.0, "model_attempts": 0, "known_credits": 0.0}
+    accounting = reconcile_production_requests(req_dir, paid, interrupted_key, complete=False, held_attempt_ids=held_ids) if (req_dir / "api_attempts.jsonl").exists() else {"failed_requests": [], "unknown_charge_reserved_credits": 0.0, "model_attempts": 0, "known_credits": 0.0}
 
-    failed = accounting.get("failed_requests", [])
-    if failed:
-        uncertain_attempt = next((r for r in rows if r["id"] == failed[0]["attempt_id"]), None)
-        held_credits = uncertain_attempt["reserved_nanos"] / SCALE if uncertain_attempt else 0.0
-    else:
-        uncertain_attempt = None
-        held_credits = 0.0
+    uncertain_attempt = next((r for r in rows if r["status"] == "uncertain" and r["id"] not in held_ids), None)
+    held_credits = uncertain_attempt["reserved_nanos"] / SCALE if uncertain_attempt else 0.0
 
     proposal = {
         "schema_version": 1,

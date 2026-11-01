@@ -633,6 +633,8 @@ def prepare_production_recovery(batch_dir: Path, handoff_dir: Path, snapshot: di
     if ledger_path is None:
         budget_file = handoff_dir.parent / "approved_budget.json"
         if not budget_file.exists():
+            budget_file = handoff_dir.parent / "main_handoff/approved_budget.json"
+        if not budget_file.exists():
             budget_file = root / "results/report2/milestone3/recovery2_final/approved_budget.json"
         budget = read_json(budget_file) if budget_file.exists() else current_allowance(root / "results/budgets/stage2_pilot_v1.sqlite")[0]
         ledger_path = root / "results/budgets" / f"{budget['budget_id']}.sqlite"

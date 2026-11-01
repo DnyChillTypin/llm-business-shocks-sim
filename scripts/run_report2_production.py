@@ -222,12 +222,18 @@ def main():
         if not args.approve_held_credits:
             parser.error("--activate-and-resume requires --approve-held-credits")
         proposal = read_json(handoff_dir / "recovery_proposal.json")
-        receipt = activate_production_recovery(proposal, handoff_dir, batch_dir, args.approve_held_credits, root=ROOT)
-        print(json.dumps(receipt, indent=2), flush=True)
+        receipt_file = handoff_dir / "recovery_receipt.json"
+        if not receipt_file.exists():
+            receipt = activate_production_recovery(proposal, handoff_dir, batch_dir, args.approve_held_credits, root=ROOT)
+            print(json.dumps(receipt, indent=2), flush=True)
 
         plan = production_plan(proposal["cohort"], root=ROOT)
         auth_path = handoff_dir.parent / "approved_authorization.json"
+        if not auth_path.exists():
+            auth_path = handoff_dir.parent / "main_handoff/approved_authorization.json"
         budget_path = handoff_dir.parent / "approved_budget.json"
+        if not budget_path.exists():
+            budget_path = handoff_dir.parent / "main_handoff/approved_budget.json"
 
         def runner(idx, auth, budget):
             cmd = [

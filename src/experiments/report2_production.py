@@ -173,7 +173,8 @@ def run_all_baselines(batch_dir: Path | None = None, cohort: str = "all", root: 
 
 
 def run_production_model_branch(index: int, auth_path: Path, budget_path: Path,
-                                batch_dir: Path | None = None, root: Path = ROOT) -> int:
+                                batch_dir: Path | None = None, cohort: str | None = None,
+                                root: Path = ROOT) -> int:
     """Subprocess runner for one production model branch.
 
     Durable claim is created before client creation.
@@ -183,8 +184,8 @@ def run_production_model_branch(index: int, auth_path: Path, budget_path: Path,
     allowance = read_json(Path(budget_path))
     protocol = read_json(root / PROTOCOL)
 
-    # Determine cohort from auth or proposal
-    cohort = auth.get("cohort", "main")
+    # Determine cohort from argument or auth
+    cohort = cohort or auth.get("cohort", "main")
     plan = production_plan(cohort, root)
     validate_authorization(auth, allowance, plan, index)
     require_existing_ledger(allowance)
@@ -250,6 +251,11 @@ def run_production_model_branch(index: int, auth_path: Path, budget_path: Path,
             counts = install_gateway_clients(request_dir, config, budget=ledger)
 
             with openai.OpenAI() as client:
+                policy = LLMPolicy(client, protocol["model"])
+                def paced_decide(obs):
+                    time.sleep(0.5)
+                    return policy(obs)
+
                 run_branch(
                     prepared,
                     prefix,
@@ -258,7 +264,7 @@ def run_production_model_branch(index: int, auth_path: Path, budget_path: Path,
                     history=episode["history"],
                     policy="llm_with_fallback",
                     realization=episode["realization"],
-                    decide=LLMPolicy(client, protocol["model"]),
+                    decide=paced_decide,
                     manual_model_execution=True,
                 )
 

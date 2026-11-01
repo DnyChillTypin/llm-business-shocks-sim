@@ -136,6 +136,7 @@ def main():
             args.authorization.resolve(),
             args.budget.resolve(),
             batch_dir=args.directory.resolve(),
+            cohort=args.cohort,
             root=ROOT,
         )
 
@@ -233,8 +234,12 @@ def main():
         plan = production_plan(proposal["cohort"], root=ROOT)
         auth_path = handoff_dir.parent / "approved_authorization.json"
         if not auth_path.exists():
+            auth_path = handoff_dir.parent / f"{proposal['cohort']}_handoff/approved_authorization.json"
+        if not auth_path.exists():
             auth_path = handoff_dir.parent / "main_handoff/approved_authorization.json"
         budget_path = handoff_dir.parent / "approved_budget.json"
+        if not budget_path.exists():
+            budget_path = handoff_dir.parent / f"{proposal['cohort']}_handoff/approved_budget.json"
         if not budget_path.exists():
             budget_path = handoff_dir.parent / "main_handoff/approved_budget.json"
 

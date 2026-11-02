@@ -253,7 +253,7 @@ def run_production_model_branch(index: int, auth_path: Path, budget_path: Path,
             with openai.OpenAI() as client:
                 policy = LLMPolicy(client, protocol["model"])
                 def paced_decide(obs):
-                    time.sleep(0.5)
+                    time.sleep(1.0)
                     return policy(obs)
 
                 run_branch(

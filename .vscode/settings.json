@@ -1,0 +1,10 @@
+{
+    "python.terminal.useEnvFile": true,
+    "python.analysis.exclude": [
+        "**/results/**",
+        "**/data/**",
+        "**/vendor/**",
+        "**/.venv/**"
+    ]
+}
+

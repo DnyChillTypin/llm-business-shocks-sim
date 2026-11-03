@@ -19,12 +19,13 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from src.analysis.report2_stage5 import (  # noqa: E402
-    CONDITIONS, OUTCOMES, SHOCKS, add_recovery, block_means, history_contrasts, llm_settings, load_evidence,
-    operational_accounting, paired_contrasts, reliability, summarize,
+    CONDITIONS, OUTCOMES, SHOCKS, add_recovery, block_means, evidence_fingerprint, history_contrasts, llm_settings,
+    load_evidence, operational_accounting, paired_contrasts, reliability, restart_events, restart_summary, summarize,
 )
 from src.research.report2 import read_json  # noqa: E402
 
-SETTING_ORDER = ["main", "history_frozen", "history_none", "elasticity_0.75", "elasticity_2.25"]
+# main_diagnostic: main full-history branches restricted to the 18 diagnostic blocks (matched history reference).
+SETTING_ORDER = ["main", "main_diagnostic", "history_frozen", "history_none", "elasticity_0.75", "elasticity_2.25"]
 CONTRAST_MEASURES = ["raw_vs_adaptive", "adjusted_vs_adaptive", "raw_vs_fixed", "adjusted_vs_fixed",
                      "fill_rate_diff_pp", "lost_sales_diff", "mean_inventory_diff"]
 
@@ -69,8 +70,12 @@ def build_tables(episodes: pd.DataFrame, daily: pd.DataFrame, integrity: dict) -
     t["main_outcome_levels"] = pd.DataFrame(levels)
 
     # Where the contribution gap comes from: contribution = gross margin - holding cost (exact identity).
+    # main_diagnostic restricts the main cohort to the diagnostic blocks, matching the history cohort.
     rows = []
-    for (setting, scenario), g in contrasts.groupby(["setting", "scenario"], sort=False):
+    main_diag = contrasts[(contrasts["setting"] == "main") & contrasts["diagnostic"]]
+    groups = list(contrasts.groupby(["setting", "scenario"], sort=False)) + [
+        (("main_diagnostic", s), g) for s, g in main_diag.groupby("scenario", sort=False)]
+    for (setting, scenario), g in groups:
         diff = {o: (g[o] - g[f"{o}_adaptive"]).mean() for o in
                 ("contribution", "revenue", "cogs", "gross_margin", "holding_cost", "sales",
                  "mean_price_multiplier", "discount_days", "premium_days", "mean_inventory", "total_ordered")}
@@ -125,8 +130,17 @@ def build_tables(episodes: pd.DataFrame, daily: pd.DataFrame, integrity: dict) -
         sens, ["elasticity", "scenario"], ["raw_vs_adaptive", "adjusted_vs_adaptive"])
 
     # RQ3 reliability and operations.
-    t["reliability"] = reliability(llm).set_index("setting").loc[SETTING_ORDER].reset_index()
+    t["reliability"] = reliability(llm, diag).set_index("setting").loc[SETTING_ORDER].reset_index()
     t["operational_accounting"] = operational_accounting(episodes, ROOT)
+    t["restart_events"] = restart_events(ROOT)
+    t["restart_summary"] = restart_summary(t["restart_events"])
+    rs = t["restart_summary"].set_index("cohort")
+    ops_restarts = t["operational_accounting"].set_index("cohort")["recoveries"]
+    if not (rs.loc[ops_restarts.index, "restart_events"] == ops_restarts).all():
+        raise ValueError("Restart events differ from the recovery directories counted in operational accounting")
+    unknown = t["operational_accounting"].set_index("cohort")["unknown_charge_attempts"]
+    if not (rs.loc[unknown.index, "restarts_with_reserve"] == unknown).all():
+        raise ValueError("Restarts holding a reserve differ from unsettled ledger attempts")
 
     # Recovery (trajectory level, explicit denominators).
     rec = episodes[episodes["scenario"] != "control"].copy()
@@ -223,17 +237,64 @@ def key_findings(t: dict, meta: dict) -> list[dict]:
             add(f"rq4_raw_{e}_{s}", f"Elasticity {e}, {s}: LLM minus adaptive, mean (positive blocks), 18 blocks",
                 "elasticity_summary", f"{r['mean']:.1f} ({r['n_positive']}/{r['n_blocks']})",
                 elasticity=e, scenario=s, measure="raw_vs_adaptive")
+    for s in CONDITIONS:
+        r = pick(t["gap_decomposition"], setting="main_diagnostic", scenario=s)
+        add(f"rq2_full_discount_days_{s}", f"Full history on the 18 diagnostic blocks, {s}: LLM mean discount days",
+            "gap_decomposition", round(r["llm_discount_days"], 1), setting="main_diagnostic", scenario=s)
     for setting in SETTING_ORDER:
         r = pick(t["reliability"], setting=setting)
-        add(f"rq3_{setting}", f"{setting}: first-pass valid / repair attempts / repair success / fallback",
-            "reliability",
+        add(f"rq3_{setting}", f"{setting}: first-pass valid / repair attempted / repaired (of decisions) / "
+            "repair success (of attempts) / fallback", "reliability",
             f"{r['first_pass_valid_share']:.1%} / {r['repair_attempt_share']:.1%} / "
-            f"{r['repair_success_rate']:.1%} / {r['fallback_share']:.1%}", setting=setting)
+            f"{r['successful_repair_share']:.1%} / {r['repair_success_rate']:.1%} / {r['fallback_share']:.1%}",
+            setting=setting)
+    r = pick(t["restart_summary"], cohort="total")
+    add("ops_restarts", "Supervised restarts: events / distinct branches / with an unknown-charge reserve",
+        "restart_summary", f"{r['restart_events']} / {r['distinct_branches']} / {r['restarts_with_reserve']}",
+        cohort="total")
     add("ops_exposure", "Project credit exposure including all reserves (cap 20)", "operational_accounting",
         round(meta["project_exposure_credits"], 6))
     add("timeout_deviation", "Elasticity branches containing a request that completed after the frozen 90 s timeout",
         "timeout_deviation_branches", meta["timeout_deviation_branches"])
     return claims
+
+
+# ---------------------------------------------------------------- evidence cache
+
+CACHE_PARTS = (".episodes.pkl", ".daily.pkl", ".integrity.json")
+
+
+def _file_sha(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def save_cache(cache: Path, fingerprint: dict, episodes, daily, integrity) -> None:
+    """Write the loaded evidence with the fingerprint it was built from and the hash of each cache file."""
+    cache.parent.mkdir(parents=True, exist_ok=True)
+    episodes.to_pickle(cache.with_suffix(".episodes.pkl"))
+    daily.to_pickle(cache.with_suffix(".daily.pkl"))
+    cache.with_suffix(".integrity.json").write_text(json.dumps(integrity), encoding="utf-8")
+    record = {**fingerprint, "files": {s: _file_sha(cache.with_suffix(s)) for s in CACHE_PARTS}}
+    cache.with_suffix(".fingerprint.json").write_text(json.dumps(record, indent=2), encoding="utf-8")
+
+
+def load_cache(cache: Path, fingerprint: dict):
+    """Return cached (episodes, daily, integrity) only if it matches the current evidence and code, else None."""
+    record_path = cache.with_suffix(".fingerprint.json")
+    if not all(cache.with_suffix(s).exists() for s in CACHE_PARTS):
+        return None
+    if not record_path.exists():
+        print(f"Cache {cache} has no fingerprint; rebuilding from evidence.")
+        return None
+    record = json.loads(record_path.read_text(encoding="utf-8"))
+    if record.get("fingerprint") != fingerprint["fingerprint"]:
+        print(f"Cache {cache} is stale (evidence or analysis code changed); rebuilding from evidence.")
+        return None
+    if any(record.get("files", {}).get(s) != _file_sha(cache.with_suffix(s)) for s in CACHE_PARTS):
+        print(f"Cache {cache} files do not match their recorded hashes; rebuilding from evidence.")
+        return None
+    return (pd.read_pickle(cache.with_suffix(".episodes.pkl")), pd.read_pickle(cache.with_suffix(".daily.pkl")),
+            json.loads(cache.with_suffix(".integrity.json").read_text(encoding="utf-8")))
 
 
 # ---------------------------------------------------------------- main
@@ -245,19 +306,28 @@ def main(argv=None) -> int:
     parser.add_argument("--no-figures", action="store_true")
     args = parser.parse_args(argv)
 
-    if args.cache and args.cache.with_suffix(".episodes.pkl").exists():
-        episodes = pd.read_pickle(args.cache.with_suffix(".episodes.pkl"))
-        daily = pd.read_pickle(args.cache.with_suffix(".daily.pkl"))
-        integrity = json.loads(args.cache.with_suffix(".integrity.json").read_text())
+    fingerprint = evidence_fingerprint(ROOT)
+    cached = load_cache(args.cache, fingerprint) if args.cache else None
+    if cached is not None:
+        episodes, daily, integrity = cached
+        cache_state = "used"
     else:
         episodes, daily, integrity = load_evidence(ROOT)
         episodes = add_recovery(episodes, daily)
+        cache_state = "not_requested"
         if args.cache:
-            episodes.to_pickle(args.cache.with_suffix(".episodes.pkl"))
-            daily.to_pickle(args.cache.with_suffix(".daily.pkl"))
-            args.cache.with_suffix(".integrity.json").write_text(json.dumps(integrity))
+            save_cache(args.cache, fingerprint, episodes, daily, integrity)
+            cache_state = "rebuilt"
+    evidence_source = {
+        "cache_state": cache_state, "cache_used": cache_state == "used",
+        "cache_path": str(args.cache) if args.cache else None,
+        "evidence_fingerprint": fingerprint["fingerprint"], "claim_files": fingerprint["claim_files"],
+        "analysis_source_sha256": fingerprint["analysis_source_sha256"],
+        "evidence_hashes_verified_this_run": cache_state != "used",
+    }
 
     tables, meta = build_tables(episodes, daily, integrity)
+    meta["evidence_source"] = evidence_source
     out = args.output
     (out / "tables").mkdir(parents=True, exist_ok=True)
     for name, table in tables.items():
@@ -285,8 +355,9 @@ def main(argv=None) -> int:
     }
     (out / "analysis_manifest.json").write_text(json.dumps(manifest, indent=2, default=str) + "\n", encoding="utf-8")
     print(json.dumps({k: manifest[k] for k in ("llm_branches", "baseline_branches", "prefix_groups",
-                                                 "prefix_groups_with_single_prefix", "timeout_deviation_branches",
-                                                 "project_exposure_credits")}, indent=2, default=str))
+                                                 "prefix_groups_with_single_prefix", "evidence_hash_verified_llm_branches",
+                                                 "evidence_hash_verified_baseline_branches", "timeout_deviation_branches",
+                                                 "project_exposure_credits", "evidence_source")}, indent=2, default=str))
     for c in claims:
         print(f"{c['id']:<40} {c['value']}")
     return 0

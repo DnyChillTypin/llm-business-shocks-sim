@@ -14,7 +14,9 @@ Definitions follow the frozen protocol (`configs/report2/protocol.json`, "analys
 """
 from __future__ import annotations
 
+import hashlib
 import json
+import re
 import sqlite3
 from contextlib import closing
 from pathlib import Path
@@ -22,6 +24,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
+from src.experiments.report2_production import check_prior_claim
 from src.research.report2 import read_json
 from src.research.report2_production import baseline_plan, episode_identity, production_plan
 
@@ -140,10 +143,56 @@ def load_branch(run_dir: Path, request_dir: Path | None) -> tuple[dict, pd.DataF
     return record, daily
 
 
+def verify_claim_evidence(batch_dir: Path, claim_path: Path, *, llm: bool) -> dict:
+    """Verify a branch's evidence files against the hashes recorded in its claim; raise on any mismatch.
+
+    Reuses the production runner's own check (`check_prior_claim`): claim and run-manifest status, the
+    `evidence_sha256` file set of `evidence_hashes`, and the full `request_artifact_sha256` file map. For LLM
+    branches the request-artifact hashes and directory are required, so that check cannot be skipped silently.
+    """
+    claim = read_json(claim_path)
+    if llm:
+        if not claim.get("request_artifact_sha256"):
+            raise ValueError(f"LLM claim has no request_artifact_sha256: {claim_path.stem}")
+        if not (batch_dir / "requests" / claim_path.stem).is_dir():
+            raise ValueError(f"Request artifacts missing for LLM claim: {claim_path.stem}")
+    if not claim.get("evidence_sha256"):
+        raise ValueError(f"Claim has no evidence_sha256: {claim_path.stem}")
+    check_prior_claim(batch_dir, claim_path)
+    return claim
+
+
+def claim_dirs(root: Path = ROOT) -> list[Path]:
+    results = root / "results/report2"
+    return [results / folder / "claims" for folder in COHORT_DIRS.values()] + [results / "production/baselines/claims"]
+
+
+def evidence_fingerprint(root: Path = ROOT) -> dict:
+    """Fingerprint of the evidence and analysis code that a cache of loaded evidence depends on.
+
+    Hashes every claim file (each claim carries its branch's evidence and request-artifact hashes) together
+    with the source of this analysis module (line endings normalised).
+    """
+    digest = hashlib.sha256()
+    files = 0
+    for folder in claim_dirs(root):
+        for path in sorted(folder.glob("*.json")):
+            digest.update(path.relative_to(root).as_posix().encode() + b"\0")
+            digest.update(hashlib.sha256(path.read_bytes()).hexdigest().encode() + b"\n")
+            files += 1
+    source = hashlib.sha256(Path(__file__).read_bytes().replace(b"\r\n", b"\n")).hexdigest()
+    digest.update(b"analysis_source:" + source.encode())
+    return {"fingerprint": digest.hexdigest(), "claim_files": files, "analysis_source_sha256": source}
+
+
 def load_evidence(root: Path = ROOT) -> tuple[pd.DataFrame, pd.DataFrame, dict]:
-    """Load every planned LLM and baseline branch; fail if any planned branch is missing or inconsistent."""
+    """Load every planned LLM and baseline branch; fail if any planned branch is missing or inconsistent.
+
+    Every branch's evidence files are verified against the hashes recorded in its claim before loading.
+    """
     results = root / "results/report2"
     records, dailies = [], []
+    verified = {"llm": 0, "baseline": 0}
 
     def add(plan, batch_dir, label, with_requests):
         for episode in plan["episodes"]:
@@ -151,7 +200,9 @@ def load_evidence(root: Path = ROOT) -> tuple[pd.DataFrame, pd.DataFrame, dict]:
             claim_path = batch_dir / "claims" / f"{identity}.json"
             if not claim_path.exists() or read_json(claim_path).get("status") != "validated_complete":
                 raise ValueError(f"Missing validated branch {identity} in {batch_dir}")
-            if read_json(claim_path)["episode"] != episode:
+            claim = verify_claim_evidence(batch_dir, claim_path, llm=with_requests)
+            verified["llm" if with_requests else "baseline"] += 1
+            if claim["episode"] != episode:
                 raise ValueError(f"Claim episode differs from frozen plan for {identity}")
             record, daily = load_branch(batch_dir / "branches" / identity,
                                         batch_dir / "requests" / identity if with_requests else None)
@@ -178,6 +229,8 @@ def load_evidence(root: Path = ROOT) -> tuple[pd.DataFrame, pd.DataFrame, dict]:
         "prefix_groups_with_single_prefix": int((groups["prefix_sha256"].nunique() == 1).sum()),
         "prefix_groups_with_single_restored_state": int((groups["restored_state_sha256"].nunique() == 1).sum()),
         "daily_rows": int(len(daily)),
+        "evidence_hash_verified_llm_branches": verified["llm"],
+        "evidence_hash_verified_baseline_branches": verified["baseline"],
     }
     if integrity["prefix_groups_with_single_prefix"] != integrity["prefix_groups"]:
         raise ValueError("Matched-prefix check failed: a block/elasticity group has more than one prefix")
@@ -293,19 +346,29 @@ def history_contrasts(llm_blocks: pd.DataFrame, diagnostic_blocks: set[str]) -> 
     return pd.concat(rows, ignore_index=True)
 
 
-def reliability(llm: pd.DataFrame) -> pd.DataFrame:
-    """Decision provenance with explicit denominators, from final validated evidence."""
+def reliability(llm: pd.DataFrame, diagnostic_blocks: set[str] | None = None) -> pd.DataFrame:
+    """Decision provenance with explicit denominators, from final validated evidence.
+
+    With `diagnostic_blocks`, adds a `main_diagnostic` row: the main full-history branches restricted to the
+    diagnostic blocks, i.e. the matched reference for the history and elasticity cohorts.
+    """
+    groups = list(llm.groupby("setting", sort=False))
+    if diagnostic_blocks is not None:
+        groups.append(("main_diagnostic",
+                       llm[(llm["setting"] == "main") & llm["block_id"].isin(diagnostic_blocks)]))
     rows = []
-    for setting, g in llm.groupby("setting", sort=False):
+    for setting, g in groups:
         decisions = g["completed_decisions"].sum()
         repairs = g["repair_attempts"].sum()
         rows.append({
-            "setting": setting, "branches": len(g), "scheduled_decisions": len(g) * RESPONSE_DAYS,
+            "setting": setting, "branches": len(g), "blocks": g["block_id"].nunique() if "block_id" in g else np.nan,
+            "scheduled_decisions": len(g) * RESPONSE_DAYS,
             "completed_decisions": decisions,
             "first_pass_valid": g["first_pass_valid"].sum(),
             "first_pass_valid_share": g["first_pass_valid"].sum() / decisions,
             "repair_attempts": repairs, "repair_attempt_share": repairs / decisions,
             "successful_repairs": g["successful_repairs"].sum(),
+            "successful_repair_share": g["successful_repairs"].sum() / decisions,
             "repair_success_rate": g["successful_repairs"].sum() / repairs if repairs else np.nan,
             "fallback_days": g["fallback_days"].sum(), "fallback_share": g["fallback_days"].sum() / decisions,
             "api_attempts": g["api_attempts"].sum(), "attempts_per_decision": g["api_attempts"].sum() / decisions,
@@ -352,3 +415,70 @@ def operational_accounting(episodes: pd.DataFrame, root: Path = ROOT) -> pd.Data
     table = pd.DataFrame(out)
     table.attrs["project_exposure"] = total_nanos / 1e9
     return table
+
+
+# ---------------------------------------------------------------- restarts
+
+RESTART_CAUSES = [  # (group, pattern on the failure category); first match wins
+    ("timeout", r"^api_APITimeoutError"),
+    ("process_interrupted", r"^process_interrupted"),
+    ("connection_error", r"^api_APIConnectionError"),
+    ("server_error", r"^api_InternalServerError"),
+    ("rate_limit", r"^api_RateLimitError"),
+    ("no_failed_request", r"^no_failed_request$"),
+]
+
+
+def restart_cause(proposal: dict) -> str:
+    """Failure category of the request that stopped the branch, or `no_failed_request`."""
+    reason = (proposal.get("failed_attempt") or {}).get("uncertainty_reason")
+    if not reason:
+        failed = (proposal.get("accounting") or {}).get("failed_requests") or []
+        if failed:
+            reason = max(failed, key=lambda f: f.get("started_at_utc") or "").get("failure_category")
+    return reason or "no_failed_request"
+
+
+def cause_group(cause: str) -> str:
+    return next((group for group, pattern in RESTART_CAUSES if re.search(pattern, cause)), "other")
+
+
+def restart_events(root: Path = ROOT) -> pd.DataFrame:
+    """One row per supervised restart (recoveryN directory) across the three LLM cohorts."""
+    rows = []
+    for cohort, folder in COHORT_DIRS.items():
+        dirs = [p for p in (root / "results/report2" / folder).glob("recovery*") if p.is_dir() and p.name[8:].isdigit()]
+        for d in sorted(dirs, key=lambda p: int(p.name[8:])):
+            proposal = read_json(d / "recovery_proposal.json")
+            receipt = read_json(d / "recovery_receipt.json")
+            if receipt.get("interrupted_identity") != proposal.get("interrupted_identity"):
+                raise ValueError(f"{cohort}/{d.name}: receipt and proposal name different branches")
+            cause = restart_cause(proposal)
+            http = re.search(r"_http_(\d+)$", cause)
+            rows.append({
+                "cohort": cohort, "recovery": d.name, "recovery_number": int(d.name[8:]),
+                "interrupted_identity": proposal["interrupted_identity"],
+                "interrupted_index": proposal.get("interrupted_index"),
+                "cause": cause, "cause_group": cause_group(cause), "http_status": int(http.group(1)) if http else np.nan,
+                "held_credits": float(proposal.get("held_credits") or 0.0),
+                "receipt_approved_held_credits": float(receipt.get("approved_held_credits") or 0.0),
+                "receipt_status": receipt.get("status"),
+            })
+    return pd.DataFrame(rows)
+
+
+def restart_summary(events: pd.DataFrame) -> pd.DataFrame:
+    """Restart events, distinct restarted branches and cause counts per cohort, plus a total row."""
+    groups = [g for g, _ in RESTART_CAUSES] + ["other"]
+    rows = []
+    for cohort, g in list(events.groupby("cohort", sort=False)) + [("total", events)]:
+        rows.append({
+            "cohort": cohort, "restart_events": len(g),
+            "distinct_branches": int(g[["cohort", "interrupted_identity"]].drop_duplicates().shape[0]),
+            "restarts_with_reserve": int((g["held_credits"] > 0).sum()),
+            "held_credits": g["held_credits"].sum(),
+            "receipts_with_different_approved_hold": int(
+                ((g["held_credits"] - g["receipt_approved_held_credits"]).abs() > 1e-12).sum()),
+            **{f"cause_{c}": int((g["cause_group"] == c).sum()) for c in groups},
+        })
+    return pd.DataFrame(rows)

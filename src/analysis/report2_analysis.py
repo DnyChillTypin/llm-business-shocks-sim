@@ -141,8 +141,6 @@ def compute_recovery_for_pair(shock_daily: pd.DataFrame, control_daily: pd.DataF
         "episode_day": d,
         "closing_inventory": 0.0,
         "lost_sales": 0.0,
-        "order_quantity": 0.0,
-        "price_multiplier": 1.0,
     } for d in range(1, 8)])
 
     s = shock_daily.copy()
@@ -150,8 +148,8 @@ def compute_recovery_for_pair(shock_daily: pd.DataFrame, control_daily: pd.DataF
     s["episode_day"] = range(8, 22)
     c["episode_day"] = range(8, 22)
 
-    s_full = pd.concat([warmup_days, s[["episode_day", "closing_inventory", "lost_sales", "order_quantity", "price_multiplier"]]], ignore_index=True)
-    c_full = pd.concat([warmup_days, c[["episode_day", "closing_inventory", "lost_sales", "order_quantity", "price_multiplier"]]], ignore_index=True)
+    s_full = pd.concat([warmup_days, s[["episode_day", "closing_inventory", "lost_sales"]]], ignore_index=True)
+    c_full = pd.concat([warmup_days, c[["episode_day", "closing_inventory", "lost_sales"]]], ignore_index=True)
 
     for first in range(15, 20):
         s_win = s_full.iloc[first - 1:first + 2]
@@ -181,16 +179,20 @@ def compute_paired_contrasts(models_df: pd.DataFrame, baselines_df: pd.DataFrame
     if models_df.empty or baselines_df.empty:
         return pd.DataFrame()
 
-    adaptive = baselines_df[baselines_df["policy"] == "adaptive"].set_index(["block_id", "scenario", "elasticity"])
-    fixed = baselines_df[baselines_df["policy"] == "fixed"].set_index(["block_id", "scenario", "elasticity"])
+    adaptive = baselines_df[baselines_df["policy"] == "adaptive"].drop_duplicates(
+        subset=["block_id", "scenario", "elasticity"]
+    ).set_index(["block_id", "scenario", "elasticity"])
+    fixed = baselines_df[baselines_df["policy"] == "fixed"].drop_duplicates(
+        subset=["block_id", "scenario", "elasticity"]
+    ).set_index(["block_id", "scenario", "elasticity"])
 
     contrasts = []
     for _, row in models_df.iterrows():
         key = (row["block_id"], row["scenario"], row["elasticity"])
-        c_llm = row["contribution"]
+        c_llm = float(row["contribution"])
 
-        c_adapt = adaptive.loc[key]["contribution"] if key in adaptive.index else None
-        c_fixed = fixed.loc[key]["contribution"] if key in fixed.index else None
+        c_adapt = float(adaptive.loc[key]["contribution"]) if key in adaptive.index else None
+        c_fixed = float(fixed.loc[key]["contribution"]) if key in fixed.index else None
 
         contrasts.append({
             **row.to_dict(),
@@ -198,8 +200,8 @@ def compute_paired_contrasts(models_df: pd.DataFrame, baselines_df: pd.DataFrame
             "fixed_contribution": c_fixed,
             "raw_contrast_adaptive": (c_llm - c_adapt) if c_adapt is not None else None,
             "raw_contrast_fixed": (c_llm - c_fixed) if c_fixed is not None else None,
-            "adaptive_fill_rate": adaptive.loc[key]["fill_rate"] if key in adaptive.index else None,
-            "fixed_fill_rate": fixed.loc[key]["fill_rate"] if key in fixed.index else None,
+            "adaptive_fill_rate": float(adaptive.loc[key]["fill_rate"]) if key in adaptive.index else None,
+            "fixed_fill_rate": float(fixed.loc[key]["fill_rate"]) if key in fixed.index else None,
         })
 
     df = pd.DataFrame(contrasts)

@@ -54,7 +54,7 @@ def process_alive(pid: int) -> bool:
         kernel32.CloseHandle(handle)
 
 
-def inspect(batch_dir: Path, ledger: Path, now: datetime) -> dict:
+def inspect(batch_dir: Path, ledger: Path, now: datetime, force: bool = False) -> dict:
     lock = batch_dir / ".kaggle_execution.lock"
     lock_pid = None
     if lock.exists():
@@ -72,7 +72,7 @@ def inspect(batch_dir: Path, ledger: Path, now: datetime) -> dict:
     if row["actual_nanos"] is not None:
         raise SystemExit("Pending attempt already has an actual charge; review manually.")
     age = now - datetime.fromisoformat(row["started_at"])
-    if age < MIN_PENDING_AGE:
+    if not force and age < MIN_PENDING_AGE:
         raise SystemExit(f"Pending attempt started {age} ago; it may still be live. Wait and re-check.")
 
     claim_path = batch_dir / "claims" / f"{row['run_id']}.json"
@@ -168,6 +168,7 @@ def main(argv=None) -> int:
     parser.add_argument("--apply", action="store_true")
     parser.add_argument("--attempt-id", help="Required with --apply; must equal the detected pending attempt")
     parser.add_argument("--sync-attempt-log", help="Sync missing finished event to requests/<run_id>/api_attempts.jsonl for an already uncertain attempt")
+    parser.add_argument("--force", action="store_true", help="Bypass minimum pending age when process is confirmed dead")
     args = parser.parse_args(argv)
 
     now = datetime.now(timezone.utc)
@@ -183,7 +184,7 @@ def main(argv=None) -> int:
         print(json.dumps({"status": "synced" if synced else "not_found", "attempt_id": row[0], "run_id": row[1]}, indent=2))
         return 0
 
-    found = inspect(batch_dir, args.ledger, now)
+    found = inspect(batch_dir, args.ledger, now, force=args.force)
     if not args.apply:
         print(json.dumps({"status": "dry_run", "model_calls_made": 0, **found}, indent=2))
         print(f"\nTo apply: --apply --attempt-id {found['attempt']['id']}")

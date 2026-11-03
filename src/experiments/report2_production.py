@@ -242,6 +242,7 @@ def run_production_model_branch(index: int, auth_path: Path, budget_path: Path,
             ledger = load_budget(Path(budget_path), run_id=identity, scope="kaggle", base_url=base, purpose="evaluation")
             config = {
                 **settings(),
+                "request_timeout_seconds": 180,
                 "max_output_tokens": protocol["model"]["max_output_tokens"],
                 "max_api_calls_per_task": 28,
                 "_purpose": "evaluation",
@@ -253,7 +254,7 @@ def run_production_model_branch(index: int, auth_path: Path, budget_path: Path,
             with openai.OpenAI() as client:
                 policy = LLMPolicy(client, protocol["model"])
                 def paced_decide(obs):
-                    time.sleep(1.0)
+                    time.sleep(2.5)
                     return policy(obs)
 
                 run_branch(
